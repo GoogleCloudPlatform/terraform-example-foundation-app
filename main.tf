@@ -119,9 +119,9 @@ resource "google_service_account" "node-sa" {
 }
 
 # gke
-module "gke-dev-9" {
+module "gke-dev" {
   source                     = "terraform-google-modules/kubernetes-engine/google//modules/beta-private-cluster"
-  version                    = "~> 10.0"
+  version                    = "~> 13.0"
   project_id                 = var.project_id
   name                       = local.cluster_name
   region                     = var.region
