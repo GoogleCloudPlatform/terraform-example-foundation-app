@@ -1,6 +1,7 @@
 # Deploy Bank of Anthos on example-foundations
 
 ## Instructions
+test
 
 1. Enable optional firewall rules in your shared VPC by modifying your 3-networks/envs/dev/main.tf and adding the following `optional_fw_rules_enabled = true`
 1. Ensure that you have enabled the following APIs enabled in your project, by adding `activate_apis = ["container.googleapis.com", "iap.googleapis.com"]`
