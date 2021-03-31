@@ -14,6 +14,17 @@
  * limitations under the License.
  */
 
+data "google_compute_network" "vpc" {
+  project = var.network_project_id
+  name    = var.vpc_name
+}
+
+data "google_compute_subnetwork" "bastion_subnet" {
+  project = var.network_project_id
+  name    = var.bastion_subnet
+  region  = var.bastion_region
+}
+
 module "iap_bastion" {
   source  = "terraform-google-modules/bastion-host/google"
   project = var.project_id
