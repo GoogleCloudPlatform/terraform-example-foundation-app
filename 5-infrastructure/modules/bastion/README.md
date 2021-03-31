@@ -1,3 +1,6 @@
+# Bastion Module
+This module is a wrapper for [CFT Bastion Module](https://github.com/terraform-google-modules/terraform-google-bastion-host) and will generate a shielded bastion host vm connected to a shared VPC network.
+
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
 
