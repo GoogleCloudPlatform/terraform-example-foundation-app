@@ -247,68 +247,10 @@ variable "boa_sql_project_id" {
   description = "Project ID for SQL."
 }
 
-variable "sql_1_admin_user" {
-  #sensitive  = true
-  type        = string
-  description = "The SQL admin's username."
-  default     = "testuser"
-}
-
-variable "sql_1_admin_password" {
-  #sensitive  = true
-  type        = string
-  description = "The SQL admin's password."
-  default     = "foobar"
-}
-
 variable "sql_1_database_region" {
   type        = string
   description = "The location of the SQL database. Only if primary region value, is not given"
   default     = "us-east1"
-}
-
-variable "sql_1_database_users" {
-  type = list(object({
-    name     = string
-    password = string
-    host     = string
-  }))
-  description = "Allowed list of members (users and/or service accounts) that need access to the SQL database."
-  default     = []
-}
-
-variable "sql_1_database_zone" {
-  type        = string
-  description = "The database zone in primary region"
-  default     = "us-east1-c"
-}
-
-variable "sql_1_replica_zones" {
-  type = object({
-    zone1 = string
-    zone2 = string
-    zone3 = string
-  })
-  description = "The database zones in primary region for read replicas"
-  default = {
-    zone1 = "us-central1-a",
-    zone2 = "us-central1-c",
-    zone3 = "us-central1-f"
-  }
-}
-
-variable "sql_2_admin_user" {
-  #sensitive  = true
-  type        = string
-  description = "The SQL admin's username."
-  default     = "testuser"
-}
-
-variable "sql_2_admin_password" {
-  #sensitive  = true
-  type        = string
-  description = "The SQL admin's password."
-  default     = "foobar"
 }
 
 variable "sql_2_database_region" {
@@ -317,43 +259,37 @@ variable "sql_2_database_region" {
   default     = "us-west1"
 }
 
-variable "sql_2_database_users" {
-  type = list(object({
-    name     = string
-    password = string
-    host     = string
-  }))
-  description = "Allowed list of members (users and/or service accounts) that need access to the SQL database."
-  default = [
-    {
-      name     = "tftest2"
-      password = "abcdefg"
-      host     = "localhost"
-    },
-    {
-      name     = "tftest3"
-      password = "abcdefg"
-      host     = "localhost"
-    },
-  ]
-}
-
-variable "sql_2_database_zone" {
-  type        = string
-  description = "The database zone for the 2nd SLQ Instance in secondary region"
-  default     = "us-west1-a"
-}
-
-variable "sql_2_replica_zones" {
-  type = object({
-    zone1 = string
-    zone2 = string
-    zone3 = string
-  })
-  description = "The database zone for read replicas in secondary region"
+variable "sql_instance_defaults" {
+  description = "Map of sql instance variables, leave database_region empty to use primary and secondary regions automatically"
+  type        = map
   default = {
-    zone1 = "us-central1-a",
-    zone2 = "us-central1-c",
-    zone3 = "us-central1-f"
+    sql_1 = {
+      admin_user           = "testuser",
+      admin_password       = "foobar",
+      database_region      = "",
+      database_zone        = "us-east1-c",
+      database_name        = "ledger-db",
+      database_users       = [],
+      additional_databases = [],
+      replica_zones = {
+        zone1 = "us-central1-a",
+        zone2 = "us-central1-c",
+        zone3 = "us-central1-f"
+      }
+    },
+    sql_2 = {
+      admin_user           = "testuser",
+      admin_password       = "foobar",
+      database_region      = "",
+      database_zone        = "us-west1-a",
+      database_name        = "accounts-db",
+      database_users       = [],
+      additional_databases = [],
+      replica_zones = {
+        zone1 = "us-central1-a",
+        zone2 = "us-central1-c",
+        zone3 = "us-central1-f"
+      }
+    }
   }
 }

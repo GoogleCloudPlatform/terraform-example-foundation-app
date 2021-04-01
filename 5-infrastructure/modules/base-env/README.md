@@ -46,18 +46,9 @@ This module creates the resources needed for the BOA Deloyment.
 | log\_storage\_bucket\_project | The project that will contain the storage bucket for logs, if not set, OPS project is taken by default | `string` | `""` | no |
 | parent\_folder | The parent folder or org for environments. | `string` | n/a | yes |
 | project\_prefix | Name prefix to use for projects created. | `string` | `"prj"` | no |
-| sql\_1\_admin\_password | The SQL admin's password. | `string` | `"foobar"` | no |
-| sql\_1\_admin\_user | The SQL admin's username. | `string` | `"testuser"` | no |
 | sql\_1\_database\_region | The location of the SQL database. Only if primary region value, is not given | `string` | `"us-east1"` | no |
-| sql\_1\_database\_users | Allowed list of members (users and/or service accounts) that need access to the SQL database. | <pre>list(object({<br>    name     = string<br>    password = string<br>    host     = string<br>  }))</pre> | `[]` | no |
-| sql\_1\_database\_zone | The database zone in primary region | `string` | `"us-east1-c"` | no |
-| sql\_1\_replica\_zones | The database zones in primary region for read replicas | <pre>object({<br>    zone1 = string<br>    zone2 = string<br>    zone3 = string<br>  })</pre> | <pre>{<br>  "zone1": "us-central1-a",<br>  "zone2": "us-central1-c",<br>  "zone3": "us-central1-f"<br>}</pre> | no |
-| sql\_2\_admin\_password | The SQL admin's password. | `string` | `"foobar"` | no |
-| sql\_2\_admin\_user | The SQL admin's username. | `string` | `"testuser"` | no |
 | sql\_2\_database\_region | The location of the 2nd SQL database. Only if Secondary region value, is not given | `string` | `"us-west1"` | no |
-| sql\_2\_database\_users | Allowed list of members (users and/or service accounts) that need access to the SQL database. | <pre>list(object({<br>    name     = string<br>    password = string<br>    host     = string<br>  }))</pre> | <pre>[<br>  {<br>    "host": "localhost",<br>    "name": "tftest2",<br>    "password": "abcdefg"<br>  },<br>  {<br>    "host": "localhost",<br>    "name": "tftest3",<br>    "password": "abcdefg"<br>  }<br>]</pre> | no |
-| sql\_2\_database\_zone | The database zone for the 2nd SLQ Instance in secondary region | `string` | `"us-west1-a"` | no |
-| sql\_2\_replica\_zones | The database zone for read replicas in secondary region | <pre>object({<br>    zone1 = string<br>    zone2 = string<br>    zone3 = string<br>  })</pre> | <pre>{<br>  "zone1": "us-central1-a",<br>  "zone2": "us-central1-c",<br>  "zone3": "us-central1-f"<br>}</pre> | no |
+| sql\_instance\_defaults | Map of sql instance variables, leave database\_region empty to use primary and secondary regions automatically | `map` | <pre>{<br>  "sql_1": {<br>    "additional_databases": [],<br>    "admin_password": "foobar",<br>    "admin_user": "testuser",<br>    "database_name": "ledger-db",<br>    "database_region": "",<br>    "database_users": [],<br>    "database_zone": "us-east1-c",<br>    "replica_zones": {<br>      "zone1": "us-central1-a",<br>      "zone2": "us-central1-c",<br>      "zone3": "us-central1-f"<br>    }<br>  },<br>  "sql_2": {<br>    "additional_databases": [],<br>    "admin_password": "foobar",<br>    "admin_user": "testuser",<br>    "database_name": "accounts-db",<br>    "database_region": "",<br>    "database_users": [],<br>    "database_zone": "us-west1-a",<br>    "replica_zones": {<br>      "zone1": "us-central1-a",<br>      "zone2": "us-central1-c",<br>      "zone3": "us-central1-f"<br>    }<br>  }<br>}</pre> | no |
 | terraform\_service\_account | Service account email of the account to impersonate to run Terraform. | `string` | n/a | yes |
 
 ## Outputs
@@ -144,10 +135,7 @@ This module creates the resources needed for the BOA Deloyment.
 | mci\_cluster\_zones | List of zones in which the cluster resides |
 | ops\_log\_export\_map | Outputs from the log export module |
 | sec\_log\_export\_map | Outputs from the log export module |
-| sql\_instance\_1\_name | The name for Cloud SQL instance |
-| sql\_instance\_1\_private\_ip\_address | n/a |
-| sql\_instance\_2\_name | The name for Cloud SQL instance |
-| sql\_instance\_2\_private\_ip\_address | n/a |
 | sql\_log\_export\_map | Outputs from the log export module |
+| sql\_outputs | The name for Cloud SQL instance |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

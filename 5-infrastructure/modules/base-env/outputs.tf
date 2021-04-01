@@ -18,22 +18,9 @@
   SQL Outputs
 *****************************************/
 
-output "sql_instance_1_name" {
+output "sql_outputs" {
   description = "The name for Cloud SQL instance"
-  value       = module.sql_1.sql_instance_name
-}
-
-output "sql_instance_1_private_ip_address" {
-  value = module.sql_1.private_ip_address
-}
-
-output "sql_instance_2_name" {
-  description = "The name for Cloud SQL instance"
-  value       = module.sql_2.sql_instance_name
-}
-
-output "sql_instance_2_private_ip_address" {
-  value = module.sql_2.private_ip_address
+  value       = tomap({ for key, instance in module.sql : key => { "Instance Name" = instance.sql_instance_name, "Private IP Address" = instance.private_ip_address } })
 }
 
 /******************************************
