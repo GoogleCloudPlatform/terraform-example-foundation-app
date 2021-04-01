@@ -13,8 +13,7 @@ This module is a wrapper for [CFT PostgreSQL Module](https://github.com/terrafor
 | database\_region | The database region | `string` | n/a | yes |
 | database\_users | Additional Database Users | <pre>list(object({<br>    name     = string<br>    password = string<br>    host     = string<br>  }))</pre> | `[]` | no |
 | database\_zone | The database zone | `string` | n/a | yes |
-| encrypt\_key\_id | KMS Crypto Key ID | `string` | n/a | yes |
-| encrypt\_key\_link | KMS Crypto Key link | `string` | n/a | yes |
+| encrypt\_keyring\_name | KMS Keyring Name to create secret with same name to store admin password of sql instance | `string` | n/a | yes |
 | network\_project\_id | The Shared VPC Host Project ID | `string` | n/a | yes |
 | project\_id | The GCP Project ID | `string` | n/a | yes |
 | replica\_zones | The GCP Zones | <pre>object({<br>    zone1 = string<br>    zone2 = string<br>    zone3 = string<br>  })</pre> | n/a | yes |
