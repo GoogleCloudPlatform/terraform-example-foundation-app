@@ -70,9 +70,9 @@ variable "replica_zones" {
   description = "The GCP Zones"
 }
 
-variable "vpc" {
+variable "vpc_self_link" {
   type        = string
-  description = "The name of the VPC to be given private access"
+  description = "The self_link of the VPC to be given private access"
 }
 
 variable "network_project_id" {
@@ -83,6 +83,11 @@ variable "network_project_id" {
 variable "encrypt_keyring_name" {
   type        = string
   description = "KMS Keyring Name to create secret with same name to store admin password of sql instance"
+}
+
+variable "authorized_networks" {
+  type        = list(map(string))
+  description = "CIDR Ranges of Secondary IP ranges for all GKE Cluster Subnets"
 }
 
 variable "additional_databases" {

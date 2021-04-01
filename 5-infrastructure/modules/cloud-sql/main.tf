@@ -18,17 +18,15 @@ locals {
   read_replica_ip_configuration = {
     ipv4_enabled        = false
     require_ssl         = false
-    private_network     = data.google_compute_network.vpc.self_link
-    authorized_networks = [for range in flatten([for subnet in data.google_compute_subnetwork.subnet : subnet.secondary_ip_range if length(subnet.secondary_ip_range) > 0]) : zipmap(["value", "name"], values(range))]
+    private_network     = var.vpc_self_link
+    authorized_networks = var.authorized_networks
   }
 }
 
 module "boa_postgress_ha" {
-  depends_on = [google_service_networking_connection.private_vpc_connection]
-
   source               = "GoogleCloudPlatform/sql-db/google//modules/postgresql"
   version              = "~> 5.0"
-  name                 = var.database_name
+  name                 = var.sql_instance_prefix
   random_instance_name = true
   project_id           = var.project_id
   database_version     = "POSTGRES_13"
@@ -36,7 +34,7 @@ module "boa_postgress_ha" {
 
   // Master configurations
   tier                            = "db-custom-2-13312"
-  zone                            = var.sql_instance_prefix
+  zone                            = var.database_zone
   availability_type               = "REGIONAL"
   maintenance_window_day          = 7
   maintenance_window_hour         = 12
@@ -46,15 +44,11 @@ module "boa_postgress_ha" {
 
   database_flags = [{ name = "autovacuum", value = "off" }]
 
-  user_labels = {
-    foo = "bar"
-  }
-
   ip_configuration = {
     ipv4_enabled        = false
     require_ssl         = true
-    private_network     = data.google_compute_network.vpc.self_link
-    authorized_networks = [for range in flatten([for subnet in data.google_compute_subnetwork.subnet : subnet.secondary_ip_range if length(subnet.secondary_ip_range) > 0]) : zipmap(["value", "name"], values(range))]
+    private_network     = var.vpc_self_link
+    authorized_networks = var.authorized_networks
   }
 
   backup_configuration = {
@@ -65,7 +59,7 @@ module "boa_postgress_ha" {
   }
 
   // Read replica configurations
-  read_replica_name_suffix = "-test"
+  read_replica_name_suffix = "-example"
   read_replicas = [
     {
       name             = "0"
@@ -76,7 +70,7 @@ module "boa_postgress_ha" {
       disk_autoresize  = null
       disk_size        = null
       disk_type        = "PD_HDD"
-      user_labels      = { bar = "baz" }
+      user_labels      = {}
     },
     {
       name             = "1"
@@ -87,7 +81,7 @@ module "boa_postgress_ha" {
       disk_autoresize  = null
       disk_size        = null
       disk_type        = "PD_HDD"
-      user_labels      = { bar = "baz" }
+      user_labels      = {}
     },
     {
       name             = "2"
@@ -98,7 +92,7 @@ module "boa_postgress_ha" {
       disk_autoresize  = null
       disk_size        = null
       disk_type        = "PD_HDD"
-      user_labels      = { bar = "baz" }
+      user_labels      = {}
     },
   ]
 
