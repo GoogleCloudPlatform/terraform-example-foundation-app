@@ -16,17 +16,7 @@
 
 variable "env" {
   type        = string
-  description = "The environment to prepare (ex. development)."
-}
-
-variable "env_short" {
-  type        = string
-  description = "The environment to prepare (ex. dev)."
-}
-
-variable "environment_code" {
-  type        = string
-  description = "A short form of the folder level resources (environment) within the Google Cloud organization (ex. d)."
+  description = "The environment to prepare (dev/npd/prd)."
 }
 
 variable "business_unit" {
@@ -69,30 +59,6 @@ variable "location_secondary" {
   default     = "us-west1"
 }
 
-variable "log_storage_bucket_location" {
-  type        = string
-  description = "The region the storage bucket for logs is located."
-  default     = "US-WEST1"
-}
-
-variable "log_storage_bucket_project" {
-  type        = string
-  description = "The project that will contain the storage bucket for logs, if not set, OPS project is taken by default"
-  default     = ""
-}
-
-variable "kms_location_1" {
-  type        = string
-  description = "The location of the first set of GKE, SQL - KMS keyring and keys. Only if Primary region value, is not given"
-  default     = "us-east1"
-}
-
-variable "kms_location_2" {
-  type        = string
-  description = "The location of the second set of GKE, SQL - KMS keyring and keys. Only if Secondary region value, is not given"
-  default     = "us-west1"
-}
-
 variable "gcp_shared_vpc_project_id" {
   type        = string
   description = "The host project id of the shared VPC."
@@ -101,7 +67,7 @@ variable "gcp_shared_vpc_project_id" {
 variable "bastion_zone" {
   type        = string
   description = "The zone for the bastion VM in primary region"
-  default     = "us-west1-b"
+  default     = "us-east1-b"
 }
 
 variable "bastion_subnet_name" {
@@ -110,22 +76,10 @@ variable "bastion_subnet_name" {
   default     = "bastion-host-subnet"
 }
 
-variable "bastion_subnet_region" {
-  type        = string
-  description = "The region the shared VPC will be located in. Only if Primary region value, is not given"
-  default     = "us-east1"
-}
-
 variable "bastion_members" {
   type        = list(string)
   description = "The names of the members of the bastion server."
   default     = []
-}
-
-variable "gke_cluster_1_location" {
-  type        = string
-  description = "The location of the first GKE cluster.  Only if Primary region value, is not given"
-  default     = "us-east1"
 }
 
 variable "gke_cluster_1_cidr_block" {
@@ -151,18 +105,6 @@ variable "gke_cluster_1_range_name_services" {
   default     = "services-ip-range"
 }
 
-variable "gke_cluster_1_machine_type" {
-  type        = string
-  description = "The type of VM that will be used for the first GKE cluster (ex. e2-micro)."
-  default     = "e2-standard-4"
-}
-
-variable "gke_cluster_2_location" {
-  type        = string
-  description = "The location of the second GKE cluster.  Only if Secondary region value, is not given"
-  default     = "us-west1"
-}
-
 variable "gke_cluster_2_cidr_block" {
   type        = string
   description = "The primary IPv4 cidr block for the second GKE cluster."
@@ -184,18 +126,6 @@ variable "gke_cluster_2_range_name_services" {
   type        = string
   description = "The name of the services IP range for the second GKE cluster."
   default     = "services-ip-range"
-}
-
-variable "gke_cluster_2_machine_type" {
-  type        = string
-  description = "The type of VM that will be used for the second GKE cluster (ex. e2-micro)."
-  default     = "e2-standard-4"
-}
-
-variable "gke_mci_cluster_location" {
-  type        = string
-  description = "The location for multi-cluster ingress (MCI). Only if primary region value, is not given"
-  default     = "us-east1"
 }
 
 variable "gke_mci_cluster_cidr_block" {
@@ -221,12 +151,6 @@ variable "gke_mci_cluster_range_name_services" {
   default     = "services-ip-range"
 }
 
-variable "gke_mci_cluster_machine_type" {
-  type        = string
-  description = "The type of VM that will be used for multi-cluster ingress (MCI)."
-  default     = "e2-standard-2"
-}
-
 variable "boa_gke_project_id" {
   type        = string
   description = "Project ID for GKE."
@@ -247,49 +171,17 @@ variable "boa_sql_project_id" {
   description = "Project ID for SQL."
 }
 
-variable "sql_1_database_region" {
-  type        = string
-  description = "The location of the SQL database. Only if primary region value, is not given"
-  default     = "us-east1"
+variable "sql_database_replication_region" {
+  description = "SQL Instance Replica Region"
+  default     = "us-central1"
 }
 
-variable "sql_2_database_region" {
-  type        = string
-  description = "The location of the 2nd SQL database. Only if Secondary region value, is not given"
-  default     = "us-west1"
+variable "sql_admin_username" {
+  default     = "testuser"
+  description = "Admin Username for SQL Instances"
 }
 
-variable "sql_instance_defaults" {
-  description = "Map of sql instance variables, leave database_region empty to use primary and secondary regions automatically"
-  type        = map
-  default = {
-    sql_1 = {
-      admin_user           = "testuser",
-      admin_password       = "foobar",
-      database_region      = "",
-      database_zone        = "us-east1-c",
-      database_name        = "ledger-db",
-      database_users       = [],
-      additional_databases = [],
-      replica_zones = {
-        zone1 = "us-central1-a",
-        zone2 = "us-central1-c",
-        zone3 = "us-central1-f"
-      }
-    },
-    sql_2 = {
-      admin_user           = "testuser",
-      admin_password       = "foobar",
-      database_region      = "",
-      database_zone        = "us-west1-a",
-      database_name        = "accounts-db",
-      database_users       = [],
-      additional_databases = [],
-      replica_zones = {
-        zone1 = "us-central1-a",
-        zone2 = "us-central1-c",
-        zone3 = "us-central1-f"
-      }
-    }
-  }
+variable "sql_admin_password" {
+  default     = "foobar"
+  description = "Admin Password for SQL Instances"
 }

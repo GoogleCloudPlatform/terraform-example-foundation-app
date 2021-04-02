@@ -14,34 +14,19 @@
  * limitations under the License.
  */
 
-/******************************************
-  Auto Find Environment Projects
-*****************************************/
-
 locals {
-  auto_gke_project_id        = length(data.google_projects.gke_project.projects) != 0 ? lookup(element(lookup(data.google_projects.gke_project, "projects", ""), 0), "project_id", "") : ""
-  auto_ops_project_id        = length(data.google_projects.ops_project.projects) != 0 ? lookup(element(lookup(data.google_projects.ops_project, "projects", ""), 0), "project_id", "") : ""
-  auto_sec_project_id        = length(data.google_projects.sec_project.projects) != 0 ? lookup(element(lookup(data.google_projects.sec_project, "projects", ""), 0), "project_id", "") : ""
-  auto_sql_project_id        = length(data.google_projects.sql_project.projects) != 0 ? lookup(element(lookup(data.google_projects.sql_project, "projects", ""), 0), "project_id", "") : ""
-  auto_shared_vpc_project_id = length(data.google_projects.shared_vpc_project.projects) != 0 ? lookup(element(lookup(data.google_projects.shared_vpc_project, "projects", ""), 0), "project_id", "") : ""
-}
-
-data "google_projects" "gke_project" {
-  filter = "name:${var.project_prefix}-${var.business_unit}-${var.environment_code}-boa-gke"
-}
-
-data "google_projects" "ops_project" {
-  filter = "name:${var.project_prefix}-${var.business_unit}-${var.environment_code}-boa-ops"
-}
-
-data "google_projects" "sec_project" {
-  filter = "name:${var.project_prefix}-${var.business_unit}-${var.environment_code}-boa-sec"
-}
-
-data "google_projects" "sql_project" {
-  filter = "name:${var.project_prefix}-${var.business_unit}-${var.environment_code}-boa-sql"
-}
-
-data "google_projects" "shared_vpc_project" {
-  filter = "name:${var.project_prefix}-${var.environment_code}-shared-base"
+  envs = {
+    dev = {
+      long  = "development",
+      short = "d"
+    },
+    npd = {
+      long  = "non-production",
+      short = "n"
+    },
+    prd = {
+      long  = "production",
+      short = "p"
+    }
+  }
 }

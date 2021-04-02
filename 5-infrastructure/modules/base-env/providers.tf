@@ -14,31 +14,17 @@
  * limitations under the License.
  */
 
-provider "google" {
-  alias = "impersonate"
-
-  scopes = [
-    "https://www.googleapis.com/auth/cloud-platform",
-    "https://www.googleapis.com/auth/userinfo.email",
-  ]
-}
-
-data "google_service_account_access_token" "default" {
-  provider               = google.impersonate
-  target_service_account = var.terraform_service_account
-  scopes                 = ["userinfo-email", "cloud-platform"]
-  lifetime               = "3600s"
+locals {
+  tf_sa = var.terraform_service_account
 }
 
 /******************************************
   Provider credential configuration
  *****************************************/
 provider "google" {
-  access_token = data.google_service_account_access_token.default.access_token
-  version      = "~> 3.12"
+  impersonate_service_account = local.tf_sa
 }
 
 provider "google-beta" {
-  access_token = data.google_service_account_access_token.default.access_token
-  version      = "~> 3.12"
+  impersonate_service_account = local.tf_sa
 }

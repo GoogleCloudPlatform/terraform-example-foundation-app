@@ -19,7 +19,7 @@
 *****************************************/
 
 output "sql_outputs" {
-  description = "The name for Cloud SQL instance"
+  description = "Outputs for Cloud SQL instances"
   value       = tomap({ for key, instance in module.sql : key => { "Instance Name" = instance.sql_instance_name, "Private IP Address" = instance.private_ip_address } })
 }
 
@@ -92,84 +92,14 @@ output "logging_destination_map" {
   KMS Outputs
 *****************************************/
 
-output "kms_gke_1_keyring" {
-  description = "Self link of the keyring."
-  value       = module.kms_gke_1.keyring
+output "kms_sa" {
+  description = "KMS Service Account"
+  value       = google_service_account.kms_service_account.email
 }
 
-output "kms_gke_1_keyring_resource" {
-  description = "Keyring resource."
-  value       = module.kms_gke_1.keyring_resource
-}
-
-output "kms_gke_1_keys" {
-  description = "Map of key name => key self link."
-  value       = module.kms_gke_1.keys
-}
-
-output "kms_gke_1_keyring_name" {
-  description = "Name of the keyring."
-  value       = module.kms_gke_1.keyring_name
-}
-
-output "kms_gke_2_keyring" {
-  description = "Self link of the keyring."
-  value       = module.kms_gke_2.keyring
-}
-
-output "kms_gke_2_keyring_resource" {
-  description = "Keyring resource."
-  value       = module.kms_gke_2.keyring_resource
-}
-
-output "kms_gke_2_keys" {
-  description = "Map of key name => key self link."
-  value       = module.kms_gke_2.keys
-}
-
-output "kms_gke_2_keyring_name" {
-  description = "Name of the keyring."
-  value       = module.kms_gke_2.keyring_name
-}
-
-output "kms_sql_1_keyring" {
-  description = "Self link of the keyring."
-  value       = module.kms_sql_1.keyring
-}
-
-output "kms_sql_1_keyring_resource" {
-  description = "Keyring resource."
-  value       = module.kms_sql_1.keyring_resource
-}
-
-output "kms_sql_1_keys" {
-  description = "Map of key name => key self link."
-  value       = module.kms_sql_1.keys
-}
-
-output "kms_sql_1_keyring_name" {
-  description = "Name of the keyring."
-  value       = module.kms_sql_1.keyring_name
-}
-
-output "kms_sql_2_keyring" {
-  description = "Self link of the keyring."
-  value       = module.kms_sql_2.keyring
-}
-
-output "kms_sql_2_keyring_resource" {
-  description = "Keyring resource."
-  value       = module.kms_sql_2.keyring_resource
-}
-
-output "kms_sql_2_keys" {
-  description = "Map of key name => key self link."
-  value       = module.kms_sql_2.keys
-}
-
-output "kms_sql_2_keyring_name" {
-  description = "Name of the keyring."
-  value       = module.kms_sql_2.keyring_name
+output "kms_outputs" {
+  description = "Outputs for KMS Keyrings and Keys"
+  value       = tomap({ for key, ring in module.kms_keyrings_keys : key => { "Keyring" = ring.keyring_name, "Keys" = ring.keys } })
 }
 
 /******************************************
@@ -186,11 +116,6 @@ output "bastion_ip_address" {
   value       = module.bastion.ip_address
 }
 
-output "bastion_self_link" {
-  description = "Self link of the bastion host"
-  value       = module.bastion.self_link
-}
-
 output "bastion_service_account_email" {
   description = "Email address of the SA created for the bastion host"
   value       = module.bastion.service_account_email
@@ -201,288 +126,10 @@ output "bastion_cidr_range" {
   value       = module.bastion.cidr_range
 }
 
-output "bastion_subnet_name" {
-  description = "Self link of the bastion host"
-  value       = module.bastion.subnet_name
-}
-
-
 /******************************************
   GKE Outputs
 *****************************************/
-
-output "cluster_1_name" {
-  description = "Cluster name"
-  value       = module.cluster_1.name
-}
-
-output "cluster_1_type" {
-  description = "Cluster type (regional / zonal)"
-  value       = module.cluster_1.type
-}
-
-output "cluster_1_location" {
-  description = "Cluster location (region if regional cluster, zone if zonal cluster)"
-  value       = module.cluster_1.location
-}
-
-output "cluster_1_region" {
-  description = "Cluster region"
-  value       = module.cluster_1.region
-}
-
-output "cluster_1_zones" {
-  description = "List of zones in which the cluster resides"
-  value       = module.cluster_1.zones
-}
-
-output "cluster_1_endpoint" {
-  sensitive   = true
-  description = "Cluster endpoint"
-  value       = module.cluster_1.endpoint
-}
-
-output "cluster_1_logging_service" {
-  description = "Logging service used"
-  value       = module.cluster_1.logging_service
-}
-
-output "cluster_1_monitoring_service" {
-  description = "Monitoring service used"
-  value       = module.cluster_1.monitoring_service
-}
-
-output "cluster_1_master_authorized_networks_config" {
-  description = "Networks from which access to master is permitted"
-  value       = module.cluster_1.master_authorized_networks_config
-}
-
-output "cluster_1_ca_certificate" {
-  sensitive   = true
-  description = "Cluster ca certificate (base64 encoded)"
-  value       = module.cluster_1.ca_certificate
-}
-
-output "cluster_1_network_policy_enabled" {
-  description = "Whether network policy enabled"
-  value       = module.cluster_1.network_policy_enabled
-}
-
-output "cluster_1_http_load_balancing_enabled" {
-  description = "Whether http load balancing enabled"
-  value       = module.cluster_1.http_load_balancing_enabled
-}
-
-output "cluster_1_horizontal_pod_autoscaling_enabled" {
-  description = "Whether horizontal pod autoscaling enabled"
-  value       = module.cluster_1.horizontal_pod_autoscaling_enabled
-}
-
-output "cluster_1_node_pools_names" {
-  description = "List of node pools names"
-  value       = module.cluster_1.node_pools_names
-}
-
-output "cluster_1_node_pools_versions" {
-  description = "List of node pools versions"
-  value       = module.cluster_1.node_pools_versions
-}
-
-output "cluster_1_service_account" {
-  description = "The service account to default running nodes as if not overridden in `node_pools`."
-  value       = module.cluster_1.service_account
-}
-
-output "cluster_1_master_ipv4_cidr_block" {
-  description = "The IP range in CIDR notation used for the hosted master network"
-  value       = module.cluster_1.master_ipv4_cidr_block
-}
-
-output "cluster_1_peering_name" {
-  description = "The name of the peering between this cluster and the Google owned VPC."
-  value       = module.cluster_1.peering_name
-}
-
-output "cluster_2_name" {
-  description = "Cluster name"
-  value       = module.cluster_2.name
-}
-
-output "cluster_2_type" {
-  description = "Cluster type (regional / zonal)"
-  value       = module.cluster_2.type
-}
-
-output "cluster_2_location" {
-  description = "Cluster location (region if regional cluster, zone if zonal cluster)"
-  value       = module.cluster_2.location
-}
-
-output "cluster_2_region" {
-  description = "Cluster region"
-  value       = module.cluster_2.region
-}
-
-output "cluster_2_zones" {
-  description = "List of zones in which the cluster resides"
-  value       = module.cluster_2.zones
-}
-
-output "cluster_2_endpoint" {
-  sensitive   = true
-  description = "Cluster endpoint"
-  value       = module.cluster_2.endpoint
-}
-
-output "cluster_2_logging_service" {
-  description = "Logging service used"
-  value       = module.cluster_2.logging_service
-}
-
-output "cluster_2_monitoring_service" {
-  description = "Monitoring service used"
-  value       = module.cluster_2.monitoring_service
-}
-
-output "cluster_2_master_authorized_networks_config" {
-  description = "Networks from which access to master is permitted"
-  value       = module.cluster_2.master_authorized_networks_config
-}
-
-output "cluster_2_ca_certificate" {
-  sensitive   = true
-  description = "Cluster ca certificate (base64 encoded)"
-  value       = module.cluster_2.ca_certificate
-}
-
-output "cluster_2_network_policy_enabled" {
-  description = "Whether network policy enabled"
-  value       = module.cluster_2.network_policy_enabled
-}
-
-output "cluster_2_http_load_balancing_enabled" {
-  description = "Whether http load balancing enabled"
-  value       = module.cluster_2.http_load_balancing_enabled
-}
-
-output "cluster_2_horizontal_pod_autoscaling_enabled" {
-  description = "Whether horizontal pod autoscaling enabled"
-  value       = module.cluster_2.horizontal_pod_autoscaling_enabled
-}
-
-output "cluster_2_node_pools_names" {
-  description = "List of node pools names"
-  value       = module.cluster_2.node_pools_names
-}
-
-output "cluster_2_node_pools_versions" {
-  description = "List of node pools versions"
-  value       = module.cluster_2.node_pools_versions
-}
-
-output "cluster_2_service_account" {
-  description = "The service account to default running nodes as if not overridden in `node_pools`."
-  value       = module.cluster_2.service_account
-}
-
-output "cluster_2_master_ipv4_cidr_block" {
-  description = "The IP range in CIDR notation used for the hosted master network"
-  value       = module.cluster_2.master_ipv4_cidr_block
-}
-
-output "cluster_2_peering_name" {
-  description = "The name of the peering between this cluster and the Google owned VPC."
-  value       = module.cluster_2.peering_name
-}
-
-output "mci_cluster_name" {
-  description = "Cluster name"
-  value       = module.mci_cluster.name
-}
-
-output "mci_cluster_type" {
-  description = "Cluster type (regional / zonal)"
-  value       = module.mci_cluster.type
-}
-
-output "mci_cluster_location" {
-  description = "Cluster location (region if regional cluster, zone if zonal cluster)"
-  value       = module.mci_cluster.location
-}
-
-output "mci_cluster_region" {
-  description = "Cluster region"
-  value       = module.mci_cluster.region
-}
-
-output "mci_cluster_zones" {
-  description = "List of zones in which the cluster resides"
-  value       = module.mci_cluster.zones
-}
-
-output "mci_cluster_endpoint" {
-  sensitive   = true
-  description = "Cluster endpoint"
-  value       = module.mci_cluster.endpoint
-}
-
-output "mci_cluster_logging_service" {
-  description = "Logging service used"
-  value       = module.mci_cluster.logging_service
-}
-
-output "mci_cluster_monitoring_service" {
-  description = "Monitoring service used"
-  value       = module.mci_cluster.monitoring_service
-}
-
-output "mci_cluster_master_authorized_networks_config" {
-  description = "Networks from which access to master is permitted"
-  value       = module.mci_cluster.master_authorized_networks_config
-}
-
-output "mci_cluster_ca_certificate" {
-  sensitive   = true
-  description = "Cluster ca certificate (base64 encoded)"
-  value       = module.mci_cluster.ca_certificate
-}
-
-output "mci_cluster_network_policy_enabled" {
-  description = "Whether network policy enabled"
-  value       = module.mci_cluster.network_policy_enabled
-}
-
-output "mci_cluster_http_load_balancing_enabled" {
-  description = "Whether http load balancing enabled"
-  value       = module.mci_cluster.http_load_balancing_enabled
-}
-
-output "mci_cluster_horizontal_pod_autoscaling_enabled" {
-  description = "Whether horizontal pod autoscaling enabled"
-  value       = module.mci_cluster.horizontal_pod_autoscaling_enabled
-}
-
-output "mci_cluster_node_pools_names" {
-  description = "List of node pools names"
-  value       = module.mci_cluster.node_pools_names
-}
-
-output "mci_cluster_node_pools_versions" {
-  description = "List of node pools versions"
-  value       = module.mci_cluster.node_pools_versions
-}
-
-output "mci_cluster_service_account" {
-  description = "The service account to default running nodes as if not overridden in `node_pools`."
-  value       = module.mci_cluster.service_account
-}
-
-output "mci_cluster_master_ipv4_cidr_block" {
-  description = "The IP range in CIDR notation used for the hosted master network"
-  value       = module.mci_cluster.master_ipv4_cidr_block
-}
-
-output "mci_cluster_peering_name" {
-  description = "The name of the peering between this cluster and the Google owned VPC."
-  value       = module.mci_cluster.peering_name
+output "gke_outputs" {
+  description = "Outputs for Cloud SQL instances"
+  value       = tomap({ for key, cluster in module.clusters : key => { "Cluster Name" = cluster.name, "Region" = cluster.region, "Master IPV4 Address CIDR" = cluster.master_ipv4_cidr_block } })
 }

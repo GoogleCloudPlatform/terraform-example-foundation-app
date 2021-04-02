@@ -19,8 +19,8 @@ module "sink_ops" {
   version                = "~> 5.2"
   destination_uri        = module.log_destination.destination_uri
   filter                 = ""
-  log_sink_name          = "sink-boa-ops-01"
-  parent_resource_id     = var.boa_ops_project_id != "" ? var.boa_ops_project_id : local.auto_ops_project_id
+  log_sink_name          = "sink-boa-ops-${local.envs[var.env].short}-01"
+  parent_resource_id     = var.boa_ops_project_id
   parent_resource_type   = "project"
   unique_writer_identity = true
 }
@@ -36,9 +36,9 @@ resource "random_string" "bucket_name" {
 module "log_destination" {
   source                   = "terraform-google-modules/log-export/google//modules/storage"
   version                  = "~> 5.2"
-  project_id               = var.log_storage_bucket_project != "" ? var.log_storage_bucket_project : var.boa_ops_project_id != "" ? var.boa_ops_project_id : local.auto_ops_project_id
-  storage_bucket_name      = "log-${lower(var.location_secondary != "" ? var.location_secondary : var.log_storage_bucket_location)}-01-${random_string.bucket_name.result}"
-  location                 = var.location_secondary != "" ? upper(var.location_secondary) : var.log_storage_bucket_location
+  project_id               = var.boa_ops_project_id
+  storage_bucket_name      = "log-${lower(var.location_secondary)}-01-${random_string.bucket_name.result}"
+  location                 = var.location_secondary
   log_sink_writer_identity = module.sink_ops.writer_identity
 }
 

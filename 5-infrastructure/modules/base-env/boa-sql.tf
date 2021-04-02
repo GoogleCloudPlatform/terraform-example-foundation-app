@@ -16,19 +16,33 @@
 locals {
   sql_settings = {
     sql_1 = {
-      encrypt_keyring_name = module.kms_sql_1.keyring_name,
-      sql_instance_prefix  = "sql-boa-${var.location_primary != "" ? var.location_primary : var.sql_1_database_region}-01",
-      database_region      = var.location_primary != "" ? var.location_primary : var.sql_1_database_region
+      database_zone        = "${var.location_primary}-a",
+      database_name        = "ledger-db",
+      database_users       = [],
+      additional_databases = [],
+      replica_zones = {
+        zone1 = "${var.sql_database_replication_region}-a",
+        zone2 = "${var.sql_database_replication_region}-c",
+        zone3 = "${var.sql_database_replication_region}-f"
+      }
+      encrypt_keyring_name = module.kms_keyrings_keys["kms_sql_1"].keyring_name,
+      sql_instance_prefix  = "sql-boa-${var.location_primary}-01",
+      database_region      = var.location_primary
     },
     sql_2 = {
-      encrypt_keyring_name = module.kms_sql_2.keyring_name,
-      sql_instance_prefix  = "sql-boa-${var.location_secondary != "" ? var.location_secondary : var.sql_2_database_region}-01",
-      database_region      = var.location_secondary != "" ? var.location_secondary : var.sql_1_database_region
+      database_zone        = "${var.location_secondary}-a",
+      database_name        = "accounts-db",
+      database_users       = [],
+      additional_databases = [],
+      replica_zones = {
+        zone1 = "${var.sql_database_replication_region}-a",
+        zone2 = "${var.sql_database_replication_region}-c",
+        zone3 = "${var.sql_database_replication_region}-f"
+      }
+      encrypt_keyring_name = module.kms_keyrings_keys["kms_sql_2"].keyring_name,
+      sql_instance_prefix  = "sql-boa-${var.location_secondary}-01",
+      database_region      = var.location_secondary
     }
-  }
-  sql_instance_vars = {
-    sql_1 = merge(var.sql_instance_defaults.sql_1, local.sql_settings.sql_1),
-    sql_2 = merge(var.sql_instance_defaults.sql_2, local.sql_settings.sql_2)
   }
 }
 
@@ -37,15 +51,15 @@ module "sink_sql" {
   version                = "~> 5.2"
   destination_uri        = module.log_destination.destination_uri
   filter                 = "resource.type:(cloudsql_database OR service_account OR global OR audited_resource OR project)"
-  log_sink_name          = "sink-boa-sql-01"
-  parent_resource_id     = var.boa_sql_project_id != "" ? var.boa_sql_project_id : local.auto_sql_project_id
+  log_sink_name          = "sink-boa-sql-${local.envs[var.env].short}-01"
+  parent_resource_id     = var.boa_sql_project_id
   parent_resource_type   = "project"
   unique_writer_identity = true
 }
 
 data "google_compute_network" "vpc" {
-  project = var.gcp_shared_vpc_project_id != "" ? var.gcp_shared_vpc_project_id : local.auto_shared_vpc_project_id
-  name    = "vpc-${var.env_short}-shared-base"
+  project = var.gcp_shared_vpc_project_id
+  name    = "vpc-${var.env}-shared-base"
 }
 
 data "google_compute_subnetwork" "subnet" {
@@ -56,18 +70,15 @@ data "google_compute_subnetwork" "subnet" {
 module "private_access" {
   source      = "GoogleCloudPlatform/sql-db/google//modules/private_service_access"
   version     = "~> 5.0"
-  project_id  = var.gcp_shared_vpc_project_id != "" ? var.gcp_shared_vpc_project_id : local.auto_shared_vpc_project_id
-  vpc_network = "vpc-${var.env_short}-shared-base"
+  project_id  = var.gcp_shared_vpc_project_id
+  vpc_network = "vpc-${var.env}-shared-base"
 }
 
 module "sql" {
   depends_on = [module.private_access]
   source     = "../cloud-sql"
-  for_each   = local.sql_instance_vars
+  for_each   = local.sql_settings
 
-  # Default Variables from variables.tf and locals
-  admin_user           = each.value.admin_user
-  admin_password       = each.value.admin_password
   database_name        = each.value.database_name
   database_users       = each.value.database_users
   database_zone        = each.value.database_zone
@@ -76,10 +87,11 @@ module "sql" {
   sql_instance_prefix  = each.value.sql_instance_prefix
   database_region      = each.value.database_region
 
-  # Input Variables
-  project_id         = var.boa_sql_project_id != "" ? var.boa_sql_project_id : local.auto_sql_project_id
+  admin_user         = var.sql_admin_username
+  admin_password     = var.sql_admin_password
+  project_id         = var.boa_sql_project_id
   vpc_self_link      = data.google_compute_network.vpc.self_link
-  network_project_id = var.gcp_shared_vpc_project_id != "" ? var.gcp_shared_vpc_project_id : local.auto_shared_vpc_project_id
+  network_project_id = var.gcp_shared_vpc_project_id
 
   # Secondary IP ranges from all GKE subnets in Shared VPC
   authorized_networks = [for range in flatten([for subnet in data.google_compute_subnetwork.subnet : subnet.secondary_ip_range if length(subnet.secondary_ip_range) > 0]) : zipmap(["value", "name"], values(range))]
