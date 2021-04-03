@@ -29,7 +29,6 @@ The module provisions the following resources
 | boa\_ops\_project\_id | Project ID for ops. | `string` | n/a | yes |
 | boa\_sec\_project\_id | Project ID for secrets. | `string` | n/a | yes |
 | boa\_sql\_project\_id | Project ID for SQL. | `string` | n/a | yes |
-| business\_unit | A short form of the business unit level projects within the Google Cloud organization (ex. bu1). | `string` | `"bu1"` | no |
 | env | The environment to prepare (dev/npd/prd). | `string` | n/a | yes |
 | folder\_prefix | Name prefix to use for folders created. | `string` | `"fldr"` | no |
 | gcp\_shared\_vpc\_project\_id | The host project id of the shared VPC. | `string` | n/a | yes |

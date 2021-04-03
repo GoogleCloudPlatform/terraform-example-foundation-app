@@ -18,30 +18,26 @@ locals {
     sql_1 = {
       database_zone        = "${var.location_primary}-a",
       database_name        = "ledger-db",
-      database_users       = [],
-      additional_databases = [],
+      encrypt_keyring_name = module.kms_keyrings_keys["sql_1"].keyring_name,
       replica_zones = {
         zone1 = "${var.sql_database_replication_region}-a",
         zone2 = "${var.sql_database_replication_region}-c",
         zone3 = "${var.sql_database_replication_region}-f"
       }
-      encrypt_keyring_name = module.kms_keyrings_keys["kms_sql_1"].keyring_name,
-      sql_instance_prefix  = "sql-boa-${var.location_primary}-01",
-      database_region      = var.location_primary
+      sql_instance_prefix = "sql-boa-${var.location_primary}-01",
+      database_region     = var.location_primary
     },
     sql_2 = {
       database_zone        = "${var.location_secondary}-a",
       database_name        = "accounts-db",
-      database_users       = [],
-      additional_databases = [],
+      encrypt_keyring_name = module.kms_keyrings_keys["sql_2"].keyring_name
       replica_zones = {
         zone1 = "${var.sql_database_replication_region}-a",
         zone2 = "${var.sql_database_replication_region}-c",
         zone3 = "${var.sql_database_replication_region}-f"
       }
-      encrypt_keyring_name = module.kms_keyrings_keys["kms_sql_2"].keyring_name,
-      sql_instance_prefix  = "sql-boa-${var.location_secondary}-01",
-      database_region      = var.location_secondary
+      sql_instance_prefix = "sql-boa-${var.location_secondary}-01",
+      database_region     = var.location_secondary
     }
   }
 }
@@ -80,18 +76,19 @@ module "sql" {
   for_each   = local.sql_settings
 
   database_name        = each.value.database_name
-  database_users       = each.value.database_users
   database_zone        = each.value.database_zone
   replica_zones        = each.value.replica_zones
-  encrypt_keyring_name = each.value.encrypt_keyring_name
   sql_instance_prefix  = each.value.sql_instance_prefix
   database_region      = each.value.database_region
+  encrypt_keyring_name = each.value.encrypt_keyring_name
 
-  admin_user         = var.sql_admin_username
-  admin_password     = var.sql_admin_password
-  project_id         = var.boa_sql_project_id
-  vpc_self_link      = data.google_compute_network.vpc.self_link
-  network_project_id = var.gcp_shared_vpc_project_id
+  admin_user           = var.sql_admin_username
+  admin_password       = var.sql_admin_password
+  database_users       = []
+  additional_databases = []
+  project_id           = var.boa_sql_project_id
+  vpc_self_link        = data.google_compute_network.vpc.self_link
+  network_project_id   = var.gcp_shared_vpc_project_id
 
   # Secondary IP ranges from all GKE subnets in Shared VPC
   authorized_networks = [for range in flatten([for subnet in data.google_compute_subnetwork.subnet : subnet.secondary_ip_range if length(subnet.secondary_ip_range) > 0]) : zipmap(["value", "name"], values(range))]

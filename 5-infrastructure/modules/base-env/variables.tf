@@ -19,12 +19,6 @@ variable "env" {
   description = "The environment to prepare (dev/npd/prd)."
 }
 
-variable "business_unit" {
-  type        = string
-  description = "A short form of the business unit level projects within the Google Cloud organization (ex. bu1)."
-  default     = "bu1"
-}
-
 variable "parent_folder" {
   type        = string
   description = "The parent folder or org for environments."

@@ -15,39 +15,11 @@
  */
 
 locals {
-  kms_settings = {
-    kms_gke_1 = {
-      location           = var.location_primary
-      keyring            = "kms-ring-boa-${var.location_primary}-gke-01"
-      keys               = ["kms-key-h-boa-${var.location_primary}-gke-01"]
-      set_owners_for     = ["kms-key-h-boa-${var.location_primary}-gke-01"]
-      set_encrypters_for = ["kms-key-h-boa-${var.location_primary}-gke-01"]
-      set_decrypters_for = ["kms-key-h-boa-${var.location_primary}-gke-01"]
-    },
-    kms_gke_2 = {
-      location           = var.location_secondary
-      keyring            = "kms-ring-boa-${var.location_secondary}-gke-01"
-      keys               = ["kms-key-h-boa-${var.location_secondary}-gke-01"]
-      set_owners_for     = ["kms-key-h-boa-${var.location_secondary}-gke-01"]
-      set_encrypters_for = ["kms-key-h-boa-${var.location_secondary}-gke-01"]
-      set_decrypters_for = ["kms-key-h-boa-${var.location_secondary}-gke-01"]
-    },
-    kms_sql_1 = {
-      location           = var.location_primary
-      keyring            = "kms-ring-boa-${var.location_primary}-sql-01"
-      keys               = ["kms-key-h-boa-${var.location_primary}-sql-01"]
-      set_owners_for     = ["kms-key-h-boa-${var.location_primary}-sql-01"]
-      set_encrypters_for = ["kms-key-h-boa-${var.location_primary}-sql-01"]
-      set_decrypters_for = ["kms-key-h-boa-${var.location_primary}-sql-01"]
-    },
-    kms_sql_2 = {
-      location           = var.location_secondary
-      keyring            = "kms-ring-boa-${var.location_secondary}-sql-01"
-      keys               = ["kms-key-h-boa-${var.location_secondary}-sql-01"]
-      set_owners_for     = ["kms-key-h-boa-${var.location_secondary}-sql-01"]
-      set_encrypters_for = ["kms-key-h-boa-${var.location_secondary}-sql-01"]
-      set_decrypters_for = ["kms-key-h-boa-${var.location_secondary}-sql-01"]
-    }
+  kms_locations = {
+    gke_1 = var.location_primary,
+    gke_2 = var.location_secondary,
+    sql_1 = var.location_primary,
+    sql_2 = var.location_secondary
   }
 }
 
@@ -63,7 +35,7 @@ module "sink_sec" {
 }
 
 resource "google_service_account" "kms_service_account" {
-  account_id   = "boa-${var.business_unit}-${local.envs[var.env].short}-sec-kms-sa"
+  account_id   = "boa-${local.envs[var.env].short}-sec-kms-sa"
   display_name = "KMS Secrets SA"
   project      = var.boa_sec_project_id
 }
@@ -71,7 +43,7 @@ resource "google_service_account" "kms_service_account" {
 module "kms_keyrings_keys" {
   source   = "terraform-google-modules/kms/google"
   version  = "~> 2.0"
-  for_each = local.kms_settings
+  for_each = local.kms_locations
 
   project_id           = var.boa_sec_project_id
   prevent_destroy      = false
@@ -80,10 +52,10 @@ module "kms_keyrings_keys" {
   encrypters           = ["serviceAccount:${google_service_account.kms_service_account.email}"]
   decrypters           = ["serviceAccount:${google_service_account.kms_service_account.email}"]
 
-  location           = each.value.location
-  keyring            = each.value.keyring
-  keys               = each.value.keys
-  set_owners_for     = each.value.set_owners_for
-  set_encrypters_for = each.value.set_encrypters_for
-  set_decrypters_for = each.value.set_decrypters_for
+  location           = each.value
+  keyring            = "kms-ring-boa-${each.value}-${each.key}-01"
+  keys               = ["kms-key-h-boa-${each.value}-${each.key}"]
+  set_owners_for     = ["kms-key-h-boa-${each.value}-${each.key}"]
+  set_encrypters_for = ["kms-key-h-boa-${each.value}-${each.key}"]
+  set_decrypters_for = ["kms-key-h-boa-${each.value}-${each.key}"]
 }
