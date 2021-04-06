@@ -24,9 +24,20 @@
 | bastion\_hostname | Host name of the bastion |
 | bastion\_ip\_address | Internal IP address of the bastion host |
 | bastion\_service\_account\_email | Email address of the SA created for the bastion host |
-| gke\_outputs | Outputs for Cloud SQL instances |
+| gke\_1\_cluster\_name | Cluster 1 Name |
+| gke\_1\_master\_ipv4 | Cluster 1 Master IPV4 Address CIDR |
+| gke\_1\_region | Cluster 1 Region |
+| gke\_2\_cluster\_name | Cluster 2 Name |
+| gke\_2\_master\_ipv4 | Cluster 2 Master IPV4 Address CIDR |
+| gke\_2\_region | Cluster 2 Region |
 | kms\_outputs | Outputs for KMS Keyrings and Keys |
 | kms\_sa | KMS Service Account |
-| sql\_outputs | The name for Cloud SQL instance |
+| mci\_cluster\_name | MCI Cluster Name |
+| mci\_master\_ipv4 | MCI Cluster Master IPV4 Address CIDR |
+| mci\_region | MCI Cluster Region |
+| sql\_1\_instance\_name | PostgreSQL Instance 1 Name |
+| sql\_1\_ip\_address | PostgreSQL Instance 1 Private Ip |
+| sql\_2\_instance\_name | PostgreSQL Instance 2 Name |
+| sql\_2\_ip\_address | PostgreSQL Instance 2 Private Ip |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
