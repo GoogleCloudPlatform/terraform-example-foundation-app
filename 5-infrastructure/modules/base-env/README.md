@@ -6,14 +6,15 @@ The module provisions the following resources
     - Cluster1 in Primary Region
     - CLuster2 in Secondary Region
     - MCI Cluster is Primary Region
-- Bastion Host VM in the Primary Region
+- Bastion Host VM in the Secondary Region
 - 2 Postgres CLoudSQL instances in primary and secondary region respectively
 - Shared VPC Peering for CloudSQL Instances
-- 2 Secrets to store CloudSQL Admin Passwords
+- 1 Secret to store CloudSQL Admin Password
 - 4 KMS Keyrings and Keys
     - 2 KMS Keyrings and Keys for GKE, one in each region
     - 2 KMS Keyrings and Keys for CloudSQL, one in each region
 - Service Account for KMS to own/manage the Keyrings and Keys
+- Service Account for Bastion VM with roles to install Anthos Service Mesh
 - 4 Log Sinks, one in each project
 - Log Sink Destination Storage Bucket that Log Sinks write logs to
 
