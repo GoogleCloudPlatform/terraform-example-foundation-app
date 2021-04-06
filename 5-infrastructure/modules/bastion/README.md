@@ -20,6 +20,7 @@ This module is a wrapper for [CFT Bastion Module](https://github.com/terraform-g
 
 | Name | Description |
 |------|-------------|
+| cidr\_range | Internal IP address range of the bastion host |
 | hostname | Host name of the bastion |
 | ip\_address | Internal IP address of the bastion host |
 | self\_link | Self link of the bastion host |
