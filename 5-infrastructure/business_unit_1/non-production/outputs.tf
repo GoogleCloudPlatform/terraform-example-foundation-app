@@ -39,20 +39,6 @@ output "sql_2_ip_address" {
 }
 
 /******************************************
-  KMS Outputs
-*****************************************/
-
-output "kms_sa" {
-  description = "KMS Service Account"
-  value       = module.env.kms_sa
-}
-
-output "kms_outputs" {
-  description = "Outputs for KMS Keyrings and Keys"
-  value       = module.env.kms_outputs
-}
-
-/******************************************
   Bastion Host Outputs
 *****************************************/
 

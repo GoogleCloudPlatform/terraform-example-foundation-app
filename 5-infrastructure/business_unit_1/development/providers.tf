@@ -18,6 +18,10 @@ locals {
   tf_sa = var.terraform_service_account
 }
 
+terraform {
+  required_version = ">= 0.13"
+}
+
 /******************************************
   Provider credential configuration
  *****************************************/

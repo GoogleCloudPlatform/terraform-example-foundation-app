@@ -14,11 +14,6 @@
  * limitations under the License.
  */
 
-variable "parent_folder" {
-  type        = string
-  description = "The parent folder or org for environments."
-}
-
 variable "terraform_service_account" {
   type        = string
   description = "Service account email of the account to impersonate to run Terraform."
@@ -26,19 +21,19 @@ variable "terraform_service_account" {
 
 variable "location_primary" {
   type        = string
-  description = "The primary region for deployment, if not set default locations for each resource are taken from variables file"
+  description = "The primary region for deployment"
   default     = "us-east1"
 }
 
 variable "location_secondary" {
   type        = string
-  description = "The secondary region for deployment, if not set default locations for each resource are taken from variables file"
+  description = "The secondary region for deployment"
   default     = "us-west1"
 }
 
 variable "gcp_shared_vpc_project_id" {
   type        = string
-  description = "The host project id of the shared VPC. Can be left blank if prjs deployed follow naming convention (Eg. prj-d-shared-base-xxxx)"
+  description = "The host project id of the shared VPC"
 }
 
 variable "shared_vpc_name" {
@@ -48,35 +43,38 @@ variable "shared_vpc_name" {
 
 variable "boa_gke_project_id" {
   type        = string
-  description = "Project ID for GKE. Can be left blank if prjs deployed follow naming convention (Eg. prj-bu1-d-boa-gke-xxxx)"
+  description = "Project ID for GKE"
 }
 
 variable "boa_ops_project_id" {
   type        = string
-  description = "Project ID for ops. Can be left blank if prjs deployed follow naming convention (Eg. prj-bu1-d-boa-gke-xxxx)"
+  description = "Project ID for ops"
 }
 
 variable "boa_sec_project_id" {
   type        = string
-  description = "Project ID for secrets. Can be left blank if prjs deployed follow naming convention (Eg. prj-bu1-d-boa-gke-xxxx)"
+  description = "Project ID for secrets"
 }
 
 variable "boa_sql_project_id" {
   type        = string
-  description = "Project ID for SQL. Can be left blank if prjs deployed follow naming convention (Eg. prj-bu1-d-boa-gke-xxxx)"
+  description = "Project ID for SQL"
 }
 
 variable "gke_cluster_1_cidr_block" {
   type        = string
   description = "The primary IPv4 cidr block for the first GKE cluster."
+  default     = "100.64.142.0/28"
 }
 
 variable "gke_cluster_2_cidr_block" {
   type        = string
   description = "The primary IPv4 cidr block for the second GKE cluster."
+  default     = "100.65.134.0/28"
 }
 
 variable "gke_mci_cluster_cidr_block" {
   type        = string
   description = "The primary IPv4 cidr block for multi-cluster ingress (MCI)."
+  default     = "100.64.134.0/28"
 }
