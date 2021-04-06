@@ -32,7 +32,7 @@ module "boa_postgress_ha" {
   database_version     = "POSTGRES_13"
   region               = var.database_region
 
-  // Primary configurations
+  // Master configurations
   tier                            = "db-custom-2-13312"
   zone                            = var.database_zone
   availability_type               = "REGIONAL"

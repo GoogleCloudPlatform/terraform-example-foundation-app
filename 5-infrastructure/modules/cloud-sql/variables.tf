@@ -75,16 +75,6 @@ variable "vpc_self_link" {
   description = "The self_link of the VPC to be given private access"
 }
 
-variable "network_project_id" {
-  type        = string
-  description = "The Shared VPC Host Project ID"
-}
-
-variable "encrypt_keyring_name" {
-  type        = string
-  description = "KMS Keyring Name to create secret with same name to store admin password of sql instance"
-}
-
 variable "authorized_networks" {
   type        = list(map(string))
   description = "CIDR Ranges of Secondary IP ranges for all GKE Cluster Subnets"

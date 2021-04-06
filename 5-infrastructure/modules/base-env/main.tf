@@ -14,25 +14,19 @@
  * limitations under the License.
  */
 
-resource "google_secret_manager_secret" "admin_password" {
-  provider = google
-
-  secret_id = var.encrypt_keyring_name
-
-  labels = {
-    label = var.encrypt_keyring_name
+locals {
+  envs = {
+    dev = {
+      long  = "development",
+      short = "d"
+    },
+    npd = {
+      long  = "non-production",
+      short = "n"
+    },
+    prd = {
+      long  = "production",
+      short = "p"
+    }
   }
-
-  replication {
-    automatic = true
-  }
-
-}
-
-resource "google_secret_manager_secret_version" "keyring-secret-version" {
-  provider = google
-
-  secret = google_secret_manager_secret.admin_password.id
-
-  secret_data = var.admin_password
 }
