@@ -28,14 +28,14 @@ module "sink_sec" {
   version                = "~> 5.2"
   destination_uri        = module.log_destination.destination_uri
   filter                 = "resource.type:(cloudkms_keyring OR service_account OR global OR audited_resource OR project)"
-  log_sink_name          = "sink-boa-sec-01"
+  log_sink_name          = "sink-boa-${local.envs[var.env].short}-sec-to-ops"
   parent_resource_id     = var.boa_sec_project_id
   parent_resource_type   = "project"
   unique_writer_identity = true
 }
 
 resource "google_service_account" "kms_service_account" {
-  account_id   = "boa-${local.envs[var.env].short}-sec-kms-sa"
+  account_id   = "boa-kms-sec-${local.envs[var.env].short}-sa"
   display_name = "KMS Secrets SA"
   project      = var.boa_sec_project_id
 }
@@ -53,9 +53,25 @@ module "kms_keyrings_keys" {
   decrypters           = ["serviceAccount:${google_service_account.kms_service_account.email}"]
 
   location           = each.value
-  keyring            = "kms-ring-boa-${each.value}-${each.key}-01"
-  keys               = ["kms-key-h-boa-${each.value}-${each.key}"]
-  set_owners_for     = ["kms-key-h-boa-${each.value}-${each.key}"]
-  set_encrypters_for = ["kms-key-h-boa-${each.value}-${each.key}"]
-  set_decrypters_for = ["kms-key-h-boa-${each.value}-${each.key}"]
+  keyring            = "kms-ring-boa-${local.envs[var.env].short}-${each.value}-${each.key}"
+  keys               = ["kms-key-h-boa-${local.envs[var.env].short}-${each.value}-${each.key}"]
+  set_owners_for     = ["kms-key-h-boa-${local.envs[var.env].short}-${each.value}-${each.key}"]
+  set_encrypters_for = ["kms-key-h-boa-${local.envs[var.env].short}-${each.value}-${each.key}"]
+  set_decrypters_for = ["kms-key-h-boa-${local.envs[var.env].short}-${each.value}-${each.key}"]
+}
+
+resource "google_secret_manager_secret" "admin_password" {
+  project   = var.boa_sec_project_id
+  secret_id = module.kms_keyrings_keys["sql_1"].keyring_name
+  labels = {
+    label = module.kms_keyrings_keys["sql_1"].keyring_name
+  }
+  replication {
+    automatic = true
+  }
+}
+
+resource "google_secret_manager_secret_version" "keyring-secret-version" {
+  secret      = google_secret_manager_secret.admin_password.id
+  secret_data = var.sql_admin_password
 }

@@ -24,7 +24,7 @@ The module provisions the following resources
 |------|-------------|------|---------|:--------:|
 | bastion\_members | The names of the members of the bastion server. | `list(string)` | `[]` | no |
 | bastion\_subnet\_name | The name of the subnet for the shared VPC. | `string` | `"bastion-host-subnet"` | no |
-| bastion\_zone | The zone for the bastion VM in primary region | `string` | `"us-east1-b"` | no |
+| bastion\_zone | The zone for the bastion VM in primary region | `string` | `"us-west1-b"` | no |
 | boa\_gke\_project\_id | Project ID for GKE. | `string` | n/a | yes |
 | boa\_ops\_project\_id | Project ID for ops. | `string` | n/a | yes |
 | boa\_sec\_project\_id | Project ID for secrets. | `string` | n/a | yes |
@@ -48,6 +48,7 @@ The module provisions the following resources
 | location\_secondary | The secondary region for deployment, if not set default locations for each resource are taken from variables file | `string` | `"us-west1"` | no |
 | parent\_folder | The parent folder or org for environments. | `string` | n/a | yes |
 | project\_prefix | Name prefix to use for projects created. | `string` | `"prj"` | no |
+| shared\_vpc\_name | The shared VPC network name | `string` | n/a | yes |
 | sql\_admin\_password | Admin Password for SQL Instances | `string` | `"foobar"` | no |
 | sql\_admin\_username | Admin Username for SQL Instances | `string` | `"testuser"` | no |
 | sql\_database\_replication\_region | SQL Instance Replica Region | `string` | `"us-central1"` | no |
@@ -57,18 +58,12 @@ The module provisions the following resources
 
 | Name | Description |
 |------|-------------|
-| bastion\_cidr\_range | Self link of the bastion host |
 | bastion\_hostname | Host name of the bastion |
 | bastion\_ip\_address | Internal IP address of the bastion host |
 | bastion\_service\_account\_email | Email address of the SA created for the bastion host |
-| gke\_log\_export\_map | Outputs from the log export module |
 | gke\_outputs | Outputs for Cloud SQL instances |
 | kms\_outputs | Outputs for KMS Keyrings and Keys |
 | kms\_sa | KMS Service Account |
-| logging\_destination\_map | Outputs from the destination module |
-| ops\_log\_export\_map | Outputs from the log export module |
-| sec\_log\_export\_map | Outputs from the log export module |
-| sql\_log\_export\_map | Outputs from the log export module |
 | sql\_outputs | Outputs for Cloud SQL instances |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

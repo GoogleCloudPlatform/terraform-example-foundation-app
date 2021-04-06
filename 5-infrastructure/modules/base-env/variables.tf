@@ -58,10 +58,15 @@ variable "gcp_shared_vpc_project_id" {
   description = "The host project id of the shared VPC."
 }
 
+variable "shared_vpc_name" {
+  type        = string
+  description = "The shared VPC network name"
+}
+
 variable "bastion_zone" {
   type        = string
   description = "The zone for the bastion VM in primary region"
-  default     = "us-east1-b"
+  default     = "us-west1-b"
 }
 
 variable "bastion_subnet_name" {

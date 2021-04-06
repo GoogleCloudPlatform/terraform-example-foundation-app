@@ -16,8 +16,8 @@
 
 locals {
   gke_settings = {
-    cluster_1 = {
-      name                   = "gke-boa-${var.location_primary}-001"
+    gke1 = {
+      name                   = "gke-1-boa-${local.envs[var.env].short}-${var.location_primary}"
       subnetwork             = var.gke_cluster_1_subnet_name
       ip_range_pods          = var.gke_cluster_1_range_name_pods
       ip_range_services      = var.gke_cluster_1_range_name_services
@@ -26,13 +26,13 @@ locals {
       machine_type           = "e2-standard-4"
       master_authorized_networks = [
         {
-          cidr_block   = element([for subnet_ip_range in flatten([for subnet in data.google_compute_subnetwork.subnet : subnet.secondary_ip_range if length(subnet.secondary_ip_range) > 0 && subnet.name == var.gke_cluster_2_subnet_name]) : subnet_ip_range.ip_cidr_range if subnet_ip_range.range_name == var.gke_cluster_2_range_name_pods], 0),
-          display_name = var.gke_cluster_2_range_name_pods
+          cidr_block   = element([for subnet_ip_range in flatten([for subnet in data.google_compute_subnetwork.subnet : subnet.secondary_ip_range if length(subnet.secondary_ip_range) > 0 && subnet.name == var.gke_cluster_2_subnet_name]) : subnet_ip_range.ip_cidr_range if subnet_ip_range.range_name == var.gke_cluster_2_range_name_pods], 0)
+          display_name = "cluster 2 pods to cluster 1 controlplane"
         }
       ]
     },
-    cluster_2 = {
-      name                   = "gke-boa-${var.location_secondary}-001"
+    gke2 = {
+      name                   = "gke-2-boa-${local.envs[var.env].short}-${var.location_secondary}"
       subnetwork             = var.gke_cluster_2_subnet_name
       ip_range_pods          = var.gke_cluster_2_range_name_pods
       ip_range_services      = var.gke_cluster_2_range_name_services
@@ -41,13 +41,13 @@ locals {
       machine_type           = "e2-standard-4"
       master_authorized_networks = [
         {
-          cidr_block   = element([for subnet_ip_range in flatten([for subnet in data.google_compute_subnetwork.subnet : subnet.secondary_ip_range if length(subnet.secondary_ip_range) > 0 && subnet.name == var.gke_cluster_1_subnet_name]) : subnet_ip_range.ip_cidr_range if subnet_ip_range.range_name == var.gke_cluster_1_range_name_pods], 0),
-          display_name = var.gke_cluster_1_range_name_pods
+          cidr_block   = element([for subnet_ip_range in flatten([for subnet in data.google_compute_subnetwork.subnet : subnet.secondary_ip_range if length(subnet.secondary_ip_range) > 0 && subnet.name == var.gke_cluster_1_subnet_name]) : subnet_ip_range.ip_cidr_range if subnet_ip_range.range_name == var.gke_cluster_1_range_name_pods], 0)
+          display_name = "cluster 1 pods to cluster 2 controlplane"
         }
       ]
     },
-    mci_cluster = {
-      name                       = "gke-mci-${var.location_primary}-001"
+    mci = {
+      name                       = "mci-boa-${local.envs[var.env].short}-${var.location_primary}"
       subnetwork                 = var.gke_mci_cluster_subnet_name
       ip_range_pods              = var.gke_mci_cluster_range_name_pods
       ip_range_services          = var.gke_mci_cluster_range_name_services
@@ -64,7 +64,7 @@ module "sink_gke" {
   version                = "~> 5.2"
   destination_uri        = module.log_destination.destination_uri
   filter                 = "resource.type:(k8s_cluster OR k8s_container OR gce_target_https_proxy OR gce_url_map OR http_load_balancer OR gce_target_https_proxy OR gce_backend_service OR gce_instance OR gce_forwarding_rule OR gce_health_check OR service_account OR global OR audited_resource OR project)"
-  log_sink_name          = "sink-boa-gke-${local.envs[var.env].short}-01"
+  log_sink_name          = "sink-boa-${local.envs[var.env].short}-gke-to-ops"
   parent_resource_id     = var.boa_gke_project_id
   parent_resource_type   = "project"
   unique_writer_identity = true
@@ -75,9 +75,9 @@ module "bastion" {
   project_id                   = var.boa_gke_project_id
   bastion_name                 = "gce-bastion-${lower(var.bastion_zone)}-01"
   bastion_zone                 = var.bastion_zone
-  bastion_service_account_name = "gce-bastion-${local.envs[var.env].short}-boa-sa"
+  bastion_service_account_name = "boa-gce-bastion-${local.envs[var.env].short}-sa"
   bastion_members              = var.bastion_members
-  vpc_name                     = "vpc-${var.env}-shared-base"
+  vpc_name                     = var.shared_vpc_name
   bastion_subnet               = var.bastion_subnet_name
   bastion_region               = var.location_secondary
   network_project_id           = var.gcp_shared_vpc_project_id
@@ -85,12 +85,12 @@ module "bastion" {
 
 module "clusters" {
   source   = "terraform-google-modules/kubernetes-engine/google//modules/safer-cluster"
-  version  = "~> 14.0"
+  version  = "~> 14.0.1"
   for_each = local.gke_settings
 
   project_id         = var.boa_gke_project_id
   network_project_id = var.gcp_shared_vpc_project_id
-  network            = "vpc-${var.env}-shared-base"
+  network            = var.shared_vpc_name
 
   name                   = each.value.name
   subnetwork             = each.value.subnetwork
@@ -102,13 +102,16 @@ module "clusters" {
     [
       {
         cidr_block   = module.bastion.cidr_range,
-        display_name = module.bastion.subnet_name
+        display_name = "bastion subnet to cluster controlplane"
       }
     ]
   )
+  node_pools_tags = {
+    "np-${each.value.region}" : ["boa-${each.key}-cluster"]
+  }
   node_pools = [
     {
-      name               = "np-${each.value.region}-01",
+      name               = "np-${each.value.region}",
       auto_repair        = true,
       auto_upgrade       = true,
       enable_secure_boot = true,

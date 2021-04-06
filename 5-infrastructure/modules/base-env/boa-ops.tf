@@ -19,7 +19,7 @@ module "sink_ops" {
   version                = "~> 5.2"
   destination_uri        = module.log_destination.destination_uri
   filter                 = ""
-  log_sink_name          = "sink-boa-ops-${local.envs[var.env].short}-01"
+  log_sink_name          = "sink-boa-${local.envs[var.env].short}-ops"
   parent_resource_id     = var.boa_ops_project_id
   parent_resource_type   = "project"
   unique_writer_identity = true

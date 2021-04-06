@@ -39,6 +39,19 @@ module "iap_bastion" {
   name                 = var.bastion_name
   zone                 = var.bastion_zone
   service_account_name = var.bastion_service_account_name
-  members              = var.bastion_members
-  tags                 = ["bastion"]
+  service_account_roles_supplemental = [
+    "roles/compute.admin",
+    "roles/gkehub.admin",
+    "roles/container.admin",
+    "roles/meshconfig.admin",
+    "roles/resourcemanager.projectIamAdmin",
+    "roles/iam.serviceAccountAdmin",
+    "roles/iam.serviceAccountKeyAdmin",
+    "roles/servicemanagement.admin",
+    "roles/serviceusage.serviceUsageAdmin",
+    "roles/privateca.admin"
+  ]
+  shielded_vm = false
+  members     = var.bastion_members
+  tags        = ["bastion"]
 }
