@@ -79,10 +79,10 @@ module "sql" {
   sql_instance_prefix = each.value.sql_instance_prefix
   database_region     = each.value.database_region
 
-  admin_user           = var.sql_admin_username
-  admin_password       = var.sql_admin_password
-  project_id           = var.boa_sql_project_id
-  vpc_self_link        = data.google_compute_network.vpc.self_link
+  admin_user     = var.sql_admin_username
+  admin_password = var.sql_admin_password
+  project_id     = var.boa_sql_project_id
+  vpc_self_link  = data.google_compute_network.vpc.self_link
 
   # Secondary IP ranges from all GKE subnets in Shared VPC
   authorized_networks = [for range in flatten([for subnet in data.google_compute_subnetwork.subnet : subnet.secondary_ip_range if length(subnet.secondary_ip_range) > 0]) : zipmap(["value", "name"], values(range))]
