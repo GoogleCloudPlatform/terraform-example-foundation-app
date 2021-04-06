@@ -39,47 +39,44 @@ variable "location_secondary" {
 variable "gcp_shared_vpc_project_id" {
   type        = string
   description = "The host project id of the shared VPC. Can be left blank if prjs deployed follow naming convention (Eg. prj-d-shared-base-xxxx)"
-  default     = ""
+}
+
+variable "shared_vpc_name" {
+  type        = string
+  description = "The shared VPC network name"
 }
 
 variable "boa_gke_project_id" {
   type        = string
   description = "Project ID for GKE. Can be left blank if prjs deployed follow naming convention (Eg. prj-bu1-d-boa-gke-xxxx)"
-  default     = ""
 }
 
 variable "boa_ops_project_id" {
   type        = string
   description = "Project ID for ops. Can be left blank if prjs deployed follow naming convention (Eg. prj-bu1-d-boa-gke-xxxx)"
-  default     = ""
 }
 
 variable "boa_sec_project_id" {
   type        = string
   description = "Project ID for secrets. Can be left blank if prjs deployed follow naming convention (Eg. prj-bu1-d-boa-gke-xxxx)"
-  default     = ""
 }
 
 variable "boa_sql_project_id" {
   type        = string
   description = "Project ID for SQL. Can be left blank if prjs deployed follow naming convention (Eg. prj-bu1-d-boa-gke-xxxx)"
-  default     = ""
 }
 
 variable "gke_cluster_1_cidr_block" {
   type        = string
   description = "The primary IPv4 cidr block for the first GKE cluster."
-  default     = "172.16.2.0/28"
 }
 
 variable "gke_cluster_2_cidr_block" {
   type        = string
   description = "The primary IPv4 cidr block for the second GKE cluster."
-  default     = "172.16.0.16/28"
 }
 
 variable "gke_mci_cluster_cidr_block" {
   type        = string
   description = "The primary IPv4 cidr block for multi-cluster ingress (MCI)."
-  default     = "172.16.3.0/28"
 }

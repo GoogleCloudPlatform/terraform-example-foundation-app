@@ -18,38 +18,24 @@
   SQL Outputs
 *****************************************/
 
-output "sql_outputs" {
-  description = "The name for Cloud SQL instance"
-  value       = module.env.sql_outputs
+output "sql_1_instance_name" {
+  description = "PostgreSQL Instance 1 Name"
+  value       = module.env.sql_outputs.sql1["Instance Name"]
 }
 
-/******************************************
-  Logging Outputs
-*****************************************/
-
-output "ops_log_export_map" {
-  description = "Outputs from the log export"
-  value       = module.env.ops_log_export_map
+output "sql_1_ip_address" {
+  description = "PostgreSQL Instance 1 Private Ip"
+  value       = module.env.sql_outputs.sql1["Private IP Address"]
 }
 
-output "sec_log_export_map" {
-  description = "Outputs from the log export"
-  value       = module.env.sec_log_export_map
+output "sql_2_instance_name" {
+  description = "PostgreSQL Instance 2 Name"
+  value       = module.env.sql_outputs.sql2["Instance Name"]
 }
 
-output "gke_log_export_map" {
-  description = "Outputs from the log export"
-  value       = module.env.gke_log_export_map
-}
-
-output "sql_log_export_map" {
-  description = "Outputs from the log export"
-  value       = module.env.sql_log_export_map
-}
-
-output "logging_destination_map" {
-  description = "Outputs from the destination"
-  value       = module.env.logging_destination_map
+output "sql_2_ip_address" {
+  description = "PostgreSQL Instance 2 Private Ip"
+  value       = module.env.sql_outputs.sql2["Private IP Address"]
 }
 
 /******************************************
@@ -94,7 +80,47 @@ output "bastion_cidr_range" {
   GKE Outputs
 *****************************************/
 
-output "gke_outputs" {
-  description = "Outputs for Cloud SQL instances"
-  value       = module.env.gke_outputs
+output "gke_1_cluster_name" {
+  description = "Cluster 1 Name"
+  value       = module.env.gke_outputs.gke1["Cluster Name"]
+}
+
+output "gke_1_master_ipv4" {
+  description = "Cluster 1 Master IPV4 Address CIDR"
+  value       = module.env.gke_outputs.gke1["Master IPV4 Address CIDR"]
+}
+
+output "gke_1_region" {
+  description = "Cluster 1 Region"
+  value       = module.env.gke_outputs.gke1["Region"]
+}
+
+output "gke_2_cluster_name" {
+  description = "Cluster 2 Name"
+  value       = module.env.gke_outputs.gke2["Cluster Name"]
+}
+
+output "gke_2_master_ipv4" {
+  description = "Cluster 2 Master IPV4 Address CIDR"
+  value       = module.env.gke_outputs.gke2["Master IPV4 Address CIDR"]
+}
+
+output "gke_2_region" {
+  description = "Cluster 2 Region"
+  value       = module.env.gke_outputs.gke2["Region"]
+}
+
+output "mci_cluster_name" {
+  description = "MCI Cluster Name"
+  value       = module.env.gke_outputs.mci["Cluster Name"]
+}
+
+output "mci_master_ipv4" {
+  description = "MCI Cluster Master IPV4 Address CIDR"
+  value       = module.env.gke_outputs.mci["Master IPV4 Address CIDR"]
+}
+
+output "mci_region" {
+  description = "MCI Cluster Region"
+  value       = module.env.gke_outputs.mci["Region"]
 }
