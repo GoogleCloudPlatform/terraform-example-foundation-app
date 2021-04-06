@@ -18,7 +18,6 @@ module "env" {
   source = "../../modules/base-env"
   env    = "prd"
 
-  parent_folder              = var.parent_folder
   terraform_service_account  = var.terraform_service_account
   location_primary           = var.location_primary
   location_secondary         = var.location_secondary
