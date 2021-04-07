@@ -1,7 +1,6 @@
 # 5-infrastructure
 
 The purpose of this step is to deploy the infrastructure for the Bank of Anthos Application using the infra pipeline setup in 4-projects.
-The infra pipeline created on step 4-projects, have a project with a [Cloudbuild](https://cloud.google.com/build/docs) pipeline configured to plan and deploy
 a terraform code. There is also a [Source Repository](https://cloud.google.com/source-repositories) to push the code to be deployed.
 All infrastructure components will be created using the base network created during step 3-networks to access private services.
 
