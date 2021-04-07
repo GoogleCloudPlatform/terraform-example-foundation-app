@@ -13,7 +13,7 @@ All infrastructure components will be created using the base network created dur
     - MCI Cluster is Primary Region
 - Bastion Host VM in the Secondary Region
 - 2 Postgres CLoudSQL instances in primary and secondary region respectively
-- Shared VPC Peering for CloudSQL Instances
+- Private Services Access for CloudSQL Instances
 - 1 Secret to store CloudSQL Admin Password
 - 4 KMS Keyrings and Keys
     - 2 KMS Keyrings and Keys for GKE, one in each region
