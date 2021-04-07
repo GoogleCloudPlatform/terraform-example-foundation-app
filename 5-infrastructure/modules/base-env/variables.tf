@@ -19,11 +19,6 @@ variable "env" {
   description = "The environment to prepare (dev/npd/prd)."
 }
 
-variable "parent_folder" {
-  type        = string
-  description = "The parent folder or org for environments."
-}
-
 variable "terraform_service_account" {
   type        = string
   description = "Service account email of the account to impersonate to run Terraform."
