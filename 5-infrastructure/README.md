@@ -33,7 +33,7 @@ All infrastructure components will be created using the base network created dur
 ## Usage
 
 ### Setup to run via Cloud Build
-1. Clone repo `gcloud source repos clone bu1-example-app --project=prj-bu1-s-sample-infra-<random>`.
+1. Clone repo `gcloud source repos clone bu1-example-app --project=prj-bu1-c-infra-pipeline-<random>`. (this is from the terraform output from the previous section, run `terraform output cloudbuild_project_id` in the `4-projects/business_unit_1/shared` folder)
 1. Navigate into the repo `cd bu1-example-app`.
 1. Change freshly cloned repo and change to non master branch `git checkout -b plan`.
 1. Copy contents of foundation to new repo `cp -RT ../terraform-example-foundation/5-app-infra/ .` (modify accordingly based on your current directory).
