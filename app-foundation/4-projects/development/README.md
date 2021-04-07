@@ -29,6 +29,5 @@
 | boa\_sec\_project\_id | Project ID for Secrets Project |
 | boa\_sql\_project\_id | Project ID for SQL Project |
 | terraform\_service\_account | Terraform Deployment SA for 5-infrastructure |
-| workload\_identity\_role\_sa | SA that has Workload Identity Role for Git Sync |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
