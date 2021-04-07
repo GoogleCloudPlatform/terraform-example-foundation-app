@@ -1,6 +1,6 @@
 # 4-projects
 
-The purpose of this step is to set up a folder structure, projects, and infrastructure and application pipelines, which are connected as service projects to deploy a modern application called The Bank of Anthos. These projects are created with Cloud Build triggers, CSRs for application infrastructure code, GCS buckets for state storage and follows the same [conventions](https://github.com/terraform-google-modules/terraform-example-foundation#branching-strategy) as the foundation pipeline deployed in [0-bootstrap](https://github.com/terraform-google-modules/terraform-example-foundation/blob/master/0-bootstrap/README.md). The cloudbuild SA used by this pipeline can impersonate the project SA by enabling the `enable_cloudbuild_deploy` flag and necessary roles can be granted to this SA via `sa_roles`. This pipeline can be utilized for deploying resources in projects across development/non-production/production with granular permissions.
+The purpose of this step is to set up a folder structure, projects, and infrastructure and application pipelines, which are connected as service projects to deploy an example application called Bank of Anthos.
 
 ## Prerequisites
 
