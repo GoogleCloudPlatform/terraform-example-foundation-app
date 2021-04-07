@@ -81,7 +81,6 @@ module "bastion" {
   bastion_subnet               = var.bastion_subnet_name
   bastion_region               = var.location_secondary
   network_project_id           = var.gcp_shared_vpc_project_id
-  tags                         = ["allow-google-apis"]
 }
 
 module "clusters" {
