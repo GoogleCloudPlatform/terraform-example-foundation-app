@@ -15,7 +15,7 @@
  */
 
 module "boa_sql_project" {
-  source                      = "terraform-google-modules/terraform-example-foundation/4-projects/modules/single_project"
+  source                      = "github.com/terraform-google-modules/terraform-example-foundation/4-projects/modules/single_project"
   impersonate_service_account = var.terraform_service_account
   org_id                      = var.org_id
   billing_account             = var.billing_account
