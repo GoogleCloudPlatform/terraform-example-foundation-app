@@ -44,11 +44,6 @@ output "terraform_service_account" {
   value       = module.terraform_deployment_sa.service_account.email
 }
 
-output "workload_identity_role_sa" {
-  description = "SA that has Workload Identity Role for Git Sync"
-  value       = module.boa_appworkload_identity.email
-}
-
 output "boa_gsa_sa_email" {
   description = "SA email for boa-gsa service account"
   value       = module.boa_gsa_sa.email
