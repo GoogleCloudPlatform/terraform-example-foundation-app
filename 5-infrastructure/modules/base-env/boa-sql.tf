@@ -62,9 +62,8 @@ data "google_compute_subnetwork" "subnet" {
 }
 
 module "sql" {
-  depends_on = [module.private_access]
-  source     = "../cloud-sql"
-  for_each   = local.sql_settings
+  source   = "../cloud-sql"
+  for_each = local.sql_settings
 
   database_name       = each.value.database_name
   database_zone       = each.value.database_zone
