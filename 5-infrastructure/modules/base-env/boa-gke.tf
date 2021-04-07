@@ -81,6 +81,7 @@ module "bastion" {
   bastion_subnet               = var.bastion_subnet_name
   bastion_region               = var.location_secondary
   network_project_id           = var.gcp_shared_vpc_project_id
+  tags                         = ["allow-google-apis"]
 }
 
 module "clusters" {
@@ -107,7 +108,7 @@ module "clusters" {
     ]
   )
   node_pools_tags = {
-    "np-${each.value.region}" : ["boa-${each.key}-cluster"]
+    "np-${each.value.region}" : ["boa-${each.key}-cluster", "allow-google-apis"]
   }
   node_pools = [
     {
