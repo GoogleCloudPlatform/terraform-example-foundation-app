@@ -63,15 +63,3 @@ module "boa_gke_project" {
   secondary_contact = "example2@example.com"
   business_code     = "bu1"
 }
-
-module "boa_gsa_sa" {
-  source     = "terraform-google-modules/service-accounts/google"
-  version    = "~> 3.0"
-  project_id = module.boa_gke_project.project_id
-  names      = ["boa-gsa"]
-  project_roles = [
-    "${module.boa_gke_project.project_id}=>roles/cloudtrace.agent",
-    "${module.boa_gke_project.project_id}=>roles/monitoring.metricWriter",
-    "${module.boa_sql_project.project_id}=>roles/cloudsql.client"
-  ]
-}

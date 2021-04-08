@@ -14,6 +14,47 @@
  * limitations under the License.
  */
 
+locals {
+  tf_deploy_sa_roles = {
+    "${module.boa_gke_project.project_id}" = [
+      "roles/compute.viewer",
+      "roles/compute.instanceAdmin.v1",
+      "roles/container.clusterAdmin",
+      "roles/container.developer",
+      "roles/viewer",
+      "roles/iam.serviceAccountAdmin",
+      "roles/iam.serviceAccountUser",
+      "roles/resourcemanager.projectIamAdmin",
+      "roles/logging.configWriter",
+      "roles/storage.objectViewer",
+      "roles/iap.admin",
+      "roles/iam.roleAdmin"
+    ],
+    "${module.boa_ops_project.project_id}" = [
+      "roles/logging.configWriter",
+      "roles/serviceusage.serviceUsageAdmin",
+      "roles/resourcemanager.projectIamAdmin",
+      "roles/storage.admin"
+    ],
+    "${module.boa_secret_project.project_id}" = [
+      "roles/cloudkms.admin",
+      "roles/logging.configWriter",
+      "roles/iam.serviceAccountCreator",
+      "roles/secretmanager.admin"
+    ],
+    "${module.boa_sql_project.project_id}" = [
+      "roles/cloudsql.admin",
+      "roles/compute.networkAdmin",
+      "roles/logging.configWriter"
+    ],
+    "${var.shared_vpc_host_project_id}" = [
+      "roles/compute.networkAdmin",
+      "roles/compute.securityAdmin"
+    ]
+  }
+  project_roles = [for project, roles in local.tf_deploy_sa_roles : [for role in roles : "${project}=>${role}"]]
+}
+
 module "boa_secret_project" {
   source                      = "github.com/terraform-google-modules/terraform-example-foundation/4-projects/modules/single_project"
   impersonate_service_account = var.terraform_service_account
@@ -54,37 +95,11 @@ module "boa_secret_project" {
 }
 
 module "terraform_deployment_sa" {
-  source     = "terraform-google-modules/service-accounts/google"
-  version    = "~> 3.0"
-  project_id = module.boa_secret_project.project_id
-  names      = ["boa-terraform-${var.environment_code}-sa"]
-  project_roles = [
-    "${module.boa_gke_project.project_id}=>roles/compute.viewer",
-    "${module.boa_gke_project.project_id}=>roles/compute.instanceAdmin.v1",
-    "${module.boa_gke_project.project_id}=>roles/container.clusterAdmin",
-    "${module.boa_gke_project.project_id}=>roles/container.developer",
-    "${module.boa_gke_project.project_id}=>roles/viewer",
-    "${module.boa_gke_project.project_id}=>roles/iam.serviceAccountAdmin",
-    "${module.boa_gke_project.project_id}=>roles/iam.serviceAccountUser",
-    "${module.boa_gke_project.project_id}=>roles/resourcemanager.projectIamAdmin",
-    "${module.boa_gke_project.project_id}=>roles/logging.configWriter",
-    "${module.boa_gke_project.project_id}=>roles/storage.objectViewer",
-    "${module.boa_gke_project.project_id}=>roles/iap.admin",
-    "${module.boa_gke_project.project_id}=>roles/iam.roleAdmin",
-    "${module.boa_ops_project.project_id}=>roles/logging.configWriter",
-    "${module.boa_ops_project.project_id}=>roles/serviceusage.serviceUsageAdmin",
-    "${module.boa_ops_project.project_id}=>roles/resourcemanager.projectIamAdmin",
-    "${module.boa_ops_project.project_id}=>roles/storage.admin",
-    "${module.boa_secret_project.project_id}=>roles/cloudkms.admin",
-    "${module.boa_secret_project.project_id}=>roles/logging.configWriter",
-    "${module.boa_secret_project.project_id}=>roles/iam.serviceAccountCreator",
-    "${module.boa_secret_project.project_id}=>roles/secretmanager.admin",
-    "${module.boa_sql_project.project_id}=>roles/cloudsql.admin",
-    "${module.boa_sql_project.project_id}=>roles/compute.networkAdmin",
-    "${module.boa_sql_project.project_id}=>roles/logging.configWriter",
-    "${var.shared_vpc_host_project_id}=>roles/compute.networkAdmin",
-    "${var.shared_vpc_host_project_id}=>roles/compute.securityAdmin"
-  ]
+  source        = "terraform-google-modules/service-accounts/google"
+  version       = "~> 3.0"
+  project_id    = module.boa_secret_project.project_id
+  names         = ["boa-terraform-${var.environment_code}-sa"]
+  project_roles = local.project_roles
 }
 
 resource "google_service_account_iam_member" "cloudbuild_terraform_sa_impersonate_permissions" {
