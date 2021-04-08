@@ -22,13 +22,6 @@ terraform {
   required_version = ">= 0.13"
 }
 
-terraform {
-  backend "gcs" {
-    bucket = "UPDATE_ME"
-    prefix = "terraform/environments/non-production"
-  }
-}
-
 /******************************************
   Provider credential configuration
  *****************************************/
