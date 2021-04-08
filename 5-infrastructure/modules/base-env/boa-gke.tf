@@ -107,7 +107,7 @@ module "clusters" {
     ]
   )
   node_pools_tags = {
-    "np-${each.value.region}" : ["boa-${each.key}-cluster"]
+    "np-${each.value.region}" : ["boa-${each.key}-cluster", "allow-google-apis"]
   }
   node_pools = [
     {

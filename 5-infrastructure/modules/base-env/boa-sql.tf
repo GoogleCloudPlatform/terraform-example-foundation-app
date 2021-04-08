@@ -61,17 +61,9 @@ data "google_compute_subnetwork" "subnet" {
   self_link = each.value
 }
 
-module "private_access" {
-  source      = "GoogleCloudPlatform/sql-db/google//modules/private_service_access"
-  version     = "~> 5.0"
-  project_id  = var.gcp_shared_vpc_project_id
-  vpc_network = var.shared_vpc_name
-}
-
 module "sql" {
-  depends_on = [module.private_access]
-  source     = "../cloud-sql"
-  for_each   = local.sql_settings
+  source   = "../cloud-sql"
+  for_each = local.sql_settings
 
   database_name       = each.value.database_name
   database_zone       = each.value.database_zone
