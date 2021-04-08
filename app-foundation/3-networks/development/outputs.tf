@@ -15,25 +15,28 @@
  */
 
 /******************************************
-  Development Network Outputs
+  Outputs for BoA subnets
 *****************************************/
 
-output "base_host_project_id" {
-  value       = local.base_project_id
-  description = "The base host project ID"
-}
-
-output "base_network_name" {
-  value       = module.base_shared_vpc.network_name
-  description = "The name of the VPC being created"
-}
-
-output "base_network_self_link" {
-  value       = module.base_shared_vpc.network_self_link
-  description = "The URI of the VPC being created"
-}
-
-output "base_subnets" {
+output "boa_subnets" {
   value       = var.subnets
-  description = "The VPC subnets."
+  description = "The created VPC subnets."
+}
+
+/******************************************
+ Outputs for private services address
+*****************************************/
+
+output "private_services_address" {
+  value       = google_compute_global_address.private_services_address.address
+  description = "The external IP for Cloud SQL."
+}
+
+/******************************************
+  Outputs for external IP
+*****************************************/
+
+output "external_ip_address" {
+  value       = google_compute_global_address.external_ip_for_http_load_balancing.address
+  description = "The external IP for Cloud SQL."
 }
