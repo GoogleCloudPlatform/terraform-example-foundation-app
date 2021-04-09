@@ -32,7 +32,7 @@ resource "google_secret_manager_secret" "keyring-secret" {
   labels = {
     label = google_kms_key_ring.keyring.name
   }
-  
+
   replication {
     automatic = true
   }

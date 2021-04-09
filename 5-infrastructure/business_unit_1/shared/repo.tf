@@ -67,7 +67,7 @@ resource "google_cloudbuild_trigger" "main_trigger" {
     _GAR_REPOSITORY       = local.gar_name
     _ARTIFACT_BUCKET_NAME = google_storage_bucket.cloudbuild_artifacts["${each.value}-ab"].name
   }
-  filename = "cloudbuild.yaml"
+  filename   = "cloudbuild.yaml"
   depends_on = [google_sourcerepo_repository.app_infra_repo]
 }
 
