@@ -79,7 +79,7 @@ variable "gke_mci_cluster_cidr_block" {
   default     = "100.64.198.0/28"
 }
 
-variable "enable_bin_auth_policy" {
+variable "enforce_bin_auth_policy" {
   type        = bool
   description = "Enable or Disable creation of binary authorization policy"
   default     = true
@@ -91,7 +91,7 @@ variable "bin_auth_attestor_names" {
   default     = ["build", "quality", "security"]
 }
 
-variable "bin_auth_attetor_project_id" {
+variable "bin_auth_attestor_project_id" {
   type        = string
   description = "Project id where binary attestors are created (app_cicd project from shared)"
 }

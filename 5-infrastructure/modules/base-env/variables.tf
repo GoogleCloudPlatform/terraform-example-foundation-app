@@ -183,7 +183,7 @@ variable "sql_admin_password" {
   default     = "foobar"
 }
 
-variable "enable_bin_auth_policy" {
+variable "enforce_bin_auth_policy" {
   type        = bool
   description = "Enable or Disable creation of binary authorization policy"
   default     = false
@@ -195,7 +195,7 @@ variable "bin_auth_attestor_names" {
   default     = []
 }
 
-variable "bin_auth_attetor_project_id" {
+variable "bin_auth_attestor_project_id" {
   type        = string
   description = "Project Id where binary attestors are created"
   default     = ""

@@ -67,46 +67,20 @@ resource "google_cloudbuild_trigger" "main_trigger" {
     _GAR_REPOSITORY       = local.gar_name
     _ARTIFACT_BUCKET_NAME = google_storage_bucket.cloudbuild_artifacts["${each.value}-ab"].name
   }
-  filename   = "cloudbuild.yaml"
+  filename   = var.cloudbuild_yaml_file_name
   depends_on = [google_sourcerepo_repository.app_infra_repo]
 }
 
 /***********************************************
- Cloud Build - Terraform Image Repo
+ Cloud Build - Image Repo
  ***********************************************/
 resource "google_artifact_registry_repository" "tf-image-repo" {
   provider      = google-beta
   project       = var.app_cicd_project_id
   location      = var.primary_location
-  repository_id = format("%s-%s", var.app_cicd_project_id, "tf-runners")
+  repository_id = format("%s-%s", var.app_cicd_project_id, "boa-image-repo")
   description   = "Docker repository for Terraform runner images used by Cloud Build"
   format        = "DOCKER"
-}
-
-/***********************************************
- Cloud Build - Terraform builder
- ***********************************************/
-
-resource "null_resource" "cloudbuild_terraform_builder" {
-  triggers = {
-    project_id_cloudbuild_project = var.app_cicd_project_id
-    terraform_version_sha256sum   = var.terraform_version_sha256sum
-    terraform_version             = var.terraform_version
-    gar_name                      = local.gar_name
-    gar_location                  = google_artifact_registry_repository.tf-image-repo.location
-  }
-
-  provisioner "local-exec" {
-    command = <<EOT
-      gcloud builds submit ${path.module}/cloudbuild_builder/ \
-      --project ${var.app_cicd_project_id} \
-      --config=${path.module}/cloudbuild_builder/cloudbuild.yaml \
-      --substitutions=_TERRAFORM_VERSION=${var.terraform_version},_TERRAFORM_VERSION_SHA256SUM=${var.terraform_version_sha256sum},_TERRAFORM_VALIDATOR_RELEASE=${var.terraform_validator_release},_REGION=${google_artifact_registry_repository.tf-image-repo.location},_REPOSITORY=${local.gar_name}
-  EOT
-  }
-  depends_on = [
-    google_artifact_registry_repository_iam_member.terraform-image-iam
-  ]
 }
 
 resource "google_artifact_registry_repository_iam_member" "terraform-image-iam" {

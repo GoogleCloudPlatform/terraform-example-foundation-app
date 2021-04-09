@@ -31,10 +31,6 @@ terraform {
       version = ">= 3.50"
     }
   }
-
-  provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-bootstrap:cloudbuild/v2.3.0"
-  }
 }
 
 /******************************************

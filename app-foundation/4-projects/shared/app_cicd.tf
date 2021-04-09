@@ -26,7 +26,10 @@ locals {
     "roles/container.developer",
     "roles/secretmanager.secretAccessor",
     "roles/containeranalysis.notes.editor",
-    "roles/artifactregistry.admin"
+    "roles/artifactregistry.admin",
+    "roles/secretmanager.admin",
+    "roles/source.admin",
+    "roles/cloudbuild.builds.editor"
   ]
   sa_roles = [for role in local.sa_permissions : "${module.app_cicd_project.project_id}=>${role}"]
 }
@@ -76,6 +79,12 @@ module "app_cicd_build_sa" {
   project_id    = module.app_cicd_project.project_id
   names         = ["cicd-build-sa"]
   project_roles = local.sa_roles
+}
+
+resource "google_service_account_iam_member" "app_cicd_build_sa_impersonate_permissions" {
+  service_account_id = module.app_cicd_build_sa.service_account.name
+  role               = "roles/iam.serviceAccountTokenCreator"
+  member             = "serviceAccount:${module.app_infra_cloudbuild_project.project_number}@cloudbuild.gserviceaccount.com"
 }
 
 resource "google_secret_manager_secret" "cicd_build_gsa_key_secret" {

@@ -24,9 +24,9 @@ shared_vpc_name           = "vpc-yyy-shared-base-spoke" # 'yyy' is replaced by {
 terraform_service_account = "boa-terraform-z-sa@prj-bu1-z-boa-sec-xxxx.iam.gserviceaccount.com"
 
 # Recommended Optional
-enable_bin_auth_policy      = true
-bin_auth_attestor_names     = ["build", "quality", "security"]
-bin_auth_attetor_project_id = "prj-bu1-s-app-cicd-xxxx"
+enforce_bin_auth_policy      = true
+bin_auth_attestor_names      = ["build", "quality", "security"]
+bin_auth_attestor_project_id = "prj-bu1-s-app-cicd-xxxx"
 
 # Optional
 # gke_cluster_1_cidr_block   = "000.000.000.000/00"

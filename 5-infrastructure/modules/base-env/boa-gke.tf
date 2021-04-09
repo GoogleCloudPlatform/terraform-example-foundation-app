@@ -57,8 +57,8 @@ locals {
       master_authorized_networks = []
     }
   }
-  bin_auth_attestors = [for attestor in var.bin_auth_attestor_names : "projects/${var.bin_auth_attetor_project_id}/attestors/${attestor}"]
-  whitelist_patterns = ["quay.io/random-containers/*", "k8s.gcr.io/more-random/*", "gcr.io/${var.boa_gke_project_id}/*"] # Example
+  bin_auth_attestors = [for attestor in var.bin_auth_attestor_names : "projects/${var.bin_auth_attestor_project_id}/attestors/${attestor}"]
+  allowlist_patterns = ["quay.io/random-containers/*", "k8s.gcr.io/more-random/*", "gcr.io/${var.boa_gke_project_id}/*"] # Example
 }
 
 module "sink_gke" {
@@ -136,15 +136,15 @@ module "clusters" {
 }
 
 resource "google_binary_authorization_policy" "policy" {
-  count                         = var.enable_bin_auth_policy ? 1 : 0
+  count                         = var.enforce_bin_auth_policy ? 1 : 0
   global_policy_evaluation_mode = "ENABLE"
   default_admission_rule {
     evaluation_mode         = "REQUIRE_ATTESTATION"
-    enforcement_mode        = "ENFORCED_BLOCK_AND_AUDIT_LOG"
+    enforcement_mode        = "DRYRUN_AUDIT_LOG_ONLY"
     require_attestations_by = local.bin_auth_attestors
   }
   dynamic "admission_whitelist_patterns" {
-    for_each = local.whitelist_patterns
+    for_each = local.allowlist_patterns
     content {
       name_pattern = admission_whitelist_patterns.value
     }
@@ -154,7 +154,7 @@ resource "google_binary_authorization_policy" "policy" {
     content {
       cluster                 = "${cluster_admission_rules.value.region}.${cluster_admission_rules.value.name}"
       evaluation_mode         = "REQUIRE_ATTESTATION"
-      enforcement_mode        = "ENFORCED_BLOCK_AND_AUDIT_LOG"
+      enforcement_mode        = "DRYRUN_AUDIT_LOG_ONLY"
       require_attestations_by = local.bin_auth_attestors
     }
   }

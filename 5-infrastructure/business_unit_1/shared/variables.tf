@@ -27,35 +27,23 @@ variable "app_cicd_repos" {
 
 variable "app_cicd_project_id" {
   type        = string
-  description = "Project ID for "
+  description = "Project ID for CICD Pipeline Project"
 }
 
 variable "primary_location" {
   type        = string
-  default     = "us-east1"
   description = "Region used for key-ring"
+  default     = "us-east1"
 }
 
 variable "attestor_names" {
   description = "A list of Cloud Source Repos to be created to hold app infra Terraform configs"
   type        = list(string)
-  default     = ["build", "quality", "secuirty"]
+  default     = ["build", "quality", "security"]
 }
 
-variable "terraform_version" {
-  description = "Default terraform version."
+variable "cloudbuild_yaml_file_name" {
   type        = string
-  default     = "0.13.6"
-}
-
-variable "terraform_version_sha256sum" {
-  description = "sha256sum for default terraform version."
-  type        = string
-  default     = "55f2db00b05675026be9c898bdd3e8230ff0c5c78dd12d743ca38032092abfc9"
-}
-
-variable "terraform_validator_release" {
-  description = "Default terraform-validator release."
-  type        = string
-  default     = "2021-01-21"
+  description = "Name of cloudbuild file"
+  default     = "cloudbuild.yaml"
 }
