@@ -146,13 +146,13 @@ resource "google_binary_authorization_policy" "policy" {
   dynamic "admission_whitelist_patterns" {
     for_each = local.whitelist_patterns
     content {
-      name_pattern = each.value
+      name_pattern = admission_whitelist_patterns.value
     }
   }
   dynamic "cluster_admission_rules" {
     for_each = local.gke_settings
     content {
-      cluster                 = "${each.value.region}.${each.value.name}"
+      cluster                 = "${cluster_admission_rules.value.region}.${cluster_admission_rules.value.name}"
       evaluation_mode         = "REQUIRE_ATTESTATION"
       enforcement_mode        = "ENFORCED_BLOCK_AND_AUDIT_LOG"
       require_attestations_by = local.bin_auth_attestors
