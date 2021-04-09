@@ -25,7 +25,11 @@ module "app_infra_cloudbuild_project" {
   alert_pubsub_topic          = var.alert_pubsub_topic
   budget_amount               = var.budget_amount
   project_prefix              = var.project_prefix
-  activate_apis               = ["cloudbuild.googleapis.com", "sourcerepo.googleapis.com", "cloudkms.googleapis.com"]
+  activate_apis = [
+    "cloudbuild.googleapis.com",
+    "sourcerepo.googleapis.com",
+    "cloudkms.googleapis.com"
+  ]
 
   # Metadata
   project_suffix    = "infra-pipeline"
@@ -42,4 +46,3 @@ module "infra_pipelines" {
   billing_account       = var.billing_account
   app_infra_repos       = ["boa-infra"]
 }
-

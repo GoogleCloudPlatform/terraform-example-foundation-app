@@ -166,16 +166,37 @@ variable "boa_sql_project_id" {
 }
 
 variable "sql_database_replication_region" {
+  type        = string
   description = "SQL Instance Replica Region"
   default     = "us-central1"
 }
 
 variable "sql_admin_username" {
-  default     = "testuser"
+  type        = string
   description = "Admin Username for SQL Instances"
+  default     = "testuser"
 }
 
 variable "sql_admin_password" {
-  default     = "foobar"
+  type        = string
   description = "Admin Password for SQL Instances"
+  default     = "foobar"
+}
+
+variable "enable_bin_auth_policy" {
+  type        = bool
+  description = "Enable or Disable creation of binary authorization policy"
+  default     = false
+}
+
+variable "bin_auth_attestor_names" {
+  type        = list(string)
+  description = "Binary Authorization Attestor Names set up in shared app_cicd project"
+  default     = []
+}
+
+variable "bin_auth_attetor_project_id" {
+  type        = string
+  description = "Project Id where binary attestors are created"
+  default     = ""
 }

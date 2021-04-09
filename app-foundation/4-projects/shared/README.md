@@ -15,6 +15,11 @@
 
 ## Outputs
 
-No output.
+| Name | Description |
+|------|-------------|
+| app\_cicd\_build\_sa | n/a |
+| app\_cicd\_project\_id | n/a |
+| app\_infra\_pipeline\_cloudbuild\_sa | n/a |
+| app\_infra\_repos | CSRs to store source code |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

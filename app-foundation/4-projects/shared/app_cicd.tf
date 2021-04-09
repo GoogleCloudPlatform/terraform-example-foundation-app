@@ -13,6 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+locals {
+  sa_permissions = [
+    "roles/viewer",
+    "roles/storage.admin",
+    "roles/cloudkms.admin",
+    "roles/binaryauthorization.attestorsViewer",
+    "roles/cloudkms.signerVerifier",
+    "roles/containeranalysis.occurrences.editor",
+    "roles/containeranalysis.notes.occurrences.viewer",
+    "roles/containeranalysis.notes.attacher",
+    "roles/container.developer",
+    "roles/secretmanager.secretAccessor",
+    "roles/containeranalysis.notes.editor",
+    "roles/artifactregistry.admin"
+  ]
+  sa_roles = [for role in local.sa_permissions : "${module.app_cicd_project.project_id}=>${role}"]
+}
 
 module "app_cicd_project" {
   source                      = "github.com/terraform-google-modules/terraform-example-foundation/4-projects/modules/single_project"
@@ -35,7 +52,13 @@ module "app_cicd_project" {
     "containeranalysis.googleapis.com",
     "containerscanning.googleapis.com",
     "binaryauthorization.googleapis.com",
-    "artifactregistry.googleapis.com"
+    "secretmanager.googleapis.com",
+    "compute.googleapis.com",
+    "iam.googleapis.com",
+    "container.googleapis.com",
+    "cloudkms.googleapis.com",
+    "anthos.googleapis.com",
+    "serviceusage.googleapis.com"
   ]
 
   # Metadata
@@ -47,5 +70,26 @@ module "app_cicd_project" {
   business_code     = "bu1"
 }
 
+module "app_cicd_build_sa" {
+  source        = "terraform-google-modules/service-accounts/google"
+  version       = "~> 3.0"
+  project_id    = module.app_cicd_project.project_id
+  names         = ["cicd-build-sa"]
+  project_roles = local.sa_roles
+}
 
+resource "google_secret_manager_secret" "cicd_build_gsa_key_secret" {
+  project   = module.app_cicd_project.project_id
+  secret_id = "cicd_build_sa_key"
+  labels = {
+    label = "cicd-build-sa-key"
+  }
+  replication {
+    automatic = true
+  }
+}
 
+resource "google_secret_manager_secret_version" "cicd-build-gsa-key-secret-version" {
+  secret      = google_secret_manager_secret.cicd_build_gsa_key_secret.id
+  secret_data = "key_file" # Should be 'module.app_cicd_build_sa.key' if allowed by org-policy
+}

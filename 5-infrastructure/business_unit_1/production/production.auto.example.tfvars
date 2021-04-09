@@ -15,13 +15,18 @@
  */
 
 parent_folder             = "000000000000"
-boa_gke_project_id        = "prj-bu1-z-boa-gke-xxxx" # 'z' is replaced by {d|n|p} according to environment {development|non-production|production}
-boa_ops_project_id        = "prj-bu1-z-boa-ops-xxxx" # 'z' is replaced by {d|n|p} according to environment {development|non-production|production}
-boa_sec_project_id        = "prj-bu1-z-boa-sec-xxxx" # 'z' is replaced by {d|n|p} according to environment {development|non-production|production}
-boa_sql_project_id        = "prj-bu1-z-boa-sql-xxxx" # 'z' is replaced by {d|n|p} according to environment {development|non-production|production}
-gcp_shared_vpc_project_id = "prj-z-shared-base-xxxx" # 'z' is replaced by {d|n|p} according to environment {development|non-production|production}
-shared_vpc_name           = "vpc-yyy-shared-base-spoke"    # 'yyy' is replaced by {dev|npd|prd} according to environment {development|non-production|production}
-terraform_service_account = "boa-terraform-z-sa@xxxxxxxxxx.iam.gserviceaccount.com"
+boa_gke_project_id        = "prj-bu1-z-boa-gke-xxxx"    # 'z' is replaced by {d|n|p} according to environment {development|non-production|production}
+boa_ops_project_id        = "prj-bu1-z-boa-ops-xxxx"    # 'z' is replaced by {d|n|p} according to environment {development|non-production|production}
+boa_sec_project_id        = "prj-bu1-z-boa-sec-xxxx"    # 'z' is replaced by {d|n|p} according to environment {development|non-production|production}
+boa_sql_project_id        = "prj-bu1-z-boa-sql-xxxx"    # 'z' is replaced by {d|n|p} according to environment {development|non-production|production}
+gcp_shared_vpc_project_id = "prj-z-shared-base-xxxx"    # 'z' is replaced by {d|n|p} according to environment {development|non-production|production}
+shared_vpc_name           = "vpc-yyy-shared-base-spoke" # 'yyy' is replaced by {dev|npd|prd} according to environment {development|non-production|production}
+terraform_service_account = "boa-terraform-z-sa@prj-bu1-z-boa-sec-xxxx.iam.gserviceaccount.com"
+
+# Recommended Optional
+enable_bin_auth_policy      = true
+bin_auth_attestor_names     = ["build", "quality", "security"]
+bin_auth_attetor_project_id = "prj-bu1-s-app-cicd-xxxx"
 
 # Optional
 # gke_cluster_1_cidr_block   = "000.000.000.000/00"
