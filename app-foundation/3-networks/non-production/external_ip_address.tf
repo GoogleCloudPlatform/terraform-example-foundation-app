@@ -14,10 +14,6 @@
  * limitations under the License.
  */
 
-locals {
-  base_project_id = data.google_projects.base_host_project.projects[0].project_id
-}
-
 /******************************************
  External IP Address
 *****************************************/

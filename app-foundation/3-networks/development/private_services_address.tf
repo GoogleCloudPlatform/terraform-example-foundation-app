@@ -14,10 +14,6 @@
  * limitations under the License.
  */
 
-locals {
-  base_private_service_cidr = "199.36.153.4/30"
-}
-
 /******************************************
  Private services address for Cloud SQL
 *****************************************/

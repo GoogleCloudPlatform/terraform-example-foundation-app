@@ -19,7 +19,6 @@
 *****************************************/
 
 locals {
-  base_project_id              = data.google_projects.base_host_project.projects[0].project_id
   boa_gke_cluster1_master_cidr = "100.64.78.0/28"
   boa_gke_cluster2_master_cidr = "100.65.70.0/28"
   boa_gke_mci_master_cidr      = "100.64.70.0/28"
