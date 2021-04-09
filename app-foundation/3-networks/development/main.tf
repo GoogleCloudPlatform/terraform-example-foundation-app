@@ -17,45 +17,105 @@
 locals {
   environment_code          = "dev"
   base_private_service_cidr = "199.36.153.4/30"
-  subnets = {
-    for x in var.subnets :
-    "${x.subnet_region}/${x.subnet_name}" => x
-  }
 }
 
 /******************************************
- Secure Application Subnets
+ Base shared VPC
 *****************************************/
 
-resource "google_compute_subnetwork" "boa_subnets" {
-  for_each                 = local.subnets
-  name                     = each.value.subnet_name
-  ip_cidr_range            = each.value.subnet_ip
-  region                   = each.value.subnet_region
-  private_ip_google_access = lookup(each.value, "subnet_private_access", "false")
-  dynamic "log_config" {
-    for_each = lookup(each.value, "subnet_flow_logs", false) ? [{
-      aggregation_interval = lookup(each.value, "subnet_flow_logs_interval", "INTERVAL_5_SEC")
-      flow_sampling        = lookup(each.value, "subnet_flow_logs_sampling", "0.5")
-      metadata             = lookup(each.value, "subnet_flow_logs_metadata", "INCLUDE_ALL_METADATA")
-    }] : []
-    content {
-      aggregation_interval = log_config.value.aggregation_interval
-      flow_sampling        = log_config.value.flow_sampling
-      metadata             = log_config.value.metadata
-    }
-  }
-  network     = module.base_shared_vpc.network_self_link
-  project     = local.base_project_id
-  description = lookup(each.value, "description", null)
-  secondary_ip_range = [
-    for i in range(
-      length(
-        contains(
-        keys(var.secondary_ranges), each.value.subnet_name) == true
-        ? var.secondary_ranges[each.value.subnet_name]
-        : []
-    )) :
-    var.secondary_ranges[each.value.subnet_name][i]
+module "base_shared_vpc" {
+  source                        = "github.com/terraform-google-modules/terraform-example-foundation/3-networks/modules/base_shared_vpc"
+  project_id                    = local.base_project_id
+  environment_code              = local.environment_code
+  private_service_cidr          = local.base_private_service_cidr
+  org_id                        = var.org_id
+  parent_folder                 = var.parent_folder
+  default_region1               = var.default_region1
+  default_region2               = var.default_region2
+  domain                        = var.domain
+  bgp_asn_subnet                = local.bgp_asn_number
+  windows_activation_enabled    = var.windows_activation_enabled
+  dns_enable_inbound_forwarding = var.dns_enable_inbound_forwarding
+  dns_enable_logging            = var.dns_enable_logging
+  firewall_enable_logging       = var.firewall_enable_logging
+  optional_fw_rules_enabled     = var.optional_fw_rules_enabled
+  nat_enabled                   = var.nat_enabled
+  nat_bgp_asn                   = var.nat_bgp_asn
+  nat_num_addresses_region1     = var.nat_num_addresses_region1
+  nat_num_addresses_region2     = var.nat_num_addresses_region2
+  nat_num_addresses             = var.nat_num_addresses
+  folder_prefix                 = var.folder_prefix
+  mode                          = local.mode
+
+  subnets = [
+    {
+      subnet_name           = "mci-config-subnet"
+      subnet_ip             = "10.0.64.0/29"
+      subnet_region         = var.default_region1
+      subnet_private_access = "true"
+      subnet_flow_logs      = var.subnetworks_enable_logging
+      description           = "The mci config example subnet."
+    },
+    {
+      subnet_name           = "gke-cluster1-subnet"
+      subnet_ip             = "10.0.65.0/29"
+      subnet_region         = var.default_region1
+      subnet_private_access = "true"
+      subnet_flow_logs      = var.subnetworks_enable_logging
+      description           = "The mci config example subnet."
+    },
+    {
+      subnet_name           = "bastion-host-subnet"
+      subnet_ip             = "10.0.66.0/29"
+      subnet_region         = var.default_region2
+      subnet_private_access = "true"
+      subnet_flow_logs      = var.subnetworks_enable_logging
+      description           = "The bastion host example subnet."
+    },
+    {
+      subnet_name           = "gke-cluster2-subnet"
+      subnet_ip             = "10.1.64.0/29"
+      subnet_region         = var.default_region2
+      subnet_private_access = "true"
+      subnet_flow_logs      = var.subnetworks_enable_logging
+      description           = "The bastion host example subnet."
+    },
   ]
+
+  secondary_ranges = {
+    mci-config-subnet = [
+      {
+        range_name    = "pod-ip-range"
+        ip_cidr_range = "100.64.64.0/22"
+      },
+      {
+        range_name    = "services-ip-range"
+        ip_cidr_range = "100.64.68.0/26"
+      }
+    ]
+
+    gke-cluster1-subnet = [
+      {
+        range_name    = "pod-ip-range"
+        ip_cidr_range = "100.64.72.0/22"
+      },
+      {
+        range_name    = "services-ip-range"
+        ip_cidr_range = "100.64.76.0/26"
+      }
+    ]
+
+    bastion-host-subnet = []
+
+    gke-cluster2-subnet = [
+      {
+        range_name    = "pod-ip-range"
+        ip_cidr_range = "100.65.64.0/22"
+      },
+      {
+        range_name    = "services-ip-range"
+        ip_cidr_range = "100.65.68.0/26"
+      }
+    ]
+  }
 }

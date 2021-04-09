@@ -15,15 +15,6 @@
  */
 
 /******************************************
-  Outputs for BoA subnets
-*****************************************/
-
-output "boa_subnets" {
-  value       = var.subnets
-  description = "The created VPC subnets."
-}
-
-/******************************************
  Outputs for private services address
 *****************************************/
 

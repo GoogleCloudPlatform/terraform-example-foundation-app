@@ -18,8 +18,6 @@
  Tfvars for BoA shared VPC
 *****************************************/
 
-environment_code = "npd"
-
 default_region1 = "us-east1"
 
 default_region2 = "us-west1"
@@ -37,8 +35,8 @@ enable_hub_and_spoke_transitivity = "true"
 subnets = [
   {
     subnet_name               = "mci-config-subnet"
-    network_name              = "vpc-npd-shared-base"
-    subnet_ip                 = "10.0.128.0/29"
+    network_name              = "vpc-prd-shared-base"
+    subnet_ip                 = "10.0.192.0/29"
     subnet_region             = "us-east1"
     subnet_flow_logs          = "true"
     subnet_private_access     = "true"
@@ -46,8 +44,8 @@ subnets = [
   },
   {
     subnet_name               = "gke-cluster1-subnet"
-    network_name              = "vpc-npd-shared-base"
-    subnet_ip                 = "10.0.129.0/29"
+    network_name              = "vpc-prd-shared-base"
+    subnet_ip                 = "10.0.193.0/29"
     subnet_region             = "us-east1"
     subnet_flow_logs          = "true"
     subnet_private_access     = "true"
@@ -55,8 +53,8 @@ subnets = [
   },
   {
     subnet_name               = "bastion-host-subnet"
-    network_name              = "vpc-npd-shared-base"
-    subnet_ip                 = "10.0.130.0/29"
+    network_name              = "vpc-prd-shared-base"
+    subnet_ip                 = "10.0.194.0/29"
     subnet_region             = "us-west1"
     subnet_flow_logs          = "true"
     subnet_private_access     = "true"
@@ -64,8 +62,8 @@ subnets = [
   },
   {
     subnet_name               = "gke-cluster2-subnet"
-    network_name              = "vpc-npd-shared-base"
-    subnet_ip                 = "10.1.128.0/29"
+    network_name              = "vpc-prd-shared-base"
+    subnet_ip                 = "10.1.192.0/29"
     subnet_region             = "us-west1"
     subnet_flow_logs          = "true"
     subnet_private_access     = "true"
@@ -77,22 +75,22 @@ secondary_ranges = {
   mci-config-subnet = [
     {
       range_name    = "pod-ip-range"
-      ip_cidr_range = "100.64.128.0/22"
+      ip_cidr_range = "100.64.192.0/22"
     },
     {
       range_name    = "services-ip-range"
-      ip_cidr_range = "100.64.132.0/26"
+      ip_cidr_range = "100.64.196.0/26"
     }
   ]
 
   gke-cluster1-subnet = [
     {
       range_name    = "pod-ip-range"
-      ip_cidr_range = "100.64.136.0/22"
+      ip_cidr_range = "100.64.200.0/22"
     },
     {
       range_name    = "services-ip-range"
-      ip_cidr_range = "100.64.140.0/26"
+      ip_cidr_range = "100.64.204.0/26"
     }
   ]
 
@@ -101,11 +99,11 @@ secondary_ranges = {
   gke-cluster2-subnet = [
     {
       range_name    = "pod-ip-range"
-      ip_cidr_range = "100.65.128.0/22"
+      ip_cidr_range = "100.65.192.0/22"
     },
     {
       range_name    = "services-ip-range"
-      ip_cidr_range = "100.65.132.0/26"
+      ip_cidr_range = "100.65.196.0/26"
     }
   ]
 }

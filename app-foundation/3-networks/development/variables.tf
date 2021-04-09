@@ -15,21 +15,6 @@
  */
 
 /******************************************
- Variables for BoA subnets
-*****************************************/
-
-variable "subnets" {
-  description = "The list of subnets being created for the application."
-  type        = list(map(string))
-}
-
-variable "secondary_ranges" {
-  description = "Secondary ranges that will be used in some of the application's subnets."
-  type        = map(list(object({ range_name = string, ip_cidr_range = string })))
-  default     = {}
-}
-
-/******************************************
  Variables for Cloud Armor
 *****************************************/
 
@@ -44,12 +29,12 @@ variable "policy_action" {
 }
 
 variable "policy_priority" {
-  description = "Priority level for policy - lower numbers have higher priority."
-  type        = string
+  description = "Priority level for Cloud Armor policy. Lower numbers have higher priority."
+  type        = number
 }
 
 variable "policy_expression" {
-  description = "Expression used to configure what is intended to match the policy."
+  description = "Textual representation of an expression in Common Expression Language syntax."
   type        = string
 }
 
@@ -73,16 +58,18 @@ variable "private_services_address_name" {
 *****************************************/
 
 variable "address_name" {
-  description = "What the external IP address will be used for."
+  description = "The name of the external IP address."
   type        = string
 }
 
 variable "address_type" {
-  description = "Determines if the IP address will be internal or external."
+  description = "Determines if the IP address will be internal or external. Only 'INTERNAL' or 'EXTERNAL' can be used."
   type        = string
+  default     = "EXTERNAL"
 }
 
 variable "description" {
-  description = "What the external IP address will be used for."
+  description = "Describes what the external IP address will be used for."
   type        = string
+  default     = "External IP for HTTP load balancing."
 }

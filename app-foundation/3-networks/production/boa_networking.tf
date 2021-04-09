@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
+locals {
+  boa_gke_cluster1_master_cidr = "100.64.206.0/28"
+  boa_gke_cluster2_master_cidr = "100.65.198.0/28"
+  boa_gke_mci_master_cidr      = "100.64.198.0/28"
+}
+
 /******************************************
  VPC firewall rules
 *****************************************/
-
-locals {
-  boa_gke_cluster1_master_cidr = "100.64.78.0/28"
-  boa_gke_cluster2_master_cidr = "100.65.70.0/28"
-  boa_gke_mci_master_cidr      = "100.64.70.0/28"
-}
 
 resource "google_compute_firewall" "allow_lb_healthcheck" {
   name      = "fw-${var.environment_code}-shared-base-allow-lb-healthcheck"
@@ -42,7 +42,7 @@ resource "google_compute_firewall" "allow_lb_healthcheck" {
   }
 
   source_ranges           = ["35.191.0.0/16", "130.211.0.0/22"]
-  target_service_accounts = ["tf-gke-gke-boa-us-east-huj0@prj-bu1-d-boa-gke-ecb0.iam.gserviceaccount.com"]
+  target_service_accounts = ["tf-gke-gke-boa-us-east-huj0@prj-bu1-p-boa-gke-ecb0.iam.gserviceaccount.com"]
 
   allow {
     protocol = "tcp"
@@ -171,7 +171,7 @@ resource "google_compute_firewall" "temp_allow_pod_east_west" {
     }
   }
 
-  source_ranges = ["100.64.72.0/22"]
+  source_ranges = ["100.64.200.0/22"]
   target_tags   = ["gke-gke-boa-us-west1-001-20e58b91-node"]
 
   allow {
@@ -197,7 +197,7 @@ resource "google_compute_firewall" "temp_allow_pod_west_east" {
     }
   }
 
-  source_ranges = ["100.65.64.0/22"]
+  source_ranges = ["100.65.192.0/22"]
   target_tags   = ["gke-gke-boa-us-east1-001-1d5c9eff-node"]
 
   allow {
@@ -308,4 +308,49 @@ resource "google_compute_firewall" "mci_allow_master_cidr" {
 
   destination_ranges = [local.boa_gke_mci_master_cidr]
   target_tags        = ["boa-mci-cluster"]
+}
+
+/******************************************
+ Cloud Armor policy
+*****************************************/
+
+resource "google_compute_security_policy" "cloud-armor-xss-policy" {
+  name    = var.policy_name
+  project = local.base_project_id
+  rule {
+    action   = var.policy_action
+    priority = var.policy_priority
+    match {
+      expr {
+        expression = var.policy_expression
+      }
+    }
+    description = var.policy_description
+  }
+
+}
+
+/******************************************
+ Private services address for Cloud SQL
+*****************************************/
+
+resource "google_compute_global_address" "private_services_address" {
+  name          = var.private_services_address_name
+  project       = local.base_project_id
+  purpose       = "VPC_PEERING"
+  address_type  = "INTERNAL"
+  address       = element(split("/", local.base_private_service_cidr), 0)
+  prefix_length = element(split("/", local.base_private_service_cidr), 1)
+  network       = module.base_shared_vpc.network_self_link
+}
+
+/******************************************
+ External IP Address
+*****************************************/
+
+resource "google_compute_global_address" "external_ip_for_http_load_balancing" {
+  name         = var.address_name
+  project      = local.base_project_id
+  address_type = var.address_type
+  description  = var.description
 }
