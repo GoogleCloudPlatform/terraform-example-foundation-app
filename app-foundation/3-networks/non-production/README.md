@@ -21,20 +21,20 @@ This is a terraform wrapper for [CFT 3-Networks/envs/non-production](https://git
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | address\_name | The name of the external IP address. | `string` | n/a | yes |
-| address\_type | Determines if the IP address will be internal or external. Only "INTERNAL" or "EXTERNAL" can be used. | `string` | `EXTERNAL` | yes |
-| description | Describes what the external IP will be used for. | `string` | `External IP for HTTP load balancing.` | no |
+| address\_type | Determines if the IP address will be internal or external. Only "INTERNAL" or "EXTERNAL" can be used. | `string` | `"EXTERNAL"` | no |
+| description | Describes what the external IP address will be used for. | `string` | `"External IP for HTTP load balancing."` | no |
 | policy\_action | Specify if you want to allow or deny traffic. | `string` | n/a | yes |
-| policy\_description | Description of the security policy. | `string` | n/a | no |
+| policy\_description | Description of the security policy. | `string` | n/a | yes |
 | policy\_expression | Textual representation of an expression in Common Expression Language syntax. | `string` | n/a | yes |
 | policy\_name | Name of the Cloud Armor security policy. | `string` | n/a | yes |
 | policy\_priority | Priority level for Cloud Armor policy. Lower numbers have higher priority. | `number` | n/a | yes |
-| private\_services\_address\_name | The name of the private services address. | `string` | n/a | yes |
+| private\_services\_address\_name | The name of the private services address. | `string` | `null` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| external\_ip\_address | The external IP for HTTP load balancing |
+| external\_ip\_address | The external IP for HTTP load balancing. |
 | private\_services\_address | The private services connection for Cloud SQL |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
