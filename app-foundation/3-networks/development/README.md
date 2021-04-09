@@ -21,7 +21,7 @@ This is a terraform wrapper for [CFT 3-Networks/envs/development](https://github
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | address\_name | The name of the external IP address. | `string` | n/a | yes |
-| address\_type | Determines if the IP address will be internal or external. Only "INTERNAL" or "EXTERNAL" can be used. | `string` | `"EXTERNAL"` | no |
+| address\_type | Determines if the IP address will be internal or external. Only 'INTERNAL' or 'EXTERNAL' can be used. | `string` | `"EXTERNAL"` | no |
 | description | Describes what the external IP address will be used for. | `string` | `"External IP for HTTP load balancing."` | no |
 | policy\_action | Specify if you want to allow or deny traffic. | `string` | n/a | yes |
 | policy\_description | Description of the security policy. | `string` | n/a | yes |
@@ -35,6 +35,6 @@ This is a terraform wrapper for [CFT 3-Networks/envs/development](https://github
 | Name | Description |
 |------|-------------|
 | external\_ip\_address | The external IP for HTTP load balancing. |
-| private\_services\_address | The private services connection for Cloud SQL |
+| private\_services\_address | The private services connection for Cloud SQL. |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
