@@ -78,6 +78,11 @@ variable "app_infra_pipeline_cloudbuild_sa" {
   type        = string
 }
 
+variable "app_cicd_project_id" {
+  description = "Project ID for app cicd"
+  type        = string
+}
+
 variable "shared_vpc_host_project_id" {
   description = "Host Project ID for the Shared VPC and Subnets"
   type        = string

@@ -136,7 +136,9 @@ module "clusters" {
 }
 
 resource "google_binary_authorization_policy" "policy" {
-  count                         = var.enforce_bin_auth_policy ? 1 : 0
+  count   = var.enforce_bin_auth_policy ? 1 : 0
+  project = var.boa_gke_project_id
+
   global_policy_evaluation_mode = "ENABLE"
   default_admission_rule {
     evaluation_mode         = "REQUIRE_ATTESTATION"
