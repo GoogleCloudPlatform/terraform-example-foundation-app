@@ -52,7 +52,8 @@ module "boa_gke_project" {
     "billingbudgets.googleapis.com",
     "iap.googleapis.com",
     "storage-api.googleapis.com",
-    "oslogin.googleapis.com"
+    "oslogin.googleapis.com",
+    "binaryauthorization.googleapis.com"
   ]
 
   # Metadata

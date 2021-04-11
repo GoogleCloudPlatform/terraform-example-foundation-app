@@ -28,7 +28,8 @@ locals {
       "roles/logging.configWriter",
       "roles/storage.objectViewer",
       "roles/iap.admin",
-      "roles/iam.roleAdmin"
+      "roles/iam.roleAdmin",
+      "roles/binaryauthorization.policyEditor"
     ],
     "${module.boa_ops_project.project_id}" = [
       "roles/logging.configWriter",
@@ -50,6 +51,9 @@ locals {
     "${var.shared_vpc_host_project_id}" = [
       "roles/compute.networkAdmin",
       "roles/compute.securityAdmin"
+    ],
+    "${var.app_cicd_project_id}" = [
+      "roles/binaryauthorization.attestorsViewer"
     ]
   }
   project_roles = [for project, roles in local.tf_deploy_sa_roles : [for role in roles : "${project}=>${role}"]]
@@ -106,10 +110,6 @@ resource "google_service_account_iam_member" "cloudbuild_terraform_sa_impersonat
   service_account_id = module.terraform_deployment_sa.service_account.name
   role               = "roles/iam.serviceAccountTokenCreator"
   member             = "serviceAccount:${var.app_infra_pipeline_cloudbuild_sa}"
-}
-
-data "google_projects" "shared_vpc_project" {
-  filter = "name:${var.project_prefix}-${var.environment_code}-shared-base"
 }
 
 data "google_compute_network" "vpc" {
