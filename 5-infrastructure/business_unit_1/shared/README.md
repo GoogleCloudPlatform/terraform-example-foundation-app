@@ -16,4 +16,5 @@
 |------|-------------|
 | bin\_auth\_attestor\_names | Names of Attestors |
 | bin\_auth\_attestor\_project\_id | Project ID where attestors get created |
+
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
