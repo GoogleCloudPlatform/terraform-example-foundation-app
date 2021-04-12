@@ -18,19 +18,14 @@
  Variables for Cloud Armor
 *****************************************/
 
-variable "policy_name" {
-  description = "Name of the Cloud Armor security policy."
-  type        = string
-}
-
 variable "policy_action" {
   description = "Specify if you want to allow or deny traffic."
   type        = string
 }
 
-variable "policy_priority" {
-  description = "Priority level for Cloud Armor policy. Lower numbers have higher priority."
-  type        = number
+variable "policy_description" {
+  description = "Description of the security policy."
+  type        = string
 }
 
 variable "policy_expression" {
@@ -38,9 +33,14 @@ variable "policy_expression" {
   type        = string
 }
 
-variable "policy_description" {
-  description = "Description of the security policy."
+variable "policy_name" {
+  description = "Name of the Cloud Armor security policy."
   type        = string
+}
+
+variable "policy_priority" {
+  description = "Priority level for Cloud Armor policy. Lower numbers have higher priority."
+  type        = number
 }
 
 /******************************************

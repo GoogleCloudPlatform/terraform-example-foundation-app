@@ -22,25 +22,27 @@ default_region1 = "us-east1"
 
 default_region2 = "us-west1"
 
-nat_enabled = "true"
-
 enable_hub_and_spoke = "true"
 
 enable_hub_and_spoke_transitivity = "true"
+
+nat_enabled = "true"
+
+optional_firewall_rules_enabled = "true"
 
 /******************************************
  Tfvars for Cloud Armor
 *****************************************/
 
-policy_name = "cloud-armor-xss-policy"
-
 policy_action = "deny(403)"
 
-policy_priority = "1000"
+policy_description = "Cloud Armor policy to prevent cross-site scripting attacks."
 
 policy_expression = "evaluatePreconfiguredExpr('xss-stable')"
 
-policy_description = "Cloud Armor policy to prevent cross-site scripting attacks."
+policy_name = "cloud-armor-xss-policy"
+
+policy_priority = "1000"
 
 /******************************************
  Tfvars for private services address

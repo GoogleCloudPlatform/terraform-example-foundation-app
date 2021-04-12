@@ -68,7 +68,7 @@ resource "google_compute_firewall" "allow_asm_healthcheck_sidecar_east" {
   }
 
   source_ranges = ["172.16.2.0/28"]
-  target_tags   = ["gke-gke-boa-us-east1-001-1d5c9eff-node"]
+  target_tags   = ["gke-boa-us-east1-node"]
 
   allow {
     protocol = "tcp"
@@ -94,7 +94,7 @@ resource "google_compute_firewall" "allow_asm_healthcheck_sidecar_west" {
   }
 
   source_ranges = ["172.16.0.16/28"]
-  target_tags   = ["gke-gke-boa-us-west1-001-20e58b91-node"]
+  target_tags   = ["gke-boa-us-west1-node"]
 
   allow {
     protocol = "tcp"
@@ -120,7 +120,7 @@ resource "google_compute_firewall" "temp_allow_8443_opa_east" {
   }
 
   source_ranges = ["172.16.2.0/28"]
-  target_tags   = ["gke-gke-boa-us-east1-001-1d5c9eff-node"]
+  target_tags   = ["gke-boa-us-east1-node"]
 
   allow {
     protocol = "tcp"
@@ -146,7 +146,7 @@ resource "google_compute_firewall" "temp_allow_8443_opa_west" {
   }
 
   source_ranges = ["172.16.2.0/28"]
-  target_tags   = ["gke-gke-boa-us-west1-001-20e58b91-node"]
+  target_tags   = ["gke-boa-us-west1-node"]
 
   allow {
     protocol = "tcp"
@@ -172,7 +172,7 @@ resource "google_compute_firewall" "temp_allow_pod_east_west" {
   }
 
   source_ranges = ["100.64.200.0/22"]
-  target_tags   = ["gke-gke-boa-us-west1-001-20e58b91-node"]
+  target_tags   = ["gke-boa-us-west1-node"]
 
   allow {
     protocol = "tcp"
@@ -198,7 +198,7 @@ resource "google_compute_firewall" "temp_allow_pod_west_east" {
   }
 
   source_ranges = ["100.65.192.0/22"]
-  target_tags   = ["gke-gke-boa-us-east1-001-1d5c9eff-node"]
+  target_tags   = ["gke-boa-us-east1-node"]
 
   allow {
     protocol = "tcp"
@@ -224,7 +224,7 @@ resource "google_compute_firewall" "temp_allow_asm_install" {
   }
 
   source_ranges = ["0.0.0.0/0"]
-  target_tags   = ["gke-gke-boa-us-east1-001-1d5c9eff-node", "gke-gke-boa-us-west1-001-20e58b91-node"]
+  target_tags   = ["gke-boa-us-east1-node", "gke-boa-us-west1-node"]
 
   allow {
     protocol = "all"
