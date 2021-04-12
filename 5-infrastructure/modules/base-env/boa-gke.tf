@@ -136,28 +136,18 @@ module "clusters" {
 }
 
 resource "google_binary_authorization_policy" "policy" {
-  count   = var.enforce_bin_auth_policy ? 1 : 0
   project = var.boa_gke_project_id
 
   global_policy_evaluation_mode = "ENABLE"
   default_admission_rule {
     evaluation_mode         = "REQUIRE_ATTESTATION"
-    enforcement_mode        = "DRYRUN_AUDIT_LOG_ONLY"
+    enforcement_mode        = var.enforce_bin_auth_policy ? "ENFORCED_BLOCK_AND_AUDIT_LOG" : "DRYRUN_AUDIT_LOG_ONLY"
     require_attestations_by = local.bin_auth_attestors
   }
   dynamic "admission_whitelist_patterns" {
     for_each = local.allowlist_patterns
     content {
       name_pattern = admission_whitelist_patterns.value
-    }
-  }
-  dynamic "cluster_admission_rules" {
-    for_each = local.gke_settings
-    content {
-      cluster                 = "${cluster_admission_rules.value.region}.${cluster_admission_rules.value.name}"
-      evaluation_mode         = "REQUIRE_ATTESTATION"
-      enforcement_mode        = "DRYRUN_AUDIT_LOG_ONLY"
-      require_attestations_by = local.bin_auth_attestors
     }
   }
 }

@@ -3,7 +3,7 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| bin\_auth\_attestor\_names | Binary Authorization Attestor Names set up in shared app\_cicd project | `list(string)` | <pre>[<br>  "build",<br>  "quality",<br>  "security"<br>]</pre> | no |
+| bin\_auth\_attestor\_names | Binary Authorization Attestor Names set up in shared app\_cicd project | `list(string)` | <pre>[<br>  "build-attestor",<br>  "quality-attestor",<br>  "security-attestor"<br>]</pre> | no |
 | bin\_auth\_attestor\_project\_id | Project id where binary attestors are created (app\_cicd project from shared) | `string` | n/a | yes |
 | boa\_gke\_project\_id | Project ID for GKE | `string` | n/a | yes |
 | boa\_ops\_project\_id | Project ID for ops | `string` | n/a | yes |

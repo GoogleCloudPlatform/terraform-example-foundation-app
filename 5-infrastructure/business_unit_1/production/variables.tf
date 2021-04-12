@@ -88,7 +88,7 @@ variable "enforce_bin_auth_policy" {
 variable "bin_auth_attestor_names" {
   type        = list(string)
   description = "Binary Authorization Attestor Names set up in shared app_cicd project"
-  default     = ["build", "quality", "security"]
+  default     = ["build-attestor", "quality-attestor", "security-attestor"]
 }
 
 variable "bin_auth_attestor_project_id" {

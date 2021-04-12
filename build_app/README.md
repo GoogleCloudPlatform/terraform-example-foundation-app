@@ -34,98 +34,13 @@ The solution uses two Git repositories and will need to fork a copy of each.
 
 This is a diagram of the entire CI/CD flow with labeled stages. Each subsection (labeled as "phases") will target one or more of the subsections.
 
-```mermaid
-flowchart LR
-    A(Code Commit)
-    B1(Unit Tests)
-    B2(Static code analysis)
-    B3(Secrets scanner)
-    B4(Code coverage)
-    C(Build Image)
-    D2(Container Structure Test)
-    D3(Container Analysis)
-    CR[[Container Registry]]
-    PCR[[Container Registry]] %% This needs to be the same as CR
-    subgraph CI [Continuous Integration Phase]
-
-        subgraph source [Source Code]
-            A --> B1:::stage1
-            A --> B2:::stage1
-            A --> B3:::stage1
-            A --> B4:::stage1
-        end
-        subgraph build [Image Creation]
-            C:::stage2 --> PCR:::stage2
-        end
-        subgraph before [Artifact Before Deploy]
-            CR:::stage3 --> D2:::stage3
-            CR --> D3:::stage3
-        end
-        subgraph attestation [Security Acceptance]
-            SA(Create Security Attestation):::stage4 --> T[/Trigger Next Phase/]:::stage4
-        end
-
-        source:::subg --> build
-        build:::subg --> before
-        before:::subg --> attestation
-        %%attestation:::subg --> DONE((Done))
-    end
-
-    S((start)):::stage0 --> source
-
-    %% Apply a "Google" theme for fun
-    classDef subg stroke:#000,stroke-width:4px,fill:#fff,color:#000,font-size:normal
-    classDef stage0 stroke:#fff,fill:#fff,color:#000
-    classDef stage1 stroke:#fff,fill:#EA4335,color:#fff
-    classDef stage2 stroke:#fff,fill:#34A853,color:#fff
-    classDef stage3 stroke:#fff,fill:#4285F4,color:#fff
-    classDef stage4 stroke:#fff,fill:#FBBC04,color:#fff
-    classDef bg fill:#BDC1C6,stroke:#80868B,font-size:x-large,color:#202124
-    %% Nodes that are not referenced in a directional connection
-    class A stage1
-    class attestation subg
-    class CI bg; %% connect subgraph CI
-```
+![image](https://user-images.githubusercontent.com/63249609/114470166-109bda00-9bb4-11eb-9997-204efbabbdc8.png)
 
 ## 1. Source Code
 This first stage will build all candidate artifacts (docker-based images).
 
-```mermaid
-flowchart TB
-    A[[Code Commit]]
-    B1(Unit Tests)
-    B2(Static code analysis)
-    B3(Secrets scanner)
-    B4(Code coverage)
-    C[Build Image]
-    PCR[[Container Registry]]
+![image](https://user-images.githubusercontent.com/63249609/114470317-4b057700-9bb4-11eb-921c-19841d499051.png)
 
-    subgraph source [Source Code]
-        A --> B1:::stage1
-        A --> B2:::stage1
-        A --> B3:::stage1
-        A --> B4:::stage1
-
-    end
-    subgraph build [Image Creation]
-        C:::stage2 --> PCR:::stage2
-    end
-
-    source --> build
-
-    %% Apply a "Google" theme for fun
-    classDef subg stroke:#000,stroke-width:4px,fill:#fff,color:#000,font-size:normal
-    classDef stage0 stroke:#fff,fill:#80868B,color:#000
-    classDef stage1 stroke:#fff,fill:#EA4335,color:#fff
-    classDef stage2 stroke:#fff,fill:#34A853,color:#fff
-    classDef stage3 stroke:#fff,fill:#4285F4,color:#fff
-    classDef stage4 stroke:#fff,fill:#FBBC04,color:#fff
-    classDef bg fill:#BDC1C6,stroke:#80868B,font-size:x-large,color:#202124
-    %% Nodes that are not referenced in a directional connection
-    class A stage0
-    class attestation subg
-    class source,build bg;
-```
 ### Steps
 * Unit tests - Run unit tests for all source code
 * Static code analysis (PMD, Checkstyle, Linting) - Run static analysis for all source code

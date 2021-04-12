@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-resource "random_pet" "keyring-name" {
+resource "random_id" "keyring-name" {
+  byte_length = 4
 }
 
 resource "google_kms_key_ring" "keyring" {

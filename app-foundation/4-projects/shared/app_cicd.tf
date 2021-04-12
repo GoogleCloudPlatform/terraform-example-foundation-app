@@ -86,19 +86,3 @@ resource "google_service_account_iam_member" "app_cicd_build_sa_impersonate_perm
   role               = "roles/iam.serviceAccountTokenCreator"
   member             = "serviceAccount:${module.app_infra_cloudbuild_project.project_number}@cloudbuild.gserviceaccount.com"
 }
-
-resource "google_secret_manager_secret" "cicd_build_gsa_key_secret" {
-  project   = module.app_cicd_project.project_id
-  secret_id = "cicd_build_sa_key"
-  labels = {
-    label = "cicd-build-sa-key"
-  }
-  replication {
-    automatic = true
-  }
-}
-
-resource "google_secret_manager_secret_version" "cicd-build-gsa-key-secret-version" {
-  secret      = google_secret_manager_secret.cicd_build_gsa_key_secret.id
-  secret_data = "key_file" # Should be 'module.app_cicd_build_sa.key' if allowed by org-policy
-}

@@ -17,7 +17,8 @@
 locals {
   created_csrs     = toset([for repo in google_sourcerepo_repository.app_infra_repo : repo.name])
   artifact_buckets = { for created_csr in local.created_csrs : "${created_csr}-ab" => format("%s-%s-%s", created_csr, "cloudbuild-artifacts", random_id.suffix.hex) }
-  gar_name         = split("/", google_artifact_registry_repository.tf-image-repo.name)[length(split("/", google_artifact_registry_repository.tf-image-repo.name)) - 1]
+  gar_name         = split("/", google_artifact_registry_repository.image_repo.name)[length(split("/", google_artifact_registry_repository.image_repo.name)) - 1]
+  folders          = ["cache/.m2/.ignore", "cache/.skaffold/.ignore", "cache/.cache/pip/wheels/.ignore"]
 }
 
 resource "google_sourcerepo_repository" "app_infra_repo" {
@@ -67,14 +68,15 @@ resource "google_cloudbuild_trigger" "main_trigger" {
     _GAR_REPOSITORY       = local.gar_name
     _ARTIFACT_BUCKET_NAME = google_storage_bucket.cloudbuild_artifacts["${each.value}-ab"].name
   }
-  filename   = var.cloudbuild_yaml_file_name
+  filename   = var.cloudbuild_yaml
   depends_on = [google_sourcerepo_repository.app_infra_repo]
 }
 
 /***********************************************
  Cloud Build - Image Repo
  ***********************************************/
-resource "google_artifact_registry_repository" "tf-image-repo" {
+
+resource "google_artifact_registry_repository" "image_repo" {
   provider      = google-beta
   project       = var.app_cicd_project_id
   location      = var.primary_location
@@ -86,8 +88,29 @@ resource "google_artifact_registry_repository" "tf-image-repo" {
 resource "google_artifact_registry_repository_iam_member" "terraform-image-iam" {
   provider   = google-beta
   project    = var.app_cicd_project_id
-  location   = google_artifact_registry_repository.tf-image-repo.location
-  repository = google_artifact_registry_repository.tf-image-repo.name
+  location   = google_artifact_registry_repository.image_repo.location
+  repository = google_artifact_registry_repository.image_repo.name
   role       = "roles/artifactregistry.writer"
   member     = "serviceAccount:${data.google_project.app_cicd_project.number}@cloudbuild.gserviceaccount.com"
+}
+
+/***********************************************
+ Cache Storage Bucket
+ ***********************************************/
+
+resource "google_storage_bucket" "cache_bucket" {
+  project                     = var.app_cicd_project_id
+  name                        = "${var.app_cicd_project_id}_cloudbuild"
+  location                    = var.primary_location
+  uniform_bucket_level_access = true
+  versioning {
+    enabled = true
+  }
+}
+
+resource "google_storage_bucket_object" "cache_bucket_folders" {
+  for_each = toset(local.folders)
+  name     = each.value
+  content  = "/n"
+  bucket   = google_storage_bucket.cloudbuild_artifacts.name
 }

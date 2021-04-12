@@ -42,7 +42,7 @@ variable "attestor_names" {
   default     = ["build", "quality", "security"]
 }
 
-variable "cloudbuild_yaml_file_name" {
+variable "cloudbuild_yaml" {
   type        = string
   description = "Name of cloudbuild file"
   default     = "cloudbuild.yaml"
