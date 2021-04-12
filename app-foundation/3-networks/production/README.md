@@ -11,7 +11,7 @@ This is an additional Terraform configuration for [CFT 3-Networks/envs/productio
 1. 3-networks/envs/non-production was updated successfully.
 1. Navigate out of the 3-networks/envs/non-production repo `cd ..`.
 1. Navigate into the [3-Networks/envs/production](https://github.com/terraform-google-modules/terraform-example-foundation/blob/master/3-networks/envs/production) repo `cd production`.
-1. The two local variables - `environment_code = "prd"` and `base_private_service_cidr = "199.36.153.4/30"` - defined in this example are changed in [3-Networks/envs/production/main.tf](https://github.com/terraform-google-modules/terraform-example-foundation/blob/master/3-networks/envs/production/main.tf). 
+1. The two local variables - `environment_code = "prd"` and `base_private_service_cidr = "199.36.153.4/30"` - defined in this example are changed in [3-Networks/envs/production/main.tf](https://github.com/terraform-google-modules/terraform-example-foundation/blob/master/3-networks/envs/production/main.tf).
 1. Subnets, including secondary ranges, in the base_shared_vpc module [3-Networks/envs/production/main.tf](https://github.com/terraform-google-modules/terraform-example-foundation/blob/master/3-networks/envs/production/main.tf) from the CFT have been removed.
 1. The variables located in the `base_shared_vpc {}` section of `main.tf` are updated with values from the example:
     ```
