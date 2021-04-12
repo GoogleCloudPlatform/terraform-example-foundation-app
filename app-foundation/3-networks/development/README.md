@@ -12,7 +12,7 @@ This is a terraform wrapper for [CFT 3-Networks/envs/development](https://github
 1. Subnets, including secondary ranges, in only the base_shared_vpc module [3-Networks/envs/development/main.tf](https://github.com/terraform-google-modules/terraform-example-foundation/blob/master/3-networks/envs/development/main.tf) from the CFT have been removed.
 1. New subnets are added to the base_shared_vpc module [3-Networks/envs/development/main.tf](https://github.com/terraform-google-modules/terraform-example-foundation/blob/master/3-networks/envs/development/main.tf) as shown in the example.
 1. All additional resources, variables, and outputs from this terraform wrapper are populated and consistent with the 3-networks/envs/development environment.
-1. Change boa_networking.tfvars.example to boa_networing.tfvars and update the contents to match your environment. The 'Tfvars for BoA shared VPC' section includes tfvars that reside in the CFT that must also be updated. All others tfvars are new should be added in.
+1. Change boa_networking.tfvars.example to boa_networing.tfvars and update the contents to match your environment. The 'Tfvars for BoA shared VPC' section includes tfvars that reside in the CFT that must also be updated. All other tfvars are new should be added in.
 1. Obtain the value for the access_context_manager_policy_id variable. Can be obtained by running `gcloud access-context-manager policies list --organization YOUR-ORGANIZATION_ID --format="value(name)"`.
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

@@ -14,17 +14,12 @@
  * limitations under the License.
  */
 
-locals {
-  environment_code          = "prd"
-  base_private_service_cidr = "199.36.153.4/30"
-}
-
 /******************************************
  Base shared VPC
 *****************************************/
 
 module "base_shared_vpc" {
-  source                        = "github.com/terraform-google-modules/terraform-example-foundation/3-networks/modules/base_shared_vpc"
+  source                        = "terraform-google-modules/terraform-example-foundation/3-networks/modules/base_shared_vpc"
   project_id                    = local.base_project_id
   environment_code              = local.environment_code
   private_service_cidr          = local.base_private_service_cidr
@@ -46,6 +41,7 @@ module "base_shared_vpc" {
   nat_num_addresses             = var.nat_num_addresses
   folder_prefix                 = var.folder_prefix
   mode                          = local.mode
+
   subnets = [
     {
       subnet_name           = "mci-config-subnet"
