@@ -112,5 +112,5 @@ resource "google_storage_bucket_object" "cache_bucket_folders" {
   for_each = toset(local.folders)
   name     = each.value
   content  = "/n"
-  bucket   = google_storage_bucket.cloudbuild_artifacts.name
+  bucket   = google_storage_bucket.cache_bucket.name
 }

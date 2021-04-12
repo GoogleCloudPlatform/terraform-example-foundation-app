@@ -19,7 +19,7 @@ resource "random_id" "keyring-name" {
 }
 
 resource "google_kms_key_ring" "keyring" {
-  name     = "attestor-key-ring-${random_pet.keyring-name.id}"
+  name     = "attestor-key-ring-${random_id.keyring-name.id}"
   location = var.primary_location
   lifecycle {
     prevent_destroy = false

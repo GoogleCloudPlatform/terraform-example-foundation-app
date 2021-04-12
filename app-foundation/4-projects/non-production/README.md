@@ -7,7 +7,6 @@
 | alert\_spent\_percents | A list of percentages of the budget to alert on when threshold is exceeded | `list(number)` | <pre>[<br>  0.5,<br>  0.75,<br>  0.9,<br>  0.95<br>]</pre> | no |
 | app\_cicd\_project\_id | Project ID for app cicd | `string` | n/a | yes |
 | app\_infra\_pipeline\_cloudbuild\_sa | Cloud Build SA used for deploying infrastructure | `string` | n/a | yes |
-| app\_cicd\_project\_id | Project ID for app cicd | `string` | n/a | yes |
 | billing\_account | The ID of the billing account to associated this project with | `string` | n/a | yes |
 | budget\_amount | The amount to use as the budget | `number` | `1000` | no |
 | enable\_hub\_and\_spoke | Enable Hub-and-Spoke architecture. | `bool` | `false` | no |
