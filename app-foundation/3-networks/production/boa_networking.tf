@@ -24,32 +24,6 @@ locals {
  VPC firewall rules
 *****************************************/
 
-resource "google_compute_firewall" "allow_lb_healthcheck" {
-  name      = "fw-${var.environment_code}-shared-base-allow-lb-healthcheck"
-  project   = local.base_project_id
-  network   = module.base_shared_vpc.network_self_link
-  priority  = 1000
-  direction = "INGRESS"
-
-  dynamic "log_config" {
-    for_each = var.firewall_enable_logging == true ? [{
-      metadata = "INCLUDE_ALL_METADATA"
-    }] : []
-
-    content {
-      metadata = log_config.value.metadata
-    }
-  }
-
-  source_ranges           = ["35.191.0.0/16", "130.211.0.0/22"]
-  target_service_accounts = ["tf-gke-gke-boa-us-east-huj0@prj-bu1-p-boa-gke-ecb0.iam.gserviceaccount.com"]
-
-  allow {
-    protocol = "tcp"
-    ports    = ["443", "10250", "15017"]
-  }
-}
-
 resource "google_compute_firewall" "allow_asm_healthcheck_sidecar_east" {
   name      = "fw-${var.environment_code}-shared-base-allow-asm-healthcheck-autosidecar-east"
   project   = local.base_project_id
