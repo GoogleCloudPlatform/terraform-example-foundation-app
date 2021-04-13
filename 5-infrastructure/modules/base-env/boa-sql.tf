@@ -15,7 +15,7 @@
  */
 locals {
   sql_settings = {
-    sql_1 = {
+    sql1 = {
       database_zone = "${var.location_primary}-c",
       database_name = "ledger-db",
       replica_zones = {
@@ -26,7 +26,7 @@ locals {
       sql_instance_prefix = "boa-sql-1-${local.envs[var.env].short}-${var.location_primary}",
       database_region     = var.location_primary
     },
-    sql_2 = {
+    sql2 = {
       database_zone = "${var.location_secondary}-a",
       database_name = "accounts-db",
       replica_zones = {
@@ -61,17 +61,9 @@ data "google_compute_subnetwork" "subnet" {
   self_link = each.value
 }
 
-module "private_access" {
-  source      = "GoogleCloudPlatform/sql-db/google//modules/private_service_access"
-  version     = "~> 5.0"
-  project_id  = var.gcp_shared_vpc_project_id
-  vpc_network = var.shared_vpc_name
-}
-
 module "sql" {
-  depends_on = [module.private_access]
-  source     = "../cloud-sql"
-  for_each   = local.sql_settings
+  source   = "../cloud-sql"
+  for_each = local.sql_settings
 
   database_name       = each.value.database_name
   database_zone       = each.value.database_zone

@@ -78,3 +78,20 @@ variable "gke_mci_cluster_cidr_block" {
   description = "The primary IPv4 cidr block for multi-cluster ingress (MCI)."
   default     = "100.64.198.0/28"
 }
+
+variable "enforce_bin_auth_policy" {
+  type        = bool
+  description = "Enable or Disable creation of binary authorization policy"
+  default     = true
+}
+
+variable "bin_auth_attestor_names" {
+  type        = list(string)
+  description = "Binary Authorization Attestor Names set up in shared app_cicd project"
+  default     = ["build-attestor", "quality-attestor", "security-attestor"]
+}
+
+variable "bin_auth_attestor_project_id" {
+  type        = string
+  description = "Project id where binary attestors are created (app_cicd project from shared)"
+}

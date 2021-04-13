@@ -26,10 +26,13 @@ The module provisions the following resources
 | bastion\_members | The names of the members of the bastion server. | `list(string)` | `[]` | no |
 | bastion\_subnet\_name | The name of the subnet for the shared VPC. | `string` | `"bastion-host-subnet"` | no |
 | bastion\_zone | The zone for the bastion VM in primary region | `string` | `"us-west1-b"` | no |
+| bin\_auth\_attestor\_names | Binary Authorization Attestor Names set up in shared app\_cicd project | `list(string)` | `[]` | no |
+| bin\_auth\_attestor\_project\_id | Project Id where binary attestors are created | `string` | n/a | yes |
 | boa\_gke\_project\_id | Project ID for GKE. | `string` | n/a | yes |
 | boa\_ops\_project\_id | Project ID for ops. | `string` | n/a | yes |
 | boa\_sec\_project\_id | Project ID for secrets. | `string` | n/a | yes |
 | boa\_sql\_project\_id | Project ID for SQL. | `string` | n/a | yes |
+| enforce\_bin\_auth\_policy | Enable or Disable creation of binary authorization policy | `bool` | `false` | no |
 | env | The environment to prepare (dev/npd/prd). | `string` | n/a | yes |
 | folder\_prefix | Name prefix to use for folders created. | `string` | `"fldr"` | no |
 | gcp\_shared\_vpc\_project\_id | The host project id of the shared VPC. | `string` | n/a | yes |
