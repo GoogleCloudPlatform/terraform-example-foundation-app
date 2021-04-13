@@ -19,7 +19,7 @@ output "app_cicd_project_id" {
 }
 
 output "app_cicd_build_sa" {
-  value = module.app_cicd_build_sa.service_account.email
+  value = google_service_account.app_cicd_build_sa.email
 }
 
 output "app_infra_cloudbuild_project_id" {

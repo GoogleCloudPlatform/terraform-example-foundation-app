@@ -16,7 +16,7 @@
 
 locals {
   tf_deploy_sa_roles = {
-    "${module.boa_gke_project.project_id}" = [
+    gke = [
       "roles/compute.viewer",
       "roles/compute.instanceAdmin.v1",
       "roles/container.clusterAdmin",
@@ -31,32 +31,31 @@ locals {
       "roles/iam.roleAdmin",
       "roles/binaryauthorization.policyEditor"
     ],
-    "${module.boa_ops_project.project_id}" = [
+    ops = [
       "roles/logging.configWriter",
       "roles/serviceusage.serviceUsageAdmin",
       "roles/resourcemanager.projectIamAdmin",
       "roles/storage.admin"
     ],
-    "${module.boa_secret_project.project_id}" = [
+    sec = [
       "roles/cloudkms.admin",
       "roles/logging.configWriter",
       "roles/iam.serviceAccountCreator",
       "roles/secretmanager.admin"
     ],
-    "${module.boa_sql_project.project_id}" = [
+    sql = [
       "roles/cloudsql.admin",
       "roles/compute.networkAdmin",
       "roles/logging.configWriter"
     ],
-    "${var.shared_vpc_host_project_id}" = [
+    vpc = [
       "roles/compute.networkAdmin",
       "roles/compute.securityAdmin"
     ],
-    "${var.app_cicd_project_id}" = [
+    cicd = [
       "roles/binaryauthorization.attestorsViewer"
     ]
   }
-  project_roles = [for project, roles in local.tf_deploy_sa_roles : [for role in roles : "${project}=>${role}"]]
 }
 
 module "boa_secret_project" {
@@ -98,18 +97,58 @@ module "boa_secret_project" {
   business_code     = "bu1"
 }
 
-module "terraform_deployment_sa" {
-  source        = "terraform-google-modules/service-accounts/google"
-  version       = "~> 3.0"
-  project_id    = module.boa_secret_project.project_id
-  names         = ["boa-terraform-${var.environment_code}-sa"]
-  project_roles = local.project_roles
+resource "google_service_account" "boa_terraform_deployment_sa" {
+  account_id  = "boa-terraform-${var.environment_code}-sa"
+  description = "Service account to allow terraform to deploy 5-infra layer resources and services"
+  project     = module.boa_secret_project.project_id
 }
 
 resource "google_service_account_iam_member" "cloudbuild_terraform_sa_impersonate_permissions" {
-  service_account_id = module.terraform_deployment_sa.service_account.name
+  service_account_id = google_service_account.boa_terraform_deployment_sa.name
   role               = "roles/iam.serviceAccountTokenCreator"
   member             = "serviceAccount:${var.app_infra_pipeline_cloudbuild_sa}"
+}
+
+resource "google_project_iam_member" "boa_terraform_deployment_sa_roles_gke" {
+  for_each = toset(local.tf_deploy_sa_roles.gke)
+  project  = module.boa_gke_project.project_id
+  role     = each.value
+  member   = "serviceAccount:${google_service_account.boa_terraform_deployment_sa.email}"
+}
+
+resource "google_project_iam_member" "boa_terraform_deployment_sa_roles_sql" {
+  for_each = toset(local.tf_deploy_sa_roles.sql)
+  project  = module.boa_sql_project.project_id
+  role     = each.value
+  member   = "serviceAccount:${google_service_account.boa_terraform_deployment_sa.email}"
+}
+
+resource "google_project_iam_member" "boa_terraform_deployment_sa_roles_sec" {
+  for_each = toset(local.tf_deploy_sa_roles.sec)
+  project  = module.boa_secret_project.project_id
+  role     = each.value
+  member   = "serviceAccount:${google_service_account.boa_terraform_deployment_sa.email}"
+}
+
+resource "google_project_iam_member" "boa_terraform_deployment_sa_roles_ops" {
+  for_each = toset(local.tf_deploy_sa_roles.ops)
+  project  = module.boa_ops_project.project_id
+  role     = each.value
+  member   = "serviceAccount:${google_service_account.boa_terraform_deployment_sa.email}"
+}
+
+resource "google_project_iam_member" "boa_terraform_deployment_sa_roles_vpc" {
+  for_each = toset(local.tf_deploy_sa_roles.vpc)
+  project  = var.shared_vpc_host_project_id
+  role     = each.value
+  member   = "serviceAccount:${google_service_account.boa_terraform_deployment_sa.email}"
+}
+
+resource "google_project_iam_member" "boa_terraform_deployment_sa_roles_cicd" {
+  for_each = toset(local.tf_deploy_sa_roles.cicd)
+  project  = var.app_cicd_project_id
+  role     = each.value
+  member   = "serviceAccount:${google_service_account.boa_terraform_deployment_sa.email}"
 }
 
 data "google_compute_network" "vpc" {
@@ -128,7 +167,7 @@ resource "google_compute_subnetwork_iam_member" "terraform_subnet_member" {
   region     = each.value.region
   subnetwork = each.value.name
   role       = "roles/compute.networkUser"
-  member     = module.terraform_deployment_sa.iam_email
+  member     = "serviceAccount:${google_service_account.boa_terraform_deployment_sa.email}"
 }
 
 resource "google_compute_subnetwork_iam_member" "gke_subnet_member" {

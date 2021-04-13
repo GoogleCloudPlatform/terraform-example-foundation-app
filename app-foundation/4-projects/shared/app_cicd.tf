@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 locals {
-  sa_permissions = [
+  cicd_tf_deploy_sa_roles = [
     "roles/viewer",
     "roles/storage.admin",
     "roles/cloudkms.admin",
@@ -31,7 +31,6 @@ locals {
     "roles/source.admin",
     "roles/cloudbuild.builds.editor"
   ]
-  sa_roles = [for role in local.sa_permissions : "${module.app_cicd_project.project_id}=>${role}"]
 }
 
 module "app_cicd_project" {
@@ -73,16 +72,21 @@ module "app_cicd_project" {
   business_code     = "bu1"
 }
 
-module "app_cicd_build_sa" {
-  source        = "terraform-google-modules/service-accounts/google"
-  version       = "~> 3.0"
-  project_id    = module.app_cicd_project.project_id
-  names         = ["cicd-build-sa"]
-  project_roles = local.sa_roles
+resource "google_service_account" "app_cicd_build_sa" {
+  account_id  = "cicd-build-sa"
+  description = "Service account to allow terraform to deploy shared resources in app_cicd project"
+  project     = module.app_cicd_project.project_id
+}
+
+resource "google_project_iam_member" "app_cicd_build_sa_roles" {
+  for_each = toset(local.cicd_tf_deploy_sa_roles)
+  project  = module.app_cicd_project.project_id
+  role     = each.value
+  member   = "serviceAccount:${google_service_account.app_cicd_build_sa.email}"
 }
 
 resource "google_service_account_iam_member" "app_cicd_build_sa_impersonate_permissions" {
-  service_account_id = module.app_cicd_build_sa.service_account.name
+  service_account_id = google_service_account.app_cicd_build_sa.name
   role               = "roles/iam.serviceAccountTokenCreator"
   member             = "serviceAccount:${module.app_infra_cloudbuild_project.project_number}@cloudbuild.gserviceaccount.com"
 }
