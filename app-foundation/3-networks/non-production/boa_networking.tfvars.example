@@ -29,33 +29,3 @@ enable_hub_and_spoke_transitivity = "true"
 nat_enabled = "true"
 
 optional_firewall_rules_enabled = "true"
-
-/******************************************
- Tfvars for Cloud Armor
-*****************************************/
-
-policy_action = "deny(403)"
-
-policy_description = "Cloud Armor policy to prevent cross-site scripting attacks."
-
-policy_expression = "evaluatePreconfiguredExpr('xss-stable')"
-
-policy_name = "cloud-armor-xss-policy"
-
-policy_priority = "1000"
-
-/******************************************
- Tfvars for private services address
-*****************************************/
-
-private_service_address_name = "cloud-sql-subnet-vpc-peering-internal"
-
-/******************************************
- Tfvars for external IP
-*****************************************/
-
-address_name = "mci-ip"
-
-address_type = "EXTERNAL"
-
-description = "External IP address for HTTP load balancing on MCI subnet."

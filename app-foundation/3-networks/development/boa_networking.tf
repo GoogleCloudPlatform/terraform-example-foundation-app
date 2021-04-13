@@ -15,9 +15,10 @@
  */
 
 locals {
-  boa_gke_cluster1_master_cidr = "100.64.78.0/28"
-  boa_gke_cluster2_master_cidr = "100.65.70.0/28"
-  boa_gke_mci_master_cidr      = "100.64.70.0/28"
+  boa_gke_cluster1_master_cidr  = "100.64.78.0/28"
+  boa_gke_cluster2_master_cidr  = "100.65.70.0/28"
+  boa_gke_mci_master_cidr       = "100.64.70.0/28"
+  private_services_address_name = "cloud-sql-subnet-vpc-peering-internal"
 }
 
 /******************************************
@@ -259,57 +260,15 @@ resource "google_compute_firewall" "mci_allow_master_cidr" {
 }
 
 /******************************************
- Cloud Armor policy
-*****************************************/
-
-resource "google_compute_security_policy" "cloud-armor-xss-policy" {
-  name    = var.policy_name
-  project = local.base_project_id
-  rule {
-    action   = var.policy_action
-    priority = var.policy_priority
-    match {
-      expr {
-        expression = var.policy_expression
-      }
-    }
-    description = var.policy_description
-  }
-
-  rule {
-    action   = "allow"
-    priority = "2147483647"
-    match {
-      versioned_expr = "SRC_IPS_V1"
-      config {
-        src_ip_ranges = ["*"]
-      }
-    }
-    description = "default rule"
-  }
-}
-
-/******************************************
  Private services address for Cloud SQL
 *****************************************/
 
 resource "google_compute_global_address" "private_services_address" {
-  name          = var.private_services_address_name
+  name          = local.private_services_address_name
   project       = local.base_project_id
   purpose       = "VPC_PEERING"
   address_type  = "INTERNAL"
   address       = element(split("/", local.base_private_service_cidr), 0)
   prefix_length = element(split("/", local.base_private_service_cidr), 1)
   network       = module.base_shared_vpc.network_self_link
-}
-
-/******************************************
- External IP Address
-*****************************************/
-
-resource "google_compute_global_address" "external_ip_for_http_load_balancing" {
-  name         = var.address_name
-  project      = local.base_project_id
-  address_type = var.address_type
-  description  = var.description
 }
