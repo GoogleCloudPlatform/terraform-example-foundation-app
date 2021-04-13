@@ -151,7 +151,7 @@ gcloud alpha container hub ingress enable \
 
 2. Given that MCI will be used to loadbalance between the istio-gateways in east and west clusters, we need to create istio-system namespace in Ingress cluster to establish namespace sameness. 
 ```console
-kubectl --context ${CLUSTER_INGRESS} create namespace istio-system
+kubectl --context ${CTX_INGRESS} create namespace istio-system
 ```
 3. create a multi-cluster ingress
 ```console
@@ -233,15 +233,15 @@ kubectl create ns config-management-system --context ${CTX_2} && kubectl create 
 ```console
 gsutil cp gs://config-management-release/released/1.7.0/config-management-operator.yaml config-management-operator.yaml
 
-kubectl apply --context=${CLUSTER_1} -f config-management-operator.yaml
-kubectl apply --context=${CLUSTER_2} -f config-management-operator.yaml
+kubectl apply --context=${CTX_1} -f config-management-operator.yaml
+kubectl apply --context=${CTX_2} -f config-management-operator.yaml
 ```
 
 ### Configure ACM 
 ```console
-kubectl apply --context=${CLUSTER_1} -f ${HOME}/terraform-example-foundation-app/acm-configs/config-management-gke-east.yaml
+kubectl apply --context=${CTX_1} -f ${HOME}/terraform-example-foundation-app/acm-configs/config-management-gke-east.yaml
 
-kubectl apply --context=${CLUSTER_2} -f ${HOME}/terraform-example-foundation-app/acm-config/config-management-gke-west.yaml
+kubectl apply --context=${CTX_2} -f ${HOME}/terraform-example-foundation-app/acm-config/config-management-gke-west.yaml
 ```
 
 ### Populate the CSR repos 
