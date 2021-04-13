@@ -13,7 +13,7 @@ exit
 ```
 
 ## Pull the repo
-```consol
+```console
 cd ${HOME}
 git clone https://github.com/GoogleCloudPlatform/terraform-example-foundation-app.git
 ```
@@ -52,7 +52,7 @@ gcloud container clusters get-credentials ${CLUSTER_INGRESS} --region ${CLUSTER_
 ### Downloading the script
 
 1. Download the version of the script that installs ASM 1.8.3.
-```consol
+```console
 curl https://storage.googleapis.com/csm-artifacts/asm/install_asm_"${ASM_VERSION}" > install_asm
 ```
 2. Make the script executable:
@@ -120,7 +120,7 @@ export CLUSTER_2_URI=$(gcloud container clusters list --uri | grep ${CLUSTER_2})
 ```
 
 2. Register the clusters using workload identity.
-```consol
+```console
 # Register the config cluster
 gcloud beta container hub memberships register ${CLUSTER_INGRESS} \
 --project=${PROJECT_ID} \
@@ -144,17 +144,17 @@ gcloud container hub memberships register ${CLUSTER_2} \
 With MCI, we need to select a cluster to be the configuration cluster. In this case, `gke-mci-us-east1-001`. Once MCI is enabled, we can setup MCI. This entails establishing namespace sameness between the clusters, deploying the application in the clusters as preferred (in `gke-boa-us-east1-001` and `gke-boa-us-east1-001` clusters), and deploying a load balancer by deploying MultiClusterIngress and MultiClusterService resources in the config cluster 
 
 1. Enable MCI feature on config cluster
-```consol
+```console
 gcloud alpha container hub ingress enable \
 --config-membership=projects/${PROJECT_ID}/locations/global/memberships/${CLUSTER_INGRESS}
 ```
 
 2. Given that MCI will be used to loadbalance between the istio-gateways in east and west clusters, we need to create istio-system namespace in Ingress cluster to establish namespace sameness. 
-```consol
+```console
 kubectl --context ${CLUSTER_INGRESS} create namespace istio-system
 ```
 3. create a multi-cluster ingress
-```consol
+```console
 cat <<EOF > ${HOME}/mci.yaml
 apiVersion: networking.gke.io/v1beta1
 kind: MultiClusterIngress
@@ -163,7 +163,6 @@ metadata:
   annotations:
     networking.gke.io/static-ip: https://www.googleapis.com/compute/v1/projects/prj-bu1-d-boa-gke-ecb0/global/addresses/mci-ip
     networking.gke.io/pre-shared-certs: "boa-ssl-cert"
-
 spec:
   template:
     spec:
@@ -215,7 +214,7 @@ spec:
 EOF
 ```
 6. create the resourced defined above.
-```consol
+```console
 kubectl --context ${CTX_INGRESS} -n istio-system apply -f ${HOME}/backendconfig.yaml
 kubectl --context ${CTX_INGRESS} -n istio-system apply -f ${HOME}/mci.yaml
 kubectl --context ${CTX_INGRESS} -n istio-system apply -f ${HOME}/mcs.yaml
@@ -223,14 +222,15 @@ kubectl --context ${CTX_INGRESS} -n istio-system apply -f ${HOME}/mcs.yaml
 
 ## Install and Configure ACM
 ## Create a Private Key
+```console
 kubectl create ns config-management-system --context ${CTX_1} && kubectl create secret generic git-creds --namespace=config-management-system --context ${CTX_1} --from-file=ssh="id_rsa.nomos"
 
 kubectl create ns config-management-system --context ${CTX_2} && kubectl create secret generic git-creds --namespace=config-management-system --context ${CTX_2} --from-file=ssh="id_rsa.nomos"
-
+```
 
 ### Download and install ACM
 
-```consol
+```console
 gsutil cp gs://config-management-release/released/1.7.0/config-management-operator.yaml config-management-operator.yaml
 
 kubectl apply --context=${CLUSTER_1} -f config-management-operator.yaml
@@ -238,7 +238,7 @@ kubectl apply --context=${CLUSTER_2} -f config-management-operator.yaml
 ```
 
 ### Configure ACM 
-```consol
+```console
 kubectl apply --context=${CLUSTER_1} -f ${HOME}/terraform-example-foundation-app/acm-configs/config-management-gke-east.yaml
 
 kubectl apply --context=${CLUSTER_2} -f ${HOME}/terraform-example-foundation-app/acm-config/config-management-gke-west.yaml
@@ -247,7 +247,7 @@ kubectl apply --context=${CLUSTER_2} -f ${HOME}/terraform-example-foundation-app
 ### Populate the CSR repos 
 #### root config repo
 1. Copy the content of `acm-repos/root-config-repo` to `${HOME}/root-config-repo`
-```consol
+```console
 cd ${HOME}
 cp ${HOME}/terraform-example-foundation-app/acm-repos/root-config-repo ${HOME}/root-config-repo
 ```
@@ -266,7 +266,7 @@ git push origin master
 ```
 #### accounts namespace
 1. Copy the content of `acm-repos/accounts` to `${HOME}/accounts`
-```consol
+```console
 cd ${HOME}
 cp ${HOME}/terraform-example-foundation-app/acm-repos/accounts ${HOME}/accounts
 ```
@@ -285,7 +285,7 @@ git push origin master
 ```
 #### frontend namespace
 1. Copy the content of `acm-repos/frontend` to `${HOME}/frontend`
-```consol
+```console
 cd ${HOME}
 cp ${HOME}/terraform-example-foundation-app/acm-repos/frontend ${HOME}/frontend
 ```
@@ -305,7 +305,7 @@ git push origin master
 
 #### transactions namespace
 1. Copy the content of `acm-repos/transactions` to `${HOME}/transactions`
-```consol
+```console
 cd ${HOME}
 cp ${HOME}/terraform-example-foundation-app/acm-repos/transactions ${HOME}/transactions
 ```
