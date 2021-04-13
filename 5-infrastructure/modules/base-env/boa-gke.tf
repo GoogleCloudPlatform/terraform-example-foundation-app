@@ -151,3 +151,45 @@ resource "google_binary_authorization_policy" "policy" {
     }
   }
 }
+
+/******************************************
+ Cloud Armor policy
+*****************************************/
+
+resource "google_compute_security_policy" "cloud-armor-xss-policy" {
+  name    = "cloud-armor-xss-policy"
+  project = var.boa_gke_project_id
+  rule {
+    action   = "deny(403)"
+    priority = "1000"
+    match {
+      expr {
+        expression = "evaluatePreconfiguredExpr('xss-stable')"
+      }
+    }
+    description = "Cloud Armor policy to prevent cross-site scripting attacks."
+  }
+
+  rule {
+    action   = "allow"
+    priority = "2147483647"
+    match {
+      versioned_expr = "SRC_IPS_V1"
+      config {
+        src_ip_ranges = ["*"]
+      }
+    }
+    description = "default rule"
+  }
+}
+
+/******************************************
+ External IP Address
+*****************************************/
+
+resource "google_compute_global_address" "external_ip_for_http_load_balancing" {
+  name         = "mci-ip"
+  project      = var.boa_gke_project_id
+  address_type = "EXTERNAL"
+  description  = "External IP address for HTTP load balancing on MCI subnet."
+}
