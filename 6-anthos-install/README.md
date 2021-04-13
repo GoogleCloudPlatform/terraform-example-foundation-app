@@ -322,6 +322,12 @@ git add .
 git commit -m “adding transactions repo”
 git push origin master
 ```
+#### Configure syncing from the root repository
+```console
+kubectl apply --context=${CTX_1} -f ${HOME}/terraform-example-foundation-app/acm-configs/root-sync.yaml
+
+kubectl apply --context=${CTX_2} -f ${HOME}/terraform-example-foundation-app/acm-config/root-sync.yaml
+```
 
 ## Source Code Headers
 
