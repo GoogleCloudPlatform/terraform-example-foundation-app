@@ -15,10 +15,9 @@
  */
 
 locals {
-  boa_gke_cluster1_master_cidr  = "100.64.142.0/28"
-  boa_gke_cluster2_master_cidr  = "100.65.134.0/28"
-  boa_gke_mci_master_cidr       = "100.64.134.0/28"
-  private_services_address_name = "cloud-sql-subnet-vpc-peering-internal"
+  boa_gke_cluster1_master_cidr = "100.64.142.0/28"
+  boa_gke_cluster2_master_cidr = "100.65.134.0/28"
+  boa_gke_mci_master_cidr      = "100.64.134.0/28"
 }
 
 /******************************************
@@ -264,7 +263,7 @@ resource "google_compute_firewall" "mci_allow_master_cidr" {
 *****************************************/
 
 resource "google_compute_global_address" "private_services_address" {
-  name          = local.private_services_address_name
+  name          = "cloud-sql-subnet-vpc-peering-internal"
   project       = local.base_project_id
   purpose       = "VPC_PEERING"
   address_type  = "INTERNAL"
