@@ -19,7 +19,7 @@
 *****************************************/
 
 module "base_shared_vpc" {
-  source                        = "github.com/terraform-google-modules/terraform-example-foundation/tree/master/3-networks/modules/base_shared_vpc"
+  source                        = "github.com/terraform-google-modules/terraform-example-foundation/3-networks/modules/base_shared_vpc"
   project_id                    = local.base_project_id
   environment_code              = local.environment_code
   private_service_cidr          = local.base_private_service_cidr
