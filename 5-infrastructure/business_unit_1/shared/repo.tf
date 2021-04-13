@@ -55,7 +55,6 @@ resource "google_storage_bucket_iam_member" "cloudbuild_artifacts_iam" {
   depends_on = [google_storage_bucket.cloudbuild_artifacts]
 }
 
-# Cloud Build plan/apply triggers
 resource "google_cloudbuild_trigger" "main_trigger" {
   for_each    = local.created_csrs
   project     = var.app_cicd_project_id
@@ -81,7 +80,7 @@ resource "google_artifact_registry_repository" "image_repo" {
   project       = var.app_cicd_project_id
   location      = var.primary_location
   repository_id = format("%s-%s", var.app_cicd_project_id, "boa-image-repo")
-  description   = "Docker repository for Terraform runner images used by Cloud Build"
+  description   = "Docker repository for Bank Of Anthos images"
   format        = "DOCKER"
 }
 

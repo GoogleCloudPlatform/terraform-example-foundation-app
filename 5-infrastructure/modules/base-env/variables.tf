@@ -198,5 +198,4 @@ variable "bin_auth_attestor_names" {
 variable "bin_auth_attestor_project_id" {
   type        = string
   description = "Project Id where binary attestors are created"
-  default     = ""
 }
