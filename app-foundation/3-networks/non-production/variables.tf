@@ -21,26 +21,31 @@
 variable "policy_action" {
   description = "Specify if you want to allow or deny traffic."
   type        = string
+  default     = "deny(403)"
 }
 
 variable "policy_description" {
   description = "Description of the security policy."
   type        = string
+  default     = "Cloud Armor policy to prevent cross-site scripting attacks."
 }
 
 variable "policy_expression" {
   description = "Textual representation of an expression in Common Expression Language syntax."
   type        = string
+  default     = "evaluatePreconfiguredExpr('xss-stable')"
 }
 
 variable "policy_name" {
   description = "Name of the Cloud Armor security policy."
   type        = string
+  default     = "cloud-armor-xss-policy"
 }
 
 variable "policy_priority" {
   description = "Priority level for Cloud Armor policy. Lower numbers have higher priority."
   type        = number
+  default     = "1000"
 }
 
 /******************************************
@@ -50,7 +55,7 @@ variable "policy_priority" {
 variable "private_services_address_name" {
   description = "The name of the private services address."
   type        = string
-  default     = null
+  default     = "cloud-sql-subnet-vpc-peering-internal"
 }
 
 /******************************************
@@ -60,6 +65,7 @@ variable "private_services_address_name" {
 variable "address_name" {
   description = "The name of the external IP address."
   type        = string
+  default     = "mci-ip"
 }
 
 variable "address_type" {

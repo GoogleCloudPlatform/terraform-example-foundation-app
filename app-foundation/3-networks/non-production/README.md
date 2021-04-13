@@ -23,15 +23,15 @@ The outputs from the `outputs.tf` file have been copied from [app-foundation/3-n
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| address\_name | The name of the external IP address. | `string` | n/a | yes |
+| address\_name | The name of the external IP address. | `string` | `"mci-ip"` | yes |
 | address\_type | Determines if the IP address will be internal or external. Only 'INTERNAL' or 'EXTERNAL' can be used. | `string` | `"EXTERNAL"` | no |
 | description | Describes what the external IP address will be used for. | `string` | `"External IP for HTTP load balancing."` | no |
-| policy\_action | Specify if you want to allow or deny traffic. | `string` | n/a | yes |
-| policy\_description | Description of the security policy. | `string` | n/a | yes |
-| policy\_expression | Textual representation of an expression in Common Expression Language syntax. | `string` | n/a | yes |
-| policy\_name | Name of the Cloud Armor security policy. | `string` | n/a | yes |
-| policy\_priority | Priority level for Cloud Armor policy. Lower numbers have higher priority. | `number` | n/a | yes |
-| private\_services\_address\_name | The name of the private services address. | `string` | `null` | no |
+| policy\_action | Specify if you want to allow or deny traffic. | `string` | `"deny(403)"` | yes |
+| policy\_description | Description of the security policy. | `string` | `"Cloud Armor policy to prevent cross-site scripting attacks."` | yes |
+| policy\_expression | Textual representation of an expression in Common Expression Language syntax. | `string` | `"evaluatePreconfiguredExpr('xss-stable')"` | yes |
+| policy\_name | Name of the Cloud Armor security policy. | `string` | `"cloud-armor-xss-policy"` | yes |
+| policy\_priority | Priority level for Cloud Armor policy. Lower numbers have higher priority. | `number` | `"1000"` | yes |
+| private\_services\_address\_name | The name of the private services address. | `string` | `"cloud-sql-subnet-vpc-peering-internal"` | no |
 
 ## Outputs
 
