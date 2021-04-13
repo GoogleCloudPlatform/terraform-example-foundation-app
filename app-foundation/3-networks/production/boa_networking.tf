@@ -180,32 +180,6 @@ resource "google_compute_firewall" "temp_allow_pod_west_east" {
   }
 }
 
-resource "google_compute_firewall" "temp_allow_asm_install" {
-  name      = "fw-${var.environment_code}-temp-allow-asm-install"
-  project   = local.base_project_id
-  network   = module.base_shared_vpc.network_self_link
-  priority  = 1000
-  direction = "INGRESS"
-
-  dynamic "log_config" {
-    for_each = var.firewall_enable_logging == true ? [{
-      metadata = "INCLUDE_ALL_METADATA"
-    }] : []
-
-    content {
-      metadata = log_config.value.metadata
-    }
-  }
-
-  source_ranges = ["0.0.0.0/0"]
-  target_tags   = ["boa-gke1-cluster", "boa-gke2-cluster"]
-
-  allow {
-    protocol = "all"
-    ports    = ["all"]
-  }
-}
-
 resource "google_compute_firewall" "gke1_allow_master_cidr" {
   name      = "fw-${var.environment_code}-shared-base-e-gke1-allow-master-cidr"
   network   = module.base_shared_vpc.network_self_link
