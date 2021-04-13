@@ -20,6 +20,12 @@ This is an additional Terraform configuration for [CFT 3-Networks/envs/productio
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| n/a | n/a | n/a | n/a | n/a |
+
 ## Outputs
 
 | Name | Description |
