@@ -18,12 +18,9 @@ This is an additional Terraform configuration for [CFT 3-Networks/envs/developme
 1. Obtain the value for the access_context_manager_policy_id variable. Can be obtained by running `gcloud access-context-manager policies list --organization YOUR-ORGANIZATION_ID --format="value(name)"`.
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
-
 ## Inputs
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
-| n/a | n/a | n/a | n/a | n/a |
+No input.
 
 ## Outputs
 
