@@ -57,6 +57,8 @@ locals {
       master_authorized_networks = []
     }
   }
+  bin_auth_attestors = [for attestor in var.bin_auth_attestor_names : "projects/${var.bin_auth_attestor_project_id}/attestors/${attestor}"]
+  allowlist_patterns = ["quay.io/random-containers/*", "k8s.gcr.io/more-random/*", "gcr.io/${var.boa_gke_project_id}/*"] # Example
 }
 
 module "sink_gke" {
@@ -122,4 +124,30 @@ module "clusters" {
       node_metadata      = "GKE_METADATA_SERVER"
     }
   ]
+  node_pools_oauth_scopes = {
+    "all" : [
+      "https://www.googleapis.com/auth/cloud-platform",
+      "https://www.googleapis.com/auth/logging.write",
+      "https://www.googleapis.com/auth/monitoring",
+      "https://www.googleapis.com/auth/devstorage.read_only"
+    ],
+    "default-node-pool" : []
+  }
+}
+
+resource "google_binary_authorization_policy" "policy" {
+  project = var.boa_gke_project_id
+
+  global_policy_evaluation_mode = "ENABLE"
+  default_admission_rule {
+    evaluation_mode         = "REQUIRE_ATTESTATION"
+    enforcement_mode        = var.enforce_bin_auth_policy ? "ENFORCED_BLOCK_AND_AUDIT_LOG" : "DRYRUN_AUDIT_LOG_ONLY"
+    require_attestations_by = local.bin_auth_attestors
+  }
+  dynamic "admission_whitelist_patterns" {
+    for_each = local.allowlist_patterns
+    content {
+      name_pattern = admission_whitelist_patterns.value
+    }
+  }
 }

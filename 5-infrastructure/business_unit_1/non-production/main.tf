@@ -18,16 +18,19 @@ module "env" {
   source = "../../modules/base-env"
   env    = "npd"
 
-  terraform_service_account  = var.terraform_service_account
-  location_primary           = var.location_primary
-  location_secondary         = var.location_secondary
-  gcp_shared_vpc_project_id  = var.gcp_shared_vpc_project_id
-  shared_vpc_name            = var.shared_vpc_name
-  boa_gke_project_id         = var.boa_gke_project_id
-  boa_ops_project_id         = var.boa_ops_project_id
-  boa_sec_project_id         = var.boa_sec_project_id
-  boa_sql_project_id         = var.boa_sql_project_id
-  gke_cluster_1_cidr_block   = var.gke_cluster_1_cidr_block
-  gke_cluster_2_cidr_block   = var.gke_cluster_2_cidr_block
-  gke_mci_cluster_cidr_block = var.gke_mci_cluster_cidr_block
+  terraform_service_account    = var.terraform_service_account
+  location_primary             = var.location_primary
+  location_secondary           = var.location_secondary
+  gcp_shared_vpc_project_id    = var.gcp_shared_vpc_project_id
+  shared_vpc_name              = var.shared_vpc_name
+  boa_gke_project_id           = var.boa_gke_project_id
+  boa_ops_project_id           = var.boa_ops_project_id
+  boa_sec_project_id           = var.boa_sec_project_id
+  boa_sql_project_id           = var.boa_sql_project_id
+  gke_cluster_1_cidr_block     = var.gke_cluster_1_cidr_block
+  gke_cluster_2_cidr_block     = var.gke_cluster_2_cidr_block
+  gke_mci_cluster_cidr_block   = var.gke_mci_cluster_cidr_block
+  enforce_bin_auth_policy      = var.enforce_bin_auth_policy
+  bin_auth_attestor_names      = var.bin_auth_attestor_names
+  bin_auth_attestor_project_id = var.bin_auth_attestor_project_id
 }

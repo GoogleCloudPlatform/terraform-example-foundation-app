@@ -10,11 +10,18 @@
 | folder\_prefix | Name prefix to use for folders created. | `string` | `"fldr"` | no |
 | org\_id | The organization id for the associated services | `string` | n/a | yes |
 | parent\_folder | Optional - if using a folder for testing. | `string` | `""` | no |
+| primary\_location | Location region to create resources | `string` | `"us-east1"` | no |
 | project\_prefix | Name prefix to use for projects created. | `string` | `"prj"` | no |
 | terraform\_service\_account | Service account email of the account to impersonate to run Terraform | `string` | n/a | yes |
 
 ## Outputs
 
-No output.
+| Name | Description |
+|------|-------------|
+| app\_cicd\_build\_sa | n/a |
+| app\_cicd\_project\_id | n/a |
+| app\_infra\_cloudbuild\_project\_id | n/a |
+| app\_infra\_pipeline\_cloudbuild\_sa | n/a |
+| app\_infra\_repos | CSRs to store source code |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

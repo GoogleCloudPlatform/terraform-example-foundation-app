@@ -25,7 +25,11 @@ module "app_infra_cloudbuild_project" {
   alert_pubsub_topic          = var.alert_pubsub_topic
   budget_amount               = var.budget_amount
   project_prefix              = var.project_prefix
-  activate_apis               = ["cloudbuild.googleapis.com", "sourcerepo.googleapis.com", "cloudkms.googleapis.com"]
+  activate_apis = [
+    "cloudbuild.googleapis.com",
+    "sourcerepo.googleapis.com",
+    "cloudkms.googleapis.com"
+  ]
 
   # Metadata
   project_suffix    = "infra-pipeline"
@@ -40,6 +44,6 @@ module "infra_pipelines" {
   source                = "github.com/terraform-google-modules/terraform-example-foundation/4-projects/modules/infra_pipelines"
   cloudbuild_project_id = module.app_infra_cloudbuild_project.project_id
   billing_account       = var.billing_account
+  default_region        = var.primary_location
   app_infra_repos       = ["boa-infra"]
 }
-

@@ -3,10 +3,13 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| bin\_auth\_attestor\_names | Binary Authorization Attestor Names set up in shared app\_cicd project | `list(string)` | <pre>[<br>  "build-attestor",<br>  "quality-attestor",<br>  "security-attestor"<br>]</pre> | no |
+| bin\_auth\_attestor\_project\_id | Project id where binary attestors are created (app\_cicd project from shared) | `string` | n/a | yes |
 | boa\_gke\_project\_id | Project ID for GKE | `string` | n/a | yes |
 | boa\_ops\_project\_id | Project ID for ops | `string` | n/a | yes |
 | boa\_sec\_project\_id | Project ID for secrets | `string` | n/a | yes |
 | boa\_sql\_project\_id | Project ID for SQL | `string` | n/a | yes |
+| enforce\_bin\_auth\_policy | Enable or Disable creation of binary authorization policy | `bool` | `true` | no |
 | gcp\_shared\_vpc\_project\_id | The host project id of the shared VPC | `string` | n/a | yes |
 | gke\_cluster\_1\_cidr\_block | The primary IPv4 cidr block for the first GKE cluster. | `string` | `"100.64.206.0/28"` | no |
 | gke\_cluster\_2\_cidr\_block | The primary IPv4 cidr block for the second GKE cluster. | `string` | `"100.65.198.0/28"` | no |
