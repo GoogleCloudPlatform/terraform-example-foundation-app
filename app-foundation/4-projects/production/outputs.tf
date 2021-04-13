@@ -41,10 +41,10 @@ output "boa_sql_project_id" {
 
 output "terraform_service_account" {
   description = "Terraform Deployment SA for 5-infrastructure"
-  value       = module.terraform_deployment_sa.service_account.email
+  value       = google_service_account.boa_terraform_deployment_sa.email
 }
 
 output "boa_gsa_sa_email" {
   description = "SA email for boa-gsa service account"
-  value       = module.boa_gsa_sa.email
+  value       = google_service_account.boa_gsa_sa.email
 }

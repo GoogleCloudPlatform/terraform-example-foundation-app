@@ -14,6 +14,18 @@
  * limitations under the License.
  */
 
+locals {
+  gsa_sa_roles = {
+    gke = [
+      "roles/cloudtrace.agent",
+      "roles/monitoring.metricWriter"
+    ],
+    sql = [
+      "roles/cloudsql.client"
+    ]
+  }
+}
+
 module "boa_gke_project" {
   source                      = "github.com/terraform-google-modules/terraform-example-foundation/4-projects/modules/single_project"
   impersonate_service_account = var.terraform_service_account
@@ -66,14 +78,22 @@ module "boa_gke_project" {
 }
 
 # Service account to allow  Bank of Anthos Pods to securely communicate with GCP APIs, in specific Cloud SQL and Cloud Operations
-module "boa_gsa_sa" {
-  source     = "terraform-google-modules/service-accounts/google"
-  version    = "~> 3.0"
-  project_id = module.boa_gke_project.project_id
-  names      = ["boa-gsa"]
-  project_roles = [
-    "${module.boa_gke_project.project_id}=>roles/cloudtrace.agent",
-    "${module.boa_gke_project.project_id}=>roles/monitoring.metricWriter",
-    "${module.boa_sql_project.project_id}=>roles/cloudsql.client"
-  ]
+resource "google_service_account" "boa_gsa_sa" {
+  account_id  = "boa-gsa"
+  description = "Service account to allow Bank of Anthos Pods to securely communicate with GCP APIs, in specific Cloud SQL and Cloud Operations"
+  project     = module.boa_gke_project.project_id
+}
+
+resource "google_project_iam_member" "boa_gsa_sa_roles_gke" {
+  for_each = toset(local.gsa_sa_roles.gke)
+  project  = module.boa_gke_project.project_id
+  role     = each.value
+  member   = "serviceAccount:${google_service_account.boa_gsa_sa.email}"
+}
+
+resource "google_project_iam_member" "boa_gsa_sa_roles_sql" {
+  for_each = toset(local.gsa_sa_roles.sql)
+  project  = module.boa_sql_project.project_id
+  role     = each.value
+  member   = "serviceAccount:${google_service_account.boa_gsa_sa.email}"
 }
