@@ -14,18 +14,36 @@
 # limitations under the License.
 
 set -e
-parent_dir=$( dirname "$PWD" )
-if [ ! -d "/path/to/dir" ]; then
-    curl -L --fail https://github.com/terraform-google-modules/terraform-example-foundation/archive/refs/heads/master.tar.gz | tar xz --strip=1 "terraform-example-foundation-master/3-networks"
-    mv 3-networks/ "$parent_dir"
+parent_dir=$( dirname "$(pwd)" )
+if [ ! "${parent_dir##*/}" == "3-networks-extension" ]; then
+    cd app-foundation/3-networks-extension # Cloudbuild force move into directory
+    parent_dir=$( dirname "$(pwd)" )
 fi
 
-cd envs/
-for dir in */ ; do
-    mv "$dir"/boa_* "$parent_dir"/3-networks/env/"$dir"
+# Get example-foundation
+if [ ! -d "$parent_dir/3-networks" ]; then
+    git clone --depth 1 --filter=blob:none https://github.com/terraform-google-modules/terraform-example-foundation example-foundation
+    mv example-foundation/3-networks/ "$parent_dir"
+    rm -rf example-foundation
+fi
+
+cd "$parent_dir"/3-networks-extension/
+# transfer boa tf files
+for dir in envs/*/ ; do
+    mv "$dir"boa_* "$parent_dir"/3-networks/"$dir"
 done
 
-cd ../../3-networks/
-
+cd "$parent_dir"/3-networks/
+rm -rf "$parent_dir"/3-networks-extension/envs/
+# Change region in commom.tfvars
+sed -i 's/central1/east1/g' common.auto.example.tfvars
 # Remove base_shared_vpc from upstream main.tf
-# sed
+for dir in envs/*/ ; do
+    echo "${dir##*/}"
+    echo "${dir}"
+    if [ ! "${dir##*/}" == "shared/" ]; then
+        sed -e '/Base shared VPC/,$d' "$dir"main.tf | head -n -1 >> "$dir"tmp_main.tf
+        rm "$dir"main.tf
+        mv "$dir"tmp_main.tf "$dir"main.tf
+    fi
+done
