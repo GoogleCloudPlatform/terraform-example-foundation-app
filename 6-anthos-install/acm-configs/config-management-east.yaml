@@ -1,0 +1,7 @@
+apiVersion: configmanagement.gke.io/v1
+kind: ConfigManagement
+metadata:
+  name: config-management
+spec:
+  clusterName: gke-east
+  enableMultiRepo: true
