@@ -120,5 +120,6 @@ variable "allow_all_egress_ranges" {
 }
 
 output "network_self_link" {
-    value = "ignore"
+  description = "Fake Output"
+  value       = "ignore"
 }
