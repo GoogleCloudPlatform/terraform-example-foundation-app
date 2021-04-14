@@ -14,18 +14,13 @@
  * limitations under the License.
  */
 
-/******************************************
- Tfvars for BoA shared VPC
-*****************************************/
-
-default_region1 = "us-east1"
-
-default_region2 = "us-west1"
-
-enable_hub_and_spoke = "true"
-
-enable_hub_and_spoke_transitivity = "true"
-
-nat_enabled = "true"
-
-optional_firewall_rules_enabled = "true"
+locals {
+  environment_code          = "d"
+  base_project_id           = ""
+  base_private_service_cidr = ""
+  bgp_asn_number            = ""
+  mode                      = ""
+  enable_transitivity       = ""
+  base_hub_subnet_ranges    = ""
+  base_subnet_aggregates    = ""
+}
