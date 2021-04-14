@@ -16,16 +16,3 @@ This is an additional Terraform configuration for [CFT 3-Networks/envs/developme
 1. The `boa_networking.tfvars` file has been copied from [app-foundation/3-networks/development/boa_networking.tfvars](https://github.com/GoogleCloudPlatform/terraform-example-foundation-app/tree/main/app-foundation/3-networks/development/boa_networking.tfvars) to the [3-Networks/envs/development](https://github.com/terraform-google-modules/terraform-example-foundation/blob/master/3-networks/envs/development) folder. The 'Tfvars for BoA shared VPC' section includes tfvars that reside in the CFT that must be updated. All other tfvars are new and required.
 1. The outputs from the `outputs.tf` file have been copied from [app-foundation/3-networks/development/outputs.tf](https://github.com/GoogleCloudPlatform/terraform-example-foundation-app/tree/main/app-foundation/3-networks/development/outputs.tf) to the CFT outputs file [3-Networks/envs/development/outputs.tf](https://github.com/terraform-google-modules/terraform-example-foundation/blob/master/3-networks/envs/development/outputs.tf).
 1. Obtain the value for the access_context_manager_policy_id variable. Can be obtained by running `gcloud access-context-manager policies list --organization YOUR-ORGANIZATION_ID --format="value(name)"`.
-
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
-## Inputs
-
-No input.
-
-## Outputs
-
-| Name | Description |
-|------|-------------|
-| private\_services\_address | The private services connection for Cloud SQL. |
-
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

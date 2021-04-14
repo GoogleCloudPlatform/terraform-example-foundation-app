@@ -19,106 +19,106 @@ locals {
   ignore_module  = true
 }
 
-variable "source" {
- description = "Fake variable" 
-}
-
 variable "project_id" {
- description = "Fake variable" 
+  description = "Fake variable"
 }
 
 variable "environment_code" {
- description = "Fake variable" 
+  description = "Fake variable"
 }
 
 variable "private_service_cidr" {
- description = "Fake variable" 
+  description = "Fake variable"
 }
 
 variable "org_id" {
- description = "Fake variable" 
+  description = "Fake variable"
 }
 
 variable "parent_folder" {
- description = "Fake variable" 
+  description = "Fake variable"
 }
 
 variable "default_region1" {
- description = "Fake variable" 
+  description = "Fake variable"
 }
 
 variable "default_region2" {
- description = "Fake variable" 
+  description = "Fake variable"
 }
 
 variable "domain" {
- description = "Fake variable" 
+  description = "Fake variable"
 }
 
 variable "bgp_asn_subnet" {
- description = "Fake variable" 
+  description = "Fake variable"
 }
 
 variable "windows_activation_enabled" {
- description = "Fake variable" 
+  description = "Fake variable"
 }
 
 variable "dns_enable_inbound_forwarding" {
- description = "Fake variable" 
+  description = "Fake variable"
 }
 
 variable "dns_enable_logging" {
- description = "Fake variable" 
+  description = "Fake variable"
 }
 
 variable "firewall_enable_logging" {
- description = "Fake variable" 
+  description = "Fake variable"
 }
 
 variable "optional_fw_rules_enabled" {
- description = "Fake variable" 
+  description = "Fake variable"
 }
 
 variable "nat_enabled" {
- description = "Fake variable" 
+  description = "Fake variable"
 }
 
 variable "nat_bgp_asn" {
- description = "Fake variable" 
+  description = "Fake variable"
 }
 
 variable "nat_num_addresses_region1" {
- description = "Fake variable" 
+  description = "Fake variable"
 }
 
 variable "nat_num_addresses_region2" {
- description = "Fake variable" 
+  description = "Fake variable"
 }
 
 variable "nat_num_addresses" {
- description = "Fake variable" 
+  description = "Fake variable"
 }
 
 variable "folder_prefix" {
- description = "Fake variable" 
+  description = "Fake variable"
 }
 
 variable "mode" {
- description = "Fake variable" 
+  description = "Fake variable"
 }
 
 variable "subnets" {
- description = "Fake variable" 
+  description = "Fake variable"
 }
 
 variable "secondary_ranges" {
- description = "Fake variable" 
+  description = "Fake variable"
 }
 
 variable "allow_all_ingress_ranges" {
- description = "Fake variable" 
+  description = "Fake variable"
 }
 
 variable "allow_all_egress_ranges" {
- description = "Fake variable" 
+  description = "Fake variable"
+}
+
+output "network_self_link" {
+    value = "ignore"
 }

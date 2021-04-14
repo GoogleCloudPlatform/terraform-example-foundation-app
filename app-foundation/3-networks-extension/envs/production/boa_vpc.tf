@@ -19,7 +19,7 @@
 *****************************************/
 
 module "base_shared_vpc" {
-  source                        = "github.com/terraform-google-modules/terraform-example-foundation/3-networks/modules/base_shared_vpc"
+  source                        = "../../modules/base_shared_vpc"
   project_id                    = local.base_project_id
   environment_code              = local.environment_code
   private_service_cidr          = local.base_private_service_cidr
@@ -113,4 +113,6 @@ module "base_shared_vpc" {
       }
     ]
   }
+  allow_all_ingress_ranges = local.enable_transitivity ? local.base_hub_subnet_ranges : null
+  allow_all_egress_ranges  = local.enable_transitivity ? local.base_subnet_aggregates : null
 }

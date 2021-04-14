@@ -20,7 +20,75 @@ locals {
   base_private_service_cidr = ""
   bgp_asn_number            = ""
   mode                      = ""
-  enable_transitivity       = ""
+  enable_transitivity       = true
   base_hub_subnet_ranges    = ""
   base_subnet_aggregates    = ""
+}
+
+variable "org_id" {
+  description = "Fake variable"
+}
+
+variable "parent_folder" {
+  description = "Fake variable"
+}
+
+variable "default_region1" {
+  description = "Fake variable"
+}
+
+variable "default_region2" {
+  description = "Fake variable"
+}
+
+variable "domain" {
+  description = "Fake variable"
+}
+
+variable "windows_activation_enabled" {
+  description = "Fake variable"
+}
+
+variable "dns_enable_inbound_forwarding" {
+  description = "Fake variable"
+}
+
+variable "dns_enable_logging" {
+  description = "Fake variable"
+}
+
+variable "firewall_enable_logging" {
+  description = "Fake variable"
+}
+
+variable "optional_fw_rules_enabled" {
+  description = "Fake variable"
+}
+
+variable "nat_enabled" {
+  description = "Fake variable"
+}
+
+variable "nat_bgp_asn" {
+  description = "Fake variable"
+}
+
+variable "nat_num_addresses_region1" {
+  description = "Fake variable"
+}
+
+variable "nat_num_addresses_region2" {
+  description = "Fake variable"
+}
+
+variable "nat_num_addresses" {
+  description = "Fake variable"
+}
+
+variable "folder_prefix" {
+  description = "Fake variable"
+}
+
+variable "subnetworks_enable_logging" {
+  description = "Fake variable"
 }
