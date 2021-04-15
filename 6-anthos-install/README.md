@@ -1,6 +1,11 @@
-# Deploying Bank of Anthos 
+# Deploying Bank of Anthos
 These instructions need to be run on the bastion host. To access the bastion host, open the Google Cloud console, and navigate to Compute Engine in the GKE project. In my instance, `prj-bu1-d-boa-gke` Then, select the `gce-bastion-us-west1-b-01` and click on `ssh`. You need to be a whitelisted member to access this node.
 
+You can also connect to this instance by tunnelling SSH traffic through IAP.
+```console
+gcloud compute ssh gce-bastion-us-west1-b-01 \
+  --project gce-bastion-us-west1-b-01
+```
 
 ## Insall required tools
 ```console
@@ -8,7 +13,7 @@ sudo su
 yum install git
 yum install google-cloud-sdk-kpt
 yum install jq -y
-sudo yum install kubectl
+yum install kubectl
 exit
 ```
 
@@ -21,7 +26,7 @@ git clone https://github.com/GoogleCloudPlatform/terraform-example-foundation-ap
 ## Define required environment variables
 When indicated, make sure to replace the values below with the appropriate values based on the outcome of terraform.
 ```console
-# replace YOUR_PROJECT_ID with the project id for the project that will host your clusters.
+# replace YOUR_PROJECT_ID with the project id for the project that hosts your clusters.
 # For example: prj-bu1-d-boa-gke-ecb0
 export PROJECT_ID=YOUR_PROJECT_ID
 export PROJECT_NUM=$(gcloud projects describe ${PROJECT_ID} --format='value(projectNumber)')
@@ -89,7 +94,7 @@ The following commands run the script for a new installation of ASM on Cluster1 
 --enable_all
 ```
 ### Configure endpoint discovery between clusters
-We need to configure endpoint discovery for cross-cluster load balancing and communication. 
+We need to configure endpoint discovery for cross-cluster load balancing and communication.
 1. Creates a secret that grants access to the Kube API Server for cluster 1
 ```console
 ./istioctl x create-remote-secret \
@@ -99,7 +104,7 @@ We need to configure endpoint discovery for cross-cluster load balancing and com
 ```console
 kubectl --context=${CTX_2} -n istio-system apply -f secret-kubeconfig-${CLUSTER_1}.yaml
 ```
-3. In a similar manner, creates a secret that grants access to the Kube API Server for cluster 2 
+3. In a similar manner, creates a secret that grants access to the Kube API Server for cluster 2
 ```console
 ./istioctl x create-remote-secret \
 --name=${CLUSTER_2} > secret-kubeconfig-${CLUSTER_2}.yaml
@@ -107,7 +112,7 @@ kubectl --context=${CTX_2} -n istio-system apply -f secret-kubeconfig-${CLUSTER_
 2. Apply the secret to cluster 1, so it can read service endpoints from cluster 2
 ```console
 kubectl --context=${CTX_1} -n istio-system apply -f secret-kubeconfig-${CLUSTER_2}.yaml
-``` 
+```
 
 ## Register the Clusters to Anthos
 
@@ -121,7 +126,7 @@ export CLUSTER_2_URI=$(gcloud container clusters list --uri | grep ${CLUSTER_2})
 
 2. Register the clusters using workload identity.
 ```console
-# Register the config cluster
+# Register the MCI cluster
 gcloud beta container hub memberships register ${CLUSTER_INGRESS} \
 --project=${PROJECT_ID} \
 --gke-uri=${INGRESS_CONFIG_URI} \
@@ -237,14 +242,14 @@ kubectl apply --context=${CTX_1} -f config-management-operator.yaml
 kubectl apply --context=${CTX_2} -f config-management-operator.yaml
 ```
 
-### Configure ACM 
+### Configure ACM
 ```console
 kubectl apply --context=${CTX_1} -f ${HOME}/terraform-example-foundation-app/acm-configs/config-management-gke-east.yaml
 
 kubectl apply --context=${CTX_2} -f ${HOME}/terraform-example-foundation-app/acm-config/config-management-gke-west.yaml
 ```
 
-### Populate the CSR repos 
+### Populate the CSR repos
 #### root config repo
 1. Copy the content of `acm-repos/root-config-repo` to `${HOME}/root-config-repo`
 ```console
@@ -254,7 +259,7 @@ cp ${HOME}/terraform-example-foundation-app/acm-repos/root-config-repo ${HOME}/r
 
 2. Move to the new folder
 ```console
-cd ${HOME}/root-config-repo 
+cd ${HOME}/root-config-repo
 ```
 3. push the content to the root-config-repo
 
@@ -328,26 +333,3 @@ kubectl apply --context=${CTX_1} -f ${HOME}/terraform-example-foundation-app/acm
 
 kubectl apply --context=${CTX_2} -f ${HOME}/terraform-example-foundation-app/acm-config/root-sync.yaml
 ```
-
-## Source Code Headers
-
-Every file containing source code must include copyright and license
-information. This includes any JS/CSS files that you might be serving out to
-browsers. (This is to help well-intentioned people avoid accidental copying that
-doesn't comply with the license.)
-
-Apache header:
-
-    Copyright 2021 Google LLC
-
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-        https://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
