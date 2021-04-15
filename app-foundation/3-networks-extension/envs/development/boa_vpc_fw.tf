@@ -118,7 +118,7 @@ module "base_shared_vpc" {
 *****************************************/
 
 module "boa_firewall_rules" {
-  source = "../../fw-rules"
+  source = "../../modules/fw-rules"
 
   environment_code             = local.environment_code
   network_link                 = module.base_shared_vpc.network_self_link
