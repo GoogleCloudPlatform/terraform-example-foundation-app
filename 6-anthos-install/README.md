@@ -60,11 +60,11 @@ gcloud container clusters get-credentials ${CLUSTER_INGRESS} --region ${CLUSTER_
 ```console
 curl https://storage.googleapis.com/csm-artifacts/asm/install_asm_"${ASM_VERSION}" > install_asm
 ```
-2. Make the script executable:
+1. Make the script executable:
 ```console
 chmod +x install_asm
 ```
-3. Create a folder to host the installation files and asm packages. This folder will also include `istioctl`, sample apps, and manifests.
+1. Create a folder to host the installation files and asm packages. This folder will also include `istioctl`, sample apps, and manifests.
 ```console
 mkdir -p ${HOME}/asm-${ASM_VERSION} && export PATH=$PATH:$HOME/asm-${ASM_VERSION}
 ```
@@ -83,7 +83,7 @@ The following commands run the script for a new installation of ASM on Cluster1 
 --enable_all
 ```
 
-2. Install ASM on cluster 2
+1. Install ASM on cluster 2
 
 ```console
 ./install_asm \
@@ -100,16 +100,16 @@ We need to configure endpoint discovery for cross-cluster load balancing and com
 ./istioctl x create-remote-secret \
 --name=${CLUSTER_1} > secret-kubeconfig-${CLUSTER_1}.yaml
 ```
-2. Apply the secret to cluster 2, so it can read service endpoints from cluster 1
+1. Apply the secret to cluster 2, so it can read service endpoints from cluster 1
 ```console
 kubectl --context=${CTX_2} -n istio-system apply -f secret-kubeconfig-${CLUSTER_1}.yaml
 ```
-3. In a similar manner, creates a secret that grants access to the Kube API Server for cluster 2
+1. In a similar manner, create a secret that grants access to the Kube API Server for cluster 2
 ```console
 ./istioctl x create-remote-secret \
 --name=${CLUSTER_2} > secret-kubeconfig-${CLUSTER_2}.yaml
 ```
-2. Apply the secret to cluster 1, so it can read service endpoints from cluster 2
+1. Apply the secret to cluster 1, so it can read service endpoints from cluster 2
 ```console
 kubectl --context=${CTX_1} -n istio-system apply -f secret-kubeconfig-${CLUSTER_2}.yaml
 ```
@@ -124,7 +124,7 @@ export CLUSTER_1_URI=$(gcloud container clusters list --uri | grep ${CLUSTER_1})
 export CLUSTER_2_URI=$(gcloud container clusters list --uri | grep ${CLUSTER_2})
 ```
 
-2. Register the clusters using workload identity.
+1. Register the clusters using workload identity.
 ```console
 # Register the MCI cluster
 gcloud beta container hub memberships register ${CLUSTER_INGRESS} \
@@ -146,7 +146,7 @@ gcloud container hub memberships register ${CLUSTER_2} \
 ```
 
 ## Enable and Setup Multi Cluster Ingress (MCI)
-With MCI, we need to select a cluster to be the configuration cluster. In this case, `gke-mci-us-east1-001`. Once MCI is enabled, we can setup MCI. This entails establishing namespace sameness between the clusters, deploying the application in the clusters as preferred (in `gke-boa-us-east1-001` and `gke-boa-us-east1-001` clusters), and deploying a load balancer by deploying MultiClusterIngress and MultiClusterService resources in the config cluster 
+With MCI, we need to select a cluster to be the configuration cluster. In this case, `gke-mci-us-east1-001`. Once MCI is enabled, we can setup MCI. This entails establishing namespace sameness between the clusters, deploying the application in the clusters as preferred (in `gke-boa-us-east1-001` and `gke-boa-us-east1-001` clusters), and deploying a load balancer by deploying MultiClusterIngress and MultiClusterService resources in the config cluster
 
 1. Enable MCI feature on config cluster
 ```console
@@ -154,11 +154,11 @@ gcloud alpha container hub ingress enable \
 --config-membership=projects/${PROJECT_ID}/locations/global/memberships/${CLUSTER_INGRESS}
 ```
 
-2. Given that MCI will be used to loadbalance between the istio-gateways in east and west clusters, we need to create istio-system namespace in Ingress cluster to establish namespace sameness. 
+1. Given that MCI will be used to loadbalance between the istio-gateways in east and west clusters, we need to create istio-system namespace in Ingress cluster to establish namespace sameness.
 ```console
 kubectl --context ${CTX_INGRESS} create namespace istio-system
 ```
-3. create a multi-cluster ingress
+1. create a multi-cluster ingress
 ```console
 cat <<EOF > ${HOME}/mci.yaml
 apiVersion: networking.gke.io/v1beta1
@@ -177,7 +177,7 @@ spec:
 EOF
 ```
 
-4. create a multi-cluster service
+1. create a multi-cluster service
 ```console
 cat <<'EOF' > $HOME/mcs.yaml
 apiVersion: networking.gke.io/v1beta1
@@ -202,7 +202,7 @@ spec:
 EOF
 ```
 
-5. create a backend config
+1. create a backend config
 ```console
 cat <<EOF > $HOME/backendconfig.yaml
 apiVersion: cloud.google.com/v1beta1
@@ -218,7 +218,7 @@ spec:
    # Name: cloud-armor-xss-policy
 EOF
 ```
-6. create the resourced defined above.
+1. create the resourced defined above.
 ```console
 kubectl --context ${CTX_INGRESS} -n istio-system apply -f ${HOME}/backendconfig.yaml
 kubectl --context ${CTX_INGRESS} -n istio-system apply -f ${HOME}/mci.yaml
@@ -257,11 +257,11 @@ cd ${HOME}
 cp ${HOME}/terraform-example-foundation-app/acm-repos/root-config-repo ${HOME}/root-config-repo
 ```
 
-2. Move to the new folder
+1. Move to the new folder
 ```console
 cd ${HOME}/root-config-repo
 ```
-3. push the content to the root-config-repo
+1. push the content to the root-config-repo
 
 ```console
 gcloud source repos clone config-root-repo
@@ -276,11 +276,11 @@ cd ${HOME}
 cp ${HOME}/terraform-example-foundation-app/acm-repos/accounts ${HOME}/accounts
 ```
 
-2. Move to the new folder
+1. Move to the new folder
 ```console
 cd ${HOME}/accounts
 ```
-3. push the content to the accounts repo
+1. push the content to the accounts repo
 
 ```console
 gcloud source repos clone accounts
@@ -295,11 +295,11 @@ cd ${HOME}
 cp ${HOME}/terraform-example-foundation-app/acm-repos/frontend ${HOME}/frontend
 ```
 
-2. Move to the new folder
+1. Move to the new folder
 ```console
 cd ${HOME}/frontend
 ```
-3. push the content to the frontend repo
+1. push the content to the frontend repo
 
 ```console
 gcloud source repos clone frontend
@@ -315,11 +315,11 @@ cd ${HOME}
 cp ${HOME}/terraform-example-foundation-app/acm-repos/transactions ${HOME}/transactions
 ```
 
-2. Move to the new folder
+1. Move to the new folder
 ```console
 cd ${HOME}/transactions
 ```
-3. push the content to the transactions repo
+1. push the content to the transactions repo
 
 ```console
 gcloud source repos clone transactions
