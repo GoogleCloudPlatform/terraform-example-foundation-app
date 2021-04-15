@@ -1,0 +1,43 @@
+# # Cloud SQL Proxy makes requests to `www.googleapis.com`
+# apiVersion: networking.istio.io/v1alpha3
+# kind: ServiceEntry
+# metadata:
+#   name: sql
+#   namespace: transactions
+# spec:
+#   hosts:
+#   - sql-component.googleapis.com
+#   ports:
+#   - number: 443
+#     name: https
+#     protocol: HTTPS
+#   - number: 80
+#     name: http
+#     protocol: HTTP
+#   resolution: DNS
+#   location: MESH_EXTERNAL
+# ---
+# # see https://istio.io/blog/2018/egress-tcp/
+# apiVersion: networking.istio.io/v1alpha3
+# kind: ServiceEntry
+# metadata:
+#   name: cloud-sql-instance
+#   namespace: transactions
+# spec:
+#   # use `gcloud sql instances list` and include replicas as well
+#   hosts:
+#   - boa-sql-us-west1-cf21f525
+#   - boa-sql-us-west1-cf21f525-replica-test0
+#   - boa-sql-us-west1-cf21f525-replica-test2
+#   - boa-sql-us-west1-cf21f525-replica-test1
+#   addresses:
+#   # use `gcloud sql instances list` to find out the IP address of your Google Cloud Instance
+#   - 172.31.1.2/32 # a block of IPs in CIDR notation
+#   - 172.31.2.12/32
+#   - 172.31.2.5/32
+#   - 172.31.2.9/32
+#   ports:
+#   - name: tcp
+#     number: 3307 
+#     protocol: tcp # enable TCP traffic
+#   location: MESH_EXTERNAL

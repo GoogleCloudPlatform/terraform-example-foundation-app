@@ -1,0 +1,15 @@
+apiVersion: "security.istio.io/v1beta1"
+kind: "AuthorizationPolicy"
+metadata:
+  name: "transactions-self-writer"
+spec:
+  selector:
+    matchLabels:
+      app: boa
+  rules:
+  - from:
+    - source:
+        principals: ["cluster.local/ns/transactions/sa/transactions"]
+    to:
+    - operation:
+        methods: ["POST","GET","DELETE","PATCH", "PUT"]

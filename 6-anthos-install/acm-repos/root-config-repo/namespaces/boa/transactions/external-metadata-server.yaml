@@ -1,0 +1,54 @@
+# apiVersion: networking.istio.io/v1alpha3
+# kind: ServiceEntry
+# metadata:
+#   name: metadata-google-egress
+#   namespace: transactions
+# spec:
+#   hosts:
+#   - metadata.google.internal
+#   addresses:
+#   - 169.254.169.254
+#   ports:
+#   - number: 443
+#     name: https
+#     protocol: HTTPS
+#   - number: 80
+#     name: http
+#     protocol: HTTP
+#   resolution: DNS
+#   location: MESH_EXTERNAL
+# ---
+# apiVersion: networking.istio.io/v1alpha3
+# kind: ServiceEntry
+# metadata:
+#   name: whitelist-egress-googleapis
+#   namespace: transactions
+# spec:
+#   hosts:
+#   - "accounts.google.com" # Used to get token
+#   - "*.googleapis.com"
+#   ports:
+#   - number: 80
+#     protocol: HTTP
+#     name: http
+#   - number: 443
+#     protocol: HTTPS
+#     name: https
+
+# # ---
+# # apiVersion: networking.istio.io/v1alpha3
+# # kind: VirtualService
+# # metadata:
+# #   name: metadata-google-egress
+# #   namespace: transactions
+# # spec:
+# #   hosts:
+# #   - metadata.google.internal
+# #   http:
+# #   - match:
+# #     - port: 80
+# #       sni_hosts:
+# #       - metadata.google.internal
+# #     route:
+# #     - destination:
+# #         host: metadata.google.internal

@@ -1,0 +1,14 @@
+apiVersion: configsync.gke.io/v1alpha1
+kind: RepoSync
+metadata:
+  name: repo-sync
+  namespace: accounts
+spec:
+  git:
+   repo: ssh://dkassab@google.com@source.developers.google.com:2022/p/prj-bu1-d-boa-gke-ecb0/r/accounts
+   branch: master
+   #dir: /
+   #auth: gcenode
+   auth: ssh
+   secretRef:
+     name: git-creds

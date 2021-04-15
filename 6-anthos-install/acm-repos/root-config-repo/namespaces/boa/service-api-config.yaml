@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: service-api-config
+data:
+  TRANSACTIONS_API_ADDR: "ledgerwriter.transactions:8080"
+  BALANCES_API_ADDR: "balancereader.transactions:8080"
+  HISTORY_API_ADDR: "transactionhistory.transactions:8080"
+  CONTACTS_API_ADDR: "contacts.accounts:8080"
+  USERSERVICE_API_ADDR: "userservice.accounts:8080"
+  SCHEME: "https"

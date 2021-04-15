@@ -1,0 +1,15 @@
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: frontend-transaction-allow
+spec:
+  policyTypes:
+  #- Ingress
+  - Egress
+  podSelector: {}
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          networking/namespace: transactions
+          app: boa

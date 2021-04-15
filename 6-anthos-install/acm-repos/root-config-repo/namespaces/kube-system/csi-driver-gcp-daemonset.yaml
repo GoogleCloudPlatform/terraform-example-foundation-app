@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  labels:
+    app: csi-secrets-store-provider-gcp
+  name: csi-secrets-store-provider-gcp
+  namespace: kube-system
+spec:
+  updateStrategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: csi-secrets-store-provider-gcp
+  template:
+    metadata:
+      labels:
+        app: csi-secrets-store-provider-gcp
+    spec:
+      serviceAccountName: secrets-store-csi-driver-provider-gcp
+      containers:
+        - name: provider
+          image: us-docker.pkg.dev/secretmanager-csi/secrets-store-csi-driver-provider-gcp/plugin@sha256:90eeaef1afcbac988fb9f5a96222dff91f79920e9fa1c0d4200688ebc2680622
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              cpu: 50m
+              memory: 100Mi
+            limits:
+              cpu: 50m
+              memory: 100Mi
+          env:
+            - name: TARGET_DIR
+              value: "/etc/kubernetes/secrets-store-csi-providers"
+          volumeMounts:
+            - mountPath: "/etc/kubernetes/secrets-store-csi-providers"
+              name: providervol
+            - name: mountpoint-dir
+              mountPath: /var/lib/kubelet/pods
+              mountPropagation: HostToContainer
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /live
+              port: 8095
+            initialDelaySeconds: 5
+            timeoutSeconds: 10
+            periodSeconds: 30
+      volumes:
+        - name: providervol
+          hostPath:
+              path: /etc/kubernetes/secrets-store-csi-providers
+        - name: mountpoint-dir
+          hostPath:
+            path: /var/lib/kubelet/pods
+            type: DirectoryOrCreate
+      nodeSelector:
+        kubernetes.io/os: linux

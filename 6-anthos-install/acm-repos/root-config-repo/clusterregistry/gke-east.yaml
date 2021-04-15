@@ -1,0 +1,8 @@
+kind: Cluster
+apiVersion: clusterregistry.k8s.io/v1alpha1
+metadata:
+  name: gke-east
+  labels:
+    environment: prod
+    clusterName: gke-east
+

@@ -1,0 +1,7 @@
+kind: Cluster
+apiVersion: clusterregistry.k8s.io/v1alpha1
+metadata:
+  name: gke-west
+  labels:
+    environment: prod
+    clusterName: gke-west

@@ -1,0 +1,15 @@
+apiVersion: "security.istio.io/v1beta1"
+kind: "AuthorizationPolicy"
+metadata:
+  name: "accounts-writer"
+spec:
+  selector:
+    matchLabels:
+      app: boa
+  rules:
+  - from:
+    - source:
+        principals: ["cluster.local/ns/frontend/sa/frontend"]
+    to:
+    - operation:
+        methods: ["POST","GET","DELETE"]

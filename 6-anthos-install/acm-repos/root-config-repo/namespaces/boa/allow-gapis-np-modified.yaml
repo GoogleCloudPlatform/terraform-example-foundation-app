@@ -1,0 +1,31 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-dns-google-apis
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  - Egress
+  egress:
+  - ports:
+    - port: 53 #Allow KubeDNS without filter on the destination on port 53
+      protocol: UDP
+    - port: 53
+      protocol: TCP
+  - to:
+    - ipBlock:
+        cidr: 199.36.153.8/30 #private.googleapis.com
+    - ipBlock:
+        cidr: 0.0.0.0/0 #public range
+    - ipBlock:
+        cidr: 169.254.169.254/32
+    - ipBlock:
+        cidr: 127.0.0.1/32 
+    ports:
+    - port: 80  #Allow access to the MetadataServer 169.254.169.254 on port 80
+      protocol: TCP
+    - port: 443 #Allow access to Google API's on the 199.36.153.8/30 CIDR on port 443
+      protocol: TCP
+    - port: 988 #Allow access to the metadata proxy server for metadata-concealment reasons on  127.0.0.1 on port 988
+      protocol: TCP

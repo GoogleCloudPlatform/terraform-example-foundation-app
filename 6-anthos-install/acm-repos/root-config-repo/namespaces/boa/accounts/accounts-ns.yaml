@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: accounts
+  labels:
+    networking/namespace: accounts
+    istio.io/rev: asm-183-2
+    app: boa

@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: transactions
+  labels:
+    app: boa
+    networking/namespace: transactions
+    istio.io/rev: asm-183-2

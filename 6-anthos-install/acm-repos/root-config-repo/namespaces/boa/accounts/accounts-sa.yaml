@@ -1,0 +1,7 @@
+apiVersion: v1
+# Service Account to access Cloud SQL
+kind: ServiceAccount
+metadata:
+  annotations:
+    iam.gke.io/gcp-service-account: boa-gsa@prj-bu1-d-boa-gke-ecb0.iam.gserviceaccount.com
+  name: accounts
