@@ -15,7 +15,7 @@
 
 set -e
 parent_dir=$( dirname "$(pwd)" )
-if [ ! "${parent_dir##*/}" == "3-networks-extension" ]; then
+if [ ! "$( basename "$(pwd)" )" == "3-networks-extension" ]; then
     cd app-foundation/3-networks-extension # Cloudbuild force move into directory
     parent_dir=$( dirname "$(pwd)" )
 fi
