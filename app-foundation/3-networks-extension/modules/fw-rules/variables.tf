@@ -43,3 +43,8 @@ variable "network_link" {
   description = "VPC Network Self Link"
   type        = string
 }
+
+variable "environment_code" {
+  description = "VPC Network Self Link"
+  type        = string
+}

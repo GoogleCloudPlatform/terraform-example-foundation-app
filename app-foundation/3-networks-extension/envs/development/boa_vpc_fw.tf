@@ -120,6 +120,7 @@ module "base_shared_vpc" {
 module "boa_firewall_rules" {
   source = "../../fw-rules"
 
+  environment_code             = local.environment_code
   network_link                 = module.base_shared_vpc.network_self_link
   fw_project_id                = local.base_project_id
   firewall_enable_logging      = var.firewall_enable_logging

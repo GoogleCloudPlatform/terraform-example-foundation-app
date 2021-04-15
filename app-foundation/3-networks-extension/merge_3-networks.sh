@@ -29,8 +29,10 @@ if [ -d "$parent_dir/3-networks-extension/envs" ]; then
     for dir in envs/*/ ; do
         mv "$dir"boa_* "$parent_dir"/3-networks/"$dir"
     done
+    mv modules/fw-rules "$parent_dir"/3-networks/modules
     cd "$parent_dir"/3-networks/
     rm -rf "$parent_dir"/3-networks-extension/envs/
+    rm -rf "$parent_dir"/3-networks-extension/modules
     # Change region in commom.tfvars
     sed -i 's/central1/east1/g' common.auto.example.tfvars
     # Remove base_shared_vpc from upstream main.tf
