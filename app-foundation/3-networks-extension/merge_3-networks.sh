@@ -39,9 +39,7 @@ rm -rf "$parent_dir"/3-networks-extension/envs/
 sed -i 's/central1/east1/g' common.auto.example.tfvars
 # Remove base_shared_vpc from upstream main.tf
 for dir in envs/*/ ; do
-    echo "${dir##*/}"
-    echo "${dir}"
-    if [ ! "${dir##*/}" == "shared/" ]; then
+    if [ ! "${dir}" == "envs/shared/" ]; then
         sed -e '/Base shared VPC/,$d' "$dir"main.tf | head -n -1 >> "$dir"tmp_main.tf
         rm "$dir"main.tf
         mv "$dir"tmp_main.tf "$dir"main.tf
