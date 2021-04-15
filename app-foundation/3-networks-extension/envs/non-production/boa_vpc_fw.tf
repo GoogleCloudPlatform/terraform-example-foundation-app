@@ -116,3 +116,18 @@ module "base_shared_vpc" {
   allow_all_ingress_ranges = local.enable_transitivity ? local.base_hub_subnet_ranges : null
   allow_all_egress_ranges  = local.enable_transitivity ? local.base_subnet_aggregates : null
 }
+
+/******************************************
+ Firewall Rules
+*****************************************/
+
+module "boa_firewall_rules" {
+  source = "../../fw-rules"
+
+  network_link                 = module.base_shared_vpc.network_self_link
+  fw_project_id                = local.base_project_id
+  firewall_enable_logging      = var.firewall_enable_logging
+  boa_gke_cluster1_master_cidr = "100.64.142.0/28"
+  boa_gke_cluster2_master_cidr = "100.65.134.0/28"
+  boa_gke_mci_master_cidr      = "100.64.134.0/28"
+}

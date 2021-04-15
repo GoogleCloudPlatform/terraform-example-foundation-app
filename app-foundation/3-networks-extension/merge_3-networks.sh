@@ -15,10 +15,6 @@
 
 set -e
 parent_dir=$( dirname "$(pwd)" )
-if [ ! "$( basename "$(pwd)" )" == "3-networks-extension" ]; then
-    cd app-foundation/3-networks-extension # Cloudbuild force move into directory
-    parent_dir=$( dirname "$(pwd)" )
-fi
 
 # Get example-foundation
 if [ ! -d "$parent_dir/3-networks" ]; then
@@ -27,21 +23,22 @@ if [ ! -d "$parent_dir/3-networks" ]; then
     rm -rf example-foundation
 fi
 
-cd "$parent_dir"/3-networks-extension/
-# transfer boa tf files
-for dir in envs/*/ ; do
-    mv "$dir"boa_* "$parent_dir"/3-networks/"$dir"
-done
-
-cd "$parent_dir"/3-networks/
-rm -rf "$parent_dir"/3-networks-extension/envs/
-# Change region in commom.tfvars
-sed -i 's/central1/east1/g' common.auto.example.tfvars
-# Remove base_shared_vpc from upstream main.tf
-for dir in envs/*/ ; do
-    if [ ! "${dir}" == "envs/shared/" ]; then
-        sed -e '/Base shared VPC/,$d' "$dir"main.tf | head -n -1 >> "$dir"tmp_main.tf
-        rm "$dir"main.tf
-        mv "$dir"tmp_main.tf "$dir"main.tf
-    fi
-done
+if [ -d "$parent_dir/3-networks-extension/envs" ]; then
+    cd "$parent_dir"/3-networks-extension/
+    # transfer boa tf files
+    for dir in envs/*/ ; do
+        mv "$dir"boa_* "$parent_dir"/3-networks/"$dir"
+    done
+    cd "$parent_dir"/3-networks/
+    rm -rf "$parent_dir"/3-networks-extension/envs/
+    # Change region in commom.tfvars
+    sed -i 's/central1/east1/g' common.auto.example.tfvars
+    # Remove base_shared_vpc from upstream main.tf
+    for dir in envs/*/ ; do
+        if [ ! "${dir}" == "envs/shared/" ]; then
+            sed -e '/Base shared VPC/,$d' "$dir"main.tf | head -n -1 >> "$dir"tmp_main.tf
+            rm "$dir"main.tf
+            mv "$dir"tmp_main.tf "$dir"main.tf
+        fi
+    done
+fi

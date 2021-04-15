@@ -15,29 +15,26 @@
  */
 
 locals {
-  boa_gke_cluster1_master_cidr = "100.64.206.0/28"
-  boa_gke_cluster2_master_cidr = "100.65.198.0/28"
-  boa_gke_mci_master_cidr      = "100.64.198.0/28"
   ingress_rules = {
-    "fw-${local.environment_code}-shared-base-allow-asm-healthcheck-autosidecar" = {
-      source_ranges  = [local.boa_gke_cluster1_master_cidr, local.boa_gke_cluster2_master_cidr]
+    "fw-${var.environment_code}-shared-base-allow-asm-healthcheck-autosidecar" = {
+      source_ranges  = [var.boa_gke_cluster1_master_cidr, var.boa_gke_cluster2_master_cidr]
       target_tags    = ["boa-gke1-cluster", "boa-gke2-cluster"]
       allow_protocol = "tcp"
       allow_ports    = ["443", "10250", "15017"]
     },
-    "fw-${local.environment_code}-shared-base-allow-8443-opa" = {
-      source_ranges  = [local.boa_gke_cluster1_master_cidr, local.boa_gke_cluster2_master_cidr]
+    "fw-${var.environment_code}-shared-base-allow-8443-opa" = {
+      source_ranges  = [var.boa_gke_cluster1_master_cidr, var.boa_gke_cluster2_master_cidr]
       target_tags    = ["boa-gke1-cluster", "boa-gke2-cluster"]
       allow_protocol = "tcp"
       allow_ports    = ["8443"]
     },
-    "fw-${local.environment_code}-shared-base-allow-pod-east-west" = {
+    "fw-${var.environment_code}-shared-base-allow-pod-east-west" = {
       source_ranges  = ["100.64.72.0/22"]
       target_tags    = ["boa-gke2-cluster"]
       allow_protocol = "tcp"
       allow_ports    = ["443", "8080"]
     },
-    "fw-${local.environment_code}-shared-base-allow-pod-west-east" = {
+    "fw-${var.environment_code}-shared-base-allow-pod-west-east" = {
       source_ranges  = ["100.65.64.0/22"]
       target_tags    = ["boa-gke1-cluster"]
       allow_protocol = "tcp"
@@ -45,20 +42,20 @@ locals {
     }
   }
   egress_rules = {
-    "fw-${local.environment_code}-shared-base-e-gke1-allow-master-cidr" = {
-      destination_ranges = [local.boa_gke_cluster1_master_cidr]
+    "fw-${var.environment_code}-shared-base-e-gke1-allow-master-cidr" = {
+      destination_ranges = [var.boa_gke_cluster1_master_cidr]
       target_tags        = ["boa-gke1-cluster"]
       allow_protocol     = "tcp"
       allow_ports        = ["443", "10250"]
     },
-    "fw-${local.environment_code}-shared-base-e-gke2-allow-master-cidr" = {
-      destination_ranges = [local.boa_gke_cluster2_master_cidr]
+    "fw-${var.environment_code}-shared-base-e-gke2-allow-master-cidr" = {
+      destination_ranges = [var.boa_gke_cluster2_master_cidr]
       target_tags        = ["boa-gke2-cluster"]
       allow_protocol     = "tcp"
       allow_ports        = ["443", "10250"]
     },
-    "fw-${local.environment_code}-shared-base-e-mci-allow-master-cidr" = {
-      destination_ranges = [local.boa_gke_mci_master_cidr]
+    "fw-${var.environment_code}-shared-base-e-mci-allow-master-cidr" = {
+      destination_ranges = [var.boa_gke_mci_master_cidr]
       target_tags        = ["boa-mci-cluster"]
       allow_protocol     = "tcp"
       allow_ports        = ["443", "10250"]
@@ -73,8 +70,8 @@ locals {
 resource "google_compute_firewall" "fw_ingress_rules" {
   for_each  = local.ingress_rules
   name      = each.key
-  project   = local.base_project_id
-  network   = module.base_shared_vpc.network_self_link
+  project   = var.fw_project_id
+  network   = var.network_link
   priority  = 1000
   direction = "INGRESS"
   dynamic "log_config" {
@@ -94,8 +91,8 @@ resource "google_compute_firewall" "fw_ingress_rules" {
 resource "google_compute_firewall" "fw_egress_rules" {
   for_each  = local.egress_rules
   name      = each.key
-  network   = module.base_shared_vpc.network_self_link
-  project   = local.base_project_id
+  network   = var.network_link
+  project   = var.fw_project_id
   direction = "EGRESS"
   priority  = 900
   dynamic "log_config" {
