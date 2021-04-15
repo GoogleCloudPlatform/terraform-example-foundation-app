@@ -73,8 +73,7 @@ mkdir -p ${HOME}/asm-${ASM_VERSION} && export PATH=$PATH:$HOME/asm-${ASM_VERSION
 The following commands run the script for a new installation of ASM on Cluster1 and Cluster2. By default, ASM uses Mesh CA. The `--enable_all` flag will enable the required Google APIs and set IAM permissions.
 
 1. Install ASM on Cluster 1
-```console
-./install_asm \
+```console ./install_asm \
 --project_id ${PROJECT_ID} \
 --cluster_name ${CLUSTER_1} \
 --cluster_location ${CLUSTER_1_REGION} \
@@ -84,9 +83,7 @@ The following commands run the script for a new installation of ASM on Cluster1 
 ```
 
 1. Install ASM on cluster 2
-
-```console
-./install_asm \
+```console ./install_asm \
 --project_id ${PROJECT_ID} \
 --cluster_name ${CLUSTER_2} \
 --cluster_location ${CLUSTER_2_REGION} \
