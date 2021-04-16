@@ -96,7 +96,7 @@ spec:
           securityContext:
             runAsNonRoot: true
           terminationMessagePath: /dev/termination-log
-          terminationMessagePolicy: File    
+          terminationMessagePolicy: File
       volumes:
         - name: publickey
           secret:
