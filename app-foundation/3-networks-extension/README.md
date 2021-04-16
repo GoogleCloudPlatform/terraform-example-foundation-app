@@ -23,5 +23,5 @@ This is an additional Terraform configuration for [example-foundation 3-Networks
 
 ## Local Run Troubleshooting
 
-1. Ensure you have given execute permissions "chmod +x merge_3-networks.sh"
+1. Ensure you have given execute permissions `chmod +x merge_3-networks.sh`
 1. If you get '\r Error' you can use dos2unix to convert file format "dos2unix merge_3-networks.sh", you may need to install dos2unix first
