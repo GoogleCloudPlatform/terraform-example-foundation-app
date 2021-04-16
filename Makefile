@@ -68,9 +68,10 @@ docker_test_integration:
 .PHONY: docker_test_lint
 docker_test_lint:
 	docker run --rm -it \
+	    -e "EXCLUDE_LINT_DIRS=\\./app-foundation/3-networks-extension/envs" \
 		-v "$(CURDIR)":/workspace \
 		$(REGISTRY_URL)/${DOCKER_IMAGE_DEVELOPER_TOOLS}:${DOCKER_TAG_VERSION_DEVELOPER_TOOLS} \
-		/usr/local/bin/test_lint.sh
+		/bin/bash -c 'cd app-foundation/3-networks-extension && ./network_prepare.sh && source /usr/local/bin/test_lint.sh'
 
 # Generate documentation
 .PHONY: docker_generate_docs
@@ -89,11 +90,12 @@ docker_generate_modules:
                 /bin/bash -c 'source /usr/local/bin/task_helper_functions.sh && generate_modules'
 
 # Prepare 3-networks folder from example-foundation
+.PHONY: docker_network_prepare
 docker_network_prepare:
 	docker run --rm -it \
                 -v "$(CURDIR)":/workspace \
                 $(REGISTRY_URL)/${DOCKER_IMAGE_DEVELOPER_TOOLS}:${DOCKER_TAG_VERSION_DEVELOPER_TOOLS} \
-                /bin/bash -c 'cd app-foundation/3-networks-extension && ./merge_3-networks.sh && echo "Merge Success"'
+                /bin/bash -c 'cd app-foundation/3-networks-extension && ./network_prepare.sh'
 
 # Alias for backwards compatibility
 .PHONY: generate_docs

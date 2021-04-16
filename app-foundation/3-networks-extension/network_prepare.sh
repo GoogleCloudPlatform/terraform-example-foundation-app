@@ -22,20 +22,20 @@ if [[ ! -d "$parent_dir/3-networks" ]]; then
     mv example-foundation/3-networks/ "$parent_dir"
     rm -rf example-foundation
 fi
-if [[ -d "$parent_dir/3-networks-extension/envs" ]]; then
+if [[ -f "$parent_dir/3-networks/envs/development/boa_*" ]]; then
     cd "$parent_dir"/3-networks-extension/
     # transfer boa tf files
     for dir in envs/*/ ; do
         cp "$dir"boa_* "$parent_dir"/3-networks/"$dir"
     done
-    cp modules/fw-rules "$parent_dir"/3-networks/modules
+    cp -r modules/fw-rules "$parent_dir"/3-networks/modules
     cd "$parent_dir"/3-networks/
     # Change region in commom.tfvars
     sed -i 's/central1/east1/g' common.auto.example.tfvars
     # Remove base_shared_vpc from upstream main.tf
     for dir in envs/*/ ; do
         if [[ ! "${dir}" == "envs/shared/" ]]; then
-            sed -e '/Base shared VPC/,$d' "$dir"main.tf | head -n -1 >> "$dir"tmp_main.tf
+            sed -e '/Base shared VPC/,$d' "$dir"main.tf | tac | sed "1,2d" | tac >> "$dir"tmp_main.tf
             rm "$dir"main.tf
             mv "$dir"tmp_main.tf "$dir"main.tf
         fi
