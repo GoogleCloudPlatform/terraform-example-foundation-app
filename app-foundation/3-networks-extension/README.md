@@ -10,8 +10,12 @@ This is an additional Terraform configuration for [example-foundation 3-Networks
 
 ## Order of Execution
 
-1. Run merge_3-networks.sh
-1. Follow steps in [example_foundation 3-Networks](https://github.com/terraform-google-modules/terraform-example-foundation/tree/master/3-networks/README.md)
+### Clone 3-networks from example-foundation
+- Run the bash script network_prepare.sh using either `cd ../../ && make docker_network_prepare` or execute script directly in this folder `./network_prepare.sh`
+- Alternatively you can perform the steps of the bash script manually laid out in the next section
+
+### After cloning 3-networks from example-foundation
+- Follow steps in [example_foundation 3-Networks](https://github.com/terraform-google-modules/terraform-example-foundation/tree/master/3-networks/README.md)
 
 ## Steps performed in bash script
 
@@ -22,5 +26,5 @@ This is an additional Terraform configuration for [example-foundation 3-Networks
 
 ## Local Run Troubleshooting
 
-1. Ensure you have given execute permissions `chmod +x merge_3-networks.sh`
-1. If you get '\r Error' you can use dos2unix to convert file format "dos2unix merge_3-networks.sh", you may need to install dos2unix first
+1. Ensure you have given execute permissions `chmod +x network_prepare.sh`
+1. If you get '\r Error' you can use dos2unix to convert file format "dos2unix network_prepare.sh", you may need to install dos2unix first

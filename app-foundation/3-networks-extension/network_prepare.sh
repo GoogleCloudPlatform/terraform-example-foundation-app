@@ -22,7 +22,7 @@ if [[ ! -d "$parent_dir/3-networks" ]]; then
     mv example-foundation/3-networks/ "$parent_dir"
     rm -rf example-foundation
 fi
-if [[ -f "$parent_dir/3-networks/envs/development/boa_*" ]]; then
+if [[ ! -f "$parent_dir/3-networks/envs/development/boa_*" ]]; then
     cd "$parent_dir"/3-networks-extension/
     # transfer boa tf files
     for dir in envs/*/ ; do
