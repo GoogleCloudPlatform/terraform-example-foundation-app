@@ -6,7 +6,7 @@ You can also connect to this instance by tunnelling SSH traffic through IAP.
 # Replace YOUR_PROJECT_ID with your GKE project ID.
 export PROJECT_ID=YOUR_PROJECT_ID
 gcloud compute ssh gce-bastion-us-west1-b-01 \
-  --project ${YOUR_PROJECT_ID}
+  --project ${PROJECT_ID}
 ```
 
 ## Insall required tools
