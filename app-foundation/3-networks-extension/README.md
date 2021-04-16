@@ -1,6 +1,6 @@
 # 3-networks-extension
 
-This is an additional Terraform configuration for [CFT 3-Networks](https://github.com/terraform-google-modules/terraform-example-foundation/tree/master/3-networks) and can be used to set up the subnets, additional firewall rules for the Bank of Anthos example application in the development environment.
+This is an additional Terraform configuration for [example-foundation 3-Networks](https://github.com/terraform-google-modules/terraform-example-foundation/tree/master/3-networks) and is used to set up the subnets, additional firewall rules for the Bank of Anthos example application across dev/non-prod/prod environments.
 
 ## Prerequisites
 
