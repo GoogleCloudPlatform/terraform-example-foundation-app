@@ -59,17 +59,17 @@ gcloud container clusters get-credentials ${CLUSTER_INGRESS} --region ${CLUSTER_
 ### Downloading the script
 
 1. Download the version of the script that installs ASM 1.8.3.
-```console
-curl https://storage.googleapis.com/csm-artifacts/asm/install_asm_"${ASM_VERSION}" > install_asm
-```
+    ```console
+    curl https://storage.googleapis.com/csm-artifacts/asm/install_asm_"${ASM_VERSION}" > install_asm
+    ```
 1. Make the script executable:
-```console
-chmod +x install_asm
-```
+    ```console
+    chmod +x install_asm
+    ```
 1. Create a folder to host the installation files and asm packages. This folder will also include `istioctl`, sample apps, and manifests.
-```console
-mkdir -p ${HOME}/asm-${ASM_VERSION} && export PATH=$PATH:$HOME/asm-${ASM_VERSION}
-```
+    ```console
+    mkdir -p ${HOME}/asm-${ASM_VERSION} && export PATH=$PATH:$HOME/asm-${ASM_VERSION}
+    ```
 
 ### Install ASM on both clusters
 The following commands run the script for a new installation of ASM on Cluster1 and Cluster2. By default, ASM uses Mesh CA. The `--enable_cluster_labels` flag allows the script to attempt to bind the service account running the script to the cluster-admin role on the cluster. `--enable_cluster_roles` flag allow the script to set the required cluster labels.
