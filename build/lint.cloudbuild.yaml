@@ -16,7 +16,7 @@ timeout: 600s
 steps:
 - id: 3-networks-prep
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cd app-foundation/3-networks-extension && ./merge_3-networks.sh && echo "Merge Success"']
+  args: ['/bin/bash', '-c', 'cd app-foundation/3-networks-extension && ./network_prepare.sh && echo "Merge Success"']
 - id: 'lint-tests'
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/usr/local/bin/test_lint.sh']
