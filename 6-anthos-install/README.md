@@ -70,7 +70,7 @@ mkdir -p ${HOME}/asm-${ASM_VERSION} && export PATH=$PATH:$HOME/asm-${ASM_VERSION
 ```
 
 ### Install ASM on both clusters
-The following commands run the script for a new installation of ASM on Cluster1 and Cluster2. By default, ASM uses Mesh CA. The `--enable_all` flag will enable the required Google APIs and set IAM permissions.
+The following commands run the script for a new installation of ASM on Cluster1 and Cluster2. By default, ASM uses Mesh CA. The `--enable_cluster_labels` flag allows the script to attempt to bind the service account running the script to the cluster-admin role on the cluster. `--enable_cluster_roles` flag allow the script to set the required cluster labels.
 
 1. Install ASM on Cluster 1
 ```console ./install_asm \
@@ -79,7 +79,8 @@ The following commands run the script for a new installation of ASM on Cluster1 
 --cluster_location ${CLUSTER_1_REGION} \
 --mode install \
 --output_dir ${HOME}/asm-${ASM_VERSION} \
---enable_all
+--enable_cluster_labels \
+--enable_cluster_roles
 ```
 
 1. Install ASM on cluster 2
@@ -88,7 +89,8 @@ The following commands run the script for a new installation of ASM on Cluster1 
 --cluster_name ${CLUSTER_2} \
 --cluster_location ${CLUSTER_2_REGION} \
 --mode install \
---enable_all
+--enable_cluster_labels \
+--enable_cluster_roles
 ```
 ### Configure endpoint discovery between clusters
 We need to configure endpoint discovery for cross-cluster load balancing and communication.
@@ -211,8 +213,8 @@ spec:
     type: HTTP
     port: 15020
     requestPath: /healthz/ready
-  #securityPolicy:
-   # Name: cloud-armor-xss-policy
+  securityPolicy:
+    Name: cloud-armor-xss-policy
 EOF
 ```
 1. create the resourced defined above.
@@ -223,7 +225,7 @@ kubectl --context ${CTX_INGRESS} -n istio-system apply -f ${HOME}/mcs.yaml
 ```
 
 ## Install and Configure ACM
-## Create a Private Key
+### Create a Private Key
 ```console
 kubectl create ns config-management-system --context ${CTX_1} && kubectl create secret generic git-creds --namespace=config-management-system --context ${CTX_1} --from-file=ssh="id_rsa.nomos"
 
@@ -247,7 +249,16 @@ kubectl apply --context=${CTX_2} -f ${HOME}/terraform-example-foundation-app/acm
 ```
 
 ### Populate the CSR repos
+For configuring and deploying the applicaiton, we are using multi-repo mode in ACM. This mode allows syncing from multiple repositories. In this excample, we have one root repository that hosts the cluster-wide and namespace-scoped configurations, and three namespace repositories to host the application manifests.
+
+1. Define an environment variable to set the project where the pipeline will run. Make sure to replace `YOUR_CICD_PROJECT_ID` with the appropriate project ID.
+```console
+export CICD_PROJECT_ID=YOUR_CICD_PROJECT_ID
+```
+
 #### root config repo
+This repository is the root repository that host cluster-scoped and namespace-scoped configs for the bank of anthos application, such as resource policies, network polices and security policies.
+
 1. Copy the content of `acm-repos/root-config-repo` to `${HOME}/root-config-repo`
 ```console
 cd ${HOME}
@@ -261,12 +272,13 @@ cd ${HOME}/root-config-repo
 1. push the content to the root-config-repo
 
 ```console
-gcloud source repos clone config-root-repo
+gcloud source repos clone config-root-repo --project ${CICD_PROJECT_ID}
 git add .
 git commit -m “adding config repo”
 git push origin master
 ```
 #### accounts namespace
+This repository will host the deployment and service manifests for `userservice` and `contacts` microservices.
 1. Copy the content of `acm-repos/accounts` to `${HOME}/accounts`
 ```console
 cd ${HOME}
@@ -280,12 +292,14 @@ cd ${HOME}/accounts
 1. push the content to the accounts repo
 
 ```console
-gcloud source repos clone accounts
+gcloud source repos clone accounts --project ${CICD_PROJECT_ID}
 git add .
 git commit -m “adding accounts repo”
 git push origin master
 ```
 #### frontend namespace
+This repository will host the deployment and service manifests for `frontend` microservice, as well as a load generator service.
+
 1. Copy the content of `acm-repos/frontend` to `${HOME}/frontend`
 ```console
 cd ${HOME}
@@ -299,13 +313,15 @@ cd ${HOME}/frontend
 1. push the content to the frontend repo
 
 ```console
-gcloud source repos clone frontend
+gcloud source repos clone frontend --project ${CICD_PROJECT_ID}
 git add .
 git commit -m “adding frontend repo”
 git push origin master
 ```
 
 #### transactions namespace
+This repository will host the deployment and service manifests for `transactionhistory`, `balancereader` and `ledgerwriter` microservices.
+
 1. Copy the content of `acm-repos/transactions` to `${HOME}/transactions`
 ```console
 cd ${HOME}
@@ -319,7 +335,7 @@ cd ${HOME}/transactions
 1. push the content to the transactions repo
 
 ```console
-gcloud source repos clone transactions
+gcloud source repos clone transactions --project ${CICD_PROJECT_ID}
 git add .
 git commit -m “adding transactions repo”
 git push origin master
