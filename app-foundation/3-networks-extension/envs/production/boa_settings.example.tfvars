@@ -15,10 +15,10 @@
  */
 
 /******************************************
- Outputs for private services address
+ Tfvars for BoA shared VPC
 *****************************************/
 
-output "private_services_address" {
-  value       = google_compute_global_address.private_services_address.address
-  description = "The private services connection for Cloud SQL."
-}
+enable_hub_and_spoke              = "true"
+enable_hub_and_spoke_transitivity = "true"
+nat_enabled                       = "true"
+optional_firewall_rules_enabled   = "true"

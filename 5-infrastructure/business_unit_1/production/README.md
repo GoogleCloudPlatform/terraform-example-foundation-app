@@ -26,6 +26,7 @@
 | bastion\_hostname | Host name of the bastion |
 | bastion\_ip\_address | Internal IP address of the bastion host |
 | bastion\_service\_account\_email | Email address of the SA created for the bastion host |
+| external\_ip\_address | The external IP for HTTP load balancing. |
 | gke\_1\_cluster\_name | Cluster 1 Name |
 | gke\_1\_master\_ipv4 | Cluster 1 Master IPV4 Address CIDR |
 | gke\_1\_region | Cluster 1 Region |

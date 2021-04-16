@@ -19,7 +19,7 @@
 *****************************************/
 
 module "base_shared_vpc" {
-  source                        = "github.com/terraform-google-modules/terraform-example-foundation/3-networks/modules/base_shared_vpc"
+  source                        = "../../modules/base_shared_vpc"
   project_id                    = local.base_project_id
   environment_code              = local.environment_code
   private_service_cidr          = local.base_private_service_cidr
@@ -76,7 +76,6 @@ module "base_shared_vpc" {
       description           = "The bastion host example subnet."
     },
   ]
-
   secondary_ranges = {
     mci-config-subnet = [
       {
@@ -88,7 +87,6 @@ module "base_shared_vpc" {
         ip_cidr_range = "100.64.68.0/26"
       }
     ]
-
     gke-cluster1-subnet = [
       {
         range_name    = "pod-ip-range"
@@ -99,9 +97,7 @@ module "base_shared_vpc" {
         ip_cidr_range = "100.64.76.0/26"
       }
     ]
-
     bastion-host-subnet = []
-
     gke-cluster2-subnet = [
       {
         range_name    = "pod-ip-range"
@@ -113,4 +109,22 @@ module "base_shared_vpc" {
       }
     ]
   }
+  allow_all_ingress_ranges = local.enable_transitivity ? local.base_hub_subnet_ranges : null
+  allow_all_egress_ranges  = local.enable_transitivity ? local.base_subnet_aggregates : null
+}
+
+/******************************************
+ Firewall Rules
+*****************************************/
+
+module "boa_firewall_rules" {
+  source = "../../modules/fw-rules"
+
+  environment_code             = local.environment_code
+  network_link                 = module.base_shared_vpc.network_self_link
+  fw_project_id                = local.base_project_id
+  firewall_enable_logging      = var.firewall_enable_logging
+  boa_gke_cluster1_master_cidr = "100.64.78.0/28"
+  boa_gke_cluster2_master_cidr = "100.65.70.0/28"
+  boa_gke_mci_master_cidr      = "100.64.70.0/28"
 }
