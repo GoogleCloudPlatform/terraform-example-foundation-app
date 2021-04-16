@@ -11,15 +11,14 @@ This is an additional Terraform configuration for [example-foundation 3-Networks
 ## Order of Execution
 
 1. Run merge_3-networks.sh
-1. 3-netowrks/envs/shared
-1. 3-networks/envs/ development/non-production/production
+1. Follow steps in [example_foundation 3-Networks](https://github.com/terraform-google-modules/terraform-example-foundation/tree/master/3-networks/README.md)
 
 ## Steps performed in bash script
 
-1. Clone [CFT 3-Networks](https://github.com/terraform-google-modules/terraform-example-foundation/tree/master/3-networks)
+1. Clone [example_foundation 3-Networks](https://github.com/terraform-google-modules/terraform-example-foundation/tree/master/3-networks)
 1. Merge files from 3-networks-extensions/envs into 3-networks/envs for the respective environments
-1. Change Primary Region in [3-networks/common.auto.tfvars](https://github.com/terraform-google-modules/terraform-example-foundation/blob/master/3-networks/common.auto.example.tfvars) from us-central1 to us-east1 to be consistent with BOA 4-projects and 5-infrastructure
-1. Remove Base Shared VPC defined in main.tf of [CFT 3-Networks](https://github.com/terraform-google-modules/terraform-example-foundation/tree/master/3-networks) as boa_vpc.tf replaces it with new subnets.
+1. Change Primary Region in [example_foundation 3-networks/common.auto.tfvars](https://github.com/terraform-google-modules/terraform-example-foundation/blob/master/3-networks/common.auto.example.tfvars) from us-central1 to us-east1 to be consistent with BOA 4-projects and 5-infrastructure
+1. Remove Base Shared VPC defined in main.tf of [example_foundation 3-Networks](https://github.com/terraform-google-modules/terraform-example-foundation/tree/master/3-networks) as boa_vpc.tf replaces it with new subnets.
 
 ## Local Run Troubleshooting
 

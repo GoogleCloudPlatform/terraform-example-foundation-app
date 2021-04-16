@@ -17,26 +17,24 @@ set -e
 parent_dir=$( dirname "$(pwd)" )
 
 # Get example-foundation
-if [ ! -d "$parent_dir/3-networks" ]; then
+if [[ ! -d "$parent_dir/3-networks" ]]; then
     git clone --depth 1 --filter=blob:none https://github.com/terraform-google-modules/terraform-example-foundation example-foundation
     mv example-foundation/3-networks/ "$parent_dir"
     rm -rf example-foundation
 fi
-if [ -d "$parent_dir/3-networks-extension/envs" ]; then
+if [[ -d "$parent_dir/3-networks-extension/envs" ]]; then
     cd "$parent_dir"/3-networks-extension/
     # transfer boa tf files
     for dir in envs/*/ ; do
-        mv "$dir"boa_* "$parent_dir"/3-networks/"$dir"
+        cp "$dir"boa_* "$parent_dir"/3-networks/"$dir"
     done
-    mv modules/fw-rules "$parent_dir"/3-networks/modules
+    cp modules/fw-rules "$parent_dir"/3-networks/modules
     cd "$parent_dir"/3-networks/
-    rm -rf "$parent_dir"/3-networks-extension/envs/
-    rm -rf "$parent_dir"/3-networks-extension/modules
     # Change region in commom.tfvars
     sed -i 's/central1/east1/g' common.auto.example.tfvars
     # Remove base_shared_vpc from upstream main.tf
     for dir in envs/*/ ; do
-        if [ ! "${dir}" == "envs/shared/" ]; then
+        if [[ ! "${dir}" == "envs/shared/" ]]; then
             sed -e '/Base shared VPC/,$d' "$dir"main.tf | head -n -1 >> "$dir"tmp_main.tf
             rm "$dir"main.tf
             mv "$dir"tmp_main.tf "$dir"main.tf

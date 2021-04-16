@@ -88,6 +88,13 @@ docker_generate_modules:
                 $(REGISTRY_URL)/${DOCKER_IMAGE_DEVELOPER_TOOLS}:${DOCKER_TAG_VERSION_DEVELOPER_TOOLS} \
                 /bin/bash -c 'source /usr/local/bin/task_helper_functions.sh && generate_modules'
 
+# Prepare 3-networks folder from example-foundation
+docker_network_prepare:
+	docker run --rm -it \
+                -v "$(CURDIR)":/workspace \
+                $(REGISTRY_URL)/${DOCKER_IMAGE_DEVELOPER_TOOLS}:${DOCKER_TAG_VERSION_DEVELOPER_TOOLS} \
+                /bin/bash -c 'cd app-foundation/3-networks-extension && ./merge_3-networks.sh && echo "Merge Success"'
+
 # Alias for backwards compatibility
 .PHONY: generate_docs
 generate_docs: docker_generate_docs

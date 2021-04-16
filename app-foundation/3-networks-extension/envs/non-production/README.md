@@ -1,6 +1,6 @@
 # 3-networks/non-production
 
-This is an additional Terraform configuration for [CFT 3-Networks/envs/non-production](https://github.com/terraform-google-modules/terraform-example-foundation/tree/master/3-networks/envs/non-production) and can be used to set up the subnets, additional firewall rules, and private service networking for the Bank of Anthos example application in the non-production environment.
+This is an additional Terraform configuration for [example_foundation 3-Networks/envs/non-production](https://github.com/terraform-google-modules/terraform-example-foundation/tree/master/3-networks/envs/non-production) and can be used to set up the subnets, additional firewall rules, and private service networking for the Bank of Anthos example application in the non-production environment.
 
 ## Prerequisites
 
