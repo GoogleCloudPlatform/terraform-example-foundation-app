@@ -72,7 +72,7 @@ gcloud container clusters get-credentials ${CLUSTER_INGRESS} --region ${CLUSTER_
     ```
 
 ### Install ASM on both clusters
-The following commands run the script for a new installation of ASM on Cluster1 and Cluster2. By default, ASM uses Mesh CA. The `--enable_cluster_labels` flag allows the script to attempt to bind the service account running the script to the cluster-admin role on the cluster. `--enable_cluster_roles` flag allow the script to set the required cluster labels.
+The following commands run the script for a new installation of ASM on Cluster1 and Cluster2. By default, ASM uses Mesh CA. The `--enable_cluster_roles` flag allows the script to attempt to bind the service account running the script to the cluster-admin role on the cluster. `--enable_cluster_labels` flag allow the script to set the required cluster labels.
 
 1. Install ASM on Cluster 1
     ```console ./install_asm \
