@@ -15,7 +15,7 @@
  */
 locals {
   sql_settings = {
-    sql_1 = {
+    sql1 = {
       database_zone = "${var.location_primary}-c",
       database_name = "ledger-db",
       replica_zones = {
@@ -26,7 +26,7 @@ locals {
       sql_instance_prefix = "boa-sql-1-${local.envs[var.env].short}-${var.location_primary}",
       database_region     = var.location_primary
     },
-    sql_2 = {
+    sql2 = {
       database_zone = "${var.location_secondary}-a",
       database_name = "accounts-db",
       replica_zones = {

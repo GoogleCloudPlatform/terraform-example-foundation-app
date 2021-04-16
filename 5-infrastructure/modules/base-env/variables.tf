@@ -38,13 +38,13 @@ variable "folder_prefix" {
 
 variable "location_primary" {
   type        = string
-  description = "The primary region for deployment, if not set default locations for each resource are taken from variables file"
+  description = "The primary region for deployment, if not set default locations for each resource are taken from variables file."
   default     = "us-east1"
 }
 
 variable "location_secondary" {
   type        = string
-  description = "The secondary region for deployment, if not set default locations for each resource are taken from variables file"
+  description = "The secondary region for deployment, if not set default locations for each resource are taken from variables file."
   default     = "us-west1"
 }
 
@@ -55,12 +55,12 @@ variable "gcp_shared_vpc_project_id" {
 
 variable "shared_vpc_name" {
   type        = string
-  description = "The shared VPC network name"
+  description = "The shared VPC network name."
 }
 
 variable "bastion_zone" {
   type        = string
-  description = "The zone for the bastion VM in primary region"
+  description = "The zone for the bastion VM in primary region."
   default     = "us-west1-b"
 }
 
@@ -166,16 +166,36 @@ variable "boa_sql_project_id" {
 }
 
 variable "sql_database_replication_region" {
-  description = "SQL Instance Replica Region"
+  type        = string
+  description = "SQL Instance Replica Region."
   default     = "us-central1"
 }
 
 variable "sql_admin_username" {
+  type        = string
+  description = "Admin Username for SQL Instances."
   default     = "testuser"
-  description = "Admin Username for SQL Instances"
 }
 
 variable "sql_admin_password" {
+  type        = string
+  description = "Admin Password for SQL Instances."
   default     = "foobar"
-  description = "Admin Password for SQL Instances"
+}
+
+variable "enforce_bin_auth_policy" {
+  type        = bool
+  description = "Enable or Disable creation of binary authorization policy."
+  default     = false
+}
+
+variable "bin_auth_attestor_names" {
+  type        = list(string)
+  description = "Binary Authorization Attestor Names set up in shared app_cicd project."
+  default     = []
+}
+
+variable "bin_auth_attestor_project_id" {
+  type        = string
+  description = "Project Id where binary attestors are created."
 }

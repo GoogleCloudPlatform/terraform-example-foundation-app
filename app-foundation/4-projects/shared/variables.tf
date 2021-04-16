@@ -64,3 +64,9 @@ variable "project_prefix" {
   type        = string
   default     = "prj"
 }
+
+variable "primary_location" {
+  description = "Location region to create resources"
+  type        = string
+  default     = "us-east1"
+}
