@@ -202,7 +202,7 @@ With MCI, we need to select a cluster to be the configuration cluster. In this c
     EOF
     ```
 
-    1. create a backend config
+1. create a backend config
     ```console
     cat <<EOF > $HOME/backendconfig.yaml
     apiVersion: cloud.google.com/v1beta1
@@ -218,7 +218,7 @@ With MCI, we need to select a cluster to be the configuration cluster. In this c
         Name: cloud-armor-xss-policy
     EOF
     ```
-1. create the resourced defined above.
+1. create the resources defined above.
     ```console
     kubectl --context ${CTX_INGRESS} -n istio-system apply -f ${HOME}/backendconfig.yaml
     kubectl --context ${CTX_INGRESS} -n istio-system apply -f ${HOME}/mci.yaml
