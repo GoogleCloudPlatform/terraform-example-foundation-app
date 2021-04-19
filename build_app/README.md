@@ -4,31 +4,11 @@ This is an opinionated repository demonstrating Cloud Build based builds of Bank
 
 This demonstration uses Bank of Anthos to simulate a company building and deploying services to a multi-tier kubernetes cluster using asynchronous GitOps.
 
-# Table of Contents
-1. [Requirements](#requirements)
-1. [Run the demo](#run-the-demo)
-1. [Clean up](#cleaning-up)
-
 # Requirements
 
-## Required Repositories
-The solution uses two Git repositories and will need to fork a copy of each.
-
-1. This repository that pulls in a copy of main-line Bank of Anthos. (__Fork this repository__)
-    * [How to Fork Repos with GitHub](https://docs.github.com/en/github/getting-started-with-github/fork-a-repo)
-    * [How to Fork Repos with GitLab](https://docs.gitlab.com/ee////user/project/repository/forking_workflow.html#creating-a-fork)
-1. Desired state used by Config Sync manager inside each cluster. Fork (#TODO-create a repo)
-
-## Environment Variables
-| Name  |  Example | Description  |
-|:----:|:---:|:----|
-| PROJECT_ID | gcp-example-project-id  | Google Cloud Project ID name |
-
-## Command Line Tools
-| Name  |  Description | Link/Install  |
-|:----:|:---:|:----|
-| gcloud | Interact with GCP APIs from the command line | [install link](https://cloud.google.com/sdk/docs/install) |
-| gsutil | Interact with Google Cloud Storage buckets | $> `gcloud components install gsutil` |
+1. Clone Bank of Anthos Repo into `bank-of-anthos-source` Cloud Source Repo in project `prj-bu1-s-app-cicd-xxxx` under folder `fldr-common`
+1. Copy in files `cloudbuild-build-boa.yaml` and `policies` folder into above repo
+1. Run `sed -i.bak "s|gcr.io/bank-of-anthos|$_DEFAULT_REGION-docker.pkg.dev/$PROJECT_ID/$_GAR_REPOSITORY|g" skaffold.yaml` and `sed -i.bak "s|gitCommit: {}|sha256: {}|g" skaffold.yaml` at the root folder level while replacing the variables with the outputs obtained from runnning 5-infrastructure/business-unit-1/shared
 
 # Run the Demo
 

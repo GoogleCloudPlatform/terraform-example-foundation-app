@@ -16,10 +16,10 @@
 
 output "bin_auth_attestor_names" {
   description = "Names of Attestors"
-  value       = [for attestor_name in var.attestor_names : module.attestors[attestor_name].attestor]
+  value       = module.cicd_pipeline.bin_auth_attestor_names
 }
 
 output "bin_auth_attestor_project_id" {
   description = "Project ID where attestors get created"
-  value       = var.app_cicd_project_id
+  value       = module.cicd_pipeline.bin_auth_attestor_project_id
 }

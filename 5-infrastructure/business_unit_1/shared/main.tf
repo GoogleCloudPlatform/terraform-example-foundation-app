@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
-app_cicd_build_sa   = "cicd-build-sa@prj-bu1-s-app-cicd-xxxx.iam.gserviceaccount.com"
-app_cicd_project_id = "prj-bu1-s-app-cicd-xxxx"
-primary_location    = "us-east1"
+module "cicd_pipeline" {
+  app_cicd_build_sa   = var.app_cicd_build_sa
+  app_cicd_project_id = var.app_cicd_project_id
+  app_cicd_repos      = ["bank-of-anthos-source", "root-config-repo", "accounts", "transactions", "frontend"]
+  primary_location    = var.primary_location
+  attestor_names      = ["build", "quality", "security"]
+  cloudbuild_yaml     = "cloudbuild-build-boa.yaml"
+}

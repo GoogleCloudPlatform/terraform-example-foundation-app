@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
-app_cicd_build_sa   = "cicd-build-sa@prj-bu1-s-app-cicd-xxxx.iam.gserviceaccount.com"
-app_cicd_project_id = "prj-bu1-s-app-cicd-xxxx"
-primary_location    = "us-east1"
+output "bin_auth_attestor_names" {
+  description = "Names of Attestors"
+  value       = [for attestor_name in var.attestor_names : module.attestors[attestor_name].attestor]
+}
+
+output "bin_auth_attestor_project_id" {
+  description = "Project ID where attestors get created"
+  value       = var.app_cicd_project_id
+}

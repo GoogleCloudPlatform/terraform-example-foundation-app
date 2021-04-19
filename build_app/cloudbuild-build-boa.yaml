@@ -246,7 +246,7 @@ steps:
 ###############################  Build Containers ###########################
 
 # Create build-installation-image
-- name: gcr.io/${PROJECT_ID}/skaffold-builder
+- name: $_DEFAULT_REGION-docker.pkg.dev/$PROJECT_ID/$_GAR_REPOSITORY/skaffold-builder
   id: "build-images"
   entrypoint: "/bin/bash"
   args:
@@ -255,9 +255,9 @@ steps:
     - |
       ./mvnw validate
       # Replace gcr.io/bank-of-anthos to current project in skaffold.yaml
-      sed -i "s|gcr.io/bank-of-anthos|gcr.io/$PROJECT_ID|g" skaffold.yaml
+      sed -i "s|gcr.io/bank-of-anthos|$_DEFAULT_REGION-docker.pkg.dev/$PROJECT_ID/$_GAR_REPOSITORY|g" skaffold.yaml
       skaffold config set --global local-cluster false
-      skaffold build --default-repo=gcr.io/$PROJECT_ID --tag=$SHORT_SHA --cache-file='/.skaffold/cache' --file-output=/artifacts/build-artifacts.json
+      skaffold build --default-repo=$_DEFAULT_REGION-docker.pkg.dev/$PROJECT_ID/$_GAR_REPOSITORY --tag=$SHORT_SHA --cache-file='/.skaffold/cache' --file-output=/artifacts/build-artifacts.json
       sed -i "s|:latest||g" /artifacts/build-artifacts.json # remove the "latest" tag (complicates things later)
       cp /artifacts/build-artifacts.json ./build-artifacts.json # allow artifact copy mechanism to capture file (see 'artifacts' above)
       while read p; do
@@ -320,7 +320,7 @@ steps:
 
 # Create build-installation-image for each of the images
 # TODO: can I parameterize this to be ${PROJECT_ID} skaffold-builder
-- name: gcr.io/${PROJECT_ID}/skaffold-builder
+- name: $_DEFAULT_REGION-docker.pkg.dev/$PROJECT_ID/$_GAR_REPOSITORY/skaffold-builder
   id: "before-container-structure"
   entrypoint: "/bin/bash"
   args:
@@ -378,7 +378,7 @@ steps:
     name: 'artifacts'
   waitFor: ['build-images']
   # CVE Check
-- name: gcr.io/${PROJECT_ID}/skaffold-builder
+- name: $_DEFAULT_REGION-docker.pkg.dev/$PROJECT_ID/$_GAR_REPOSITORY/skaffold-builder
   id: "before-container-scanner"
   entrypoint: "/bin/bash"
   args:
@@ -403,7 +403,7 @@ steps:
       name: 'artifacts'
   waitFor: ['build-images']
 
-- name: gcr.io/${PROJECT_ID}/skaffold-builder
+- name: $_DEFAULT_REGION-docker.pkg.dev/$PROJECT_ID/$_GAR_REPOSITORY/skaffold-builder
   id: "security-checkpoint"
   entrypoint: "/bin/bash"
   args:
@@ -447,7 +447,7 @@ steps:
     - 'before-container-structure'
     - 'before-container-scanner'
 
-- name: gcr.io/${PROJECT_ID}/skaffold-builder
+- name: $_DEFAULT_REGION-docker.pkg.dev/$PROJECT_ID/$_GAR_REPOSITORY/skaffold-builder
   id: "commit-upstream"
   entrypoint: "/bin/bash"
   args:
@@ -476,19 +476,19 @@ steps:
           case $$IMG in
               frontend|loadgenerator)
                   pushd frontend > /dev/null # repo folder
-                    COMPARE="gcr.io/${PROJECT_ID}/$${IMG}*" FULL_IMAGE="$${IMAGES[$$INDEX]}" yq eval -i '(.spec.template.spec.containers[].image | select(. == strenv(COMPARE))) |= strenv(FULL_IMAGE)' $$IMG.yaml
+                    COMPARE="$_DEFAULT_REGION-docker.pkg.dev/$PROJECT_ID/$_GAR_REPOSITORY/$${IMG}*" FULL_IMAGE="$${IMAGES[$$INDEX]}" yq eval -i '(.spec.template.spec.containers[].image | select(. == strenv(COMPARE))) |= strenv(FULL_IMAGE)' $$IMG.yaml
                   popd > /dev/null
                   ;;
               userservice|contacts)
                   echo "ACCOUNTS - $${IMAGE}"
                   pushd accounts > /dev/null # repo folder
-                    COMPARE="gcr.io/${PROJECT_ID}/$${IMG}*" FULL_IMAGE="$${IMAGES[$$INDEX]}" yq eval -i '(.spec.template.spec.containers[].image | select(. == strenv(COMPARE))) |= strenv(FULL_IMAGE)' $$IMG.yaml
+                    COMPARE="$_DEFAULT_REGION-docker.pkg.dev/$PROJECT_ID/$_GAR_REPOSITORY/$${IMG}*" FULL_IMAGE="$${IMAGES[$$INDEX]}" yq eval -i '(.spec.template.spec.containers[].image | select(. == strenv(COMPARE))) |= strenv(FULL_IMAGE)' $$IMG.yaml
                   popd > /dev/null
                   ;;
               balancereader|ledgerwriter|transactionhistory)
                   echo "TRANSACTIONS - $${IMAGE}"
                   pushd transactions > /dev/null # repo folder
-                    COMPARE="gcr.io/${PROJECT_ID}/$${IMG}*" FULL_IMAGE="$${IMAGES[$$INDEX]}" yq eval -i '(.spec.template.spec.containers[].image | select(. == strenv(COMPARE))) |= strenv(FULL_IMAGE)' $$IMG.yaml
+                    COMPARE="$_DEFAULT_REGION-docker.pkg.dev/$PROJECT_ID/$_GAR_REPOSITORY/$${IMG}*" FULL_IMAGE="$${IMAGES[$$INDEX]}" yq eval -i '(.spec.template.spec.containers[].image | select(. == strenv(COMPARE))) |= strenv(FULL_IMAGE)' $$IMG.yaml
                   popd > /dev/null
                   ;;
           esac

@@ -55,20 +55,35 @@ resource "google_storage_bucket_iam_member" "cloudbuild_artifacts_iam" {
   depends_on = [google_storage_bucket.cloudbuild_artifacts]
 }
 
-resource "google_cloudbuild_trigger" "main_trigger" {
-  for_each    = local.created_csrs
+resource "google_cloudbuild_trigger" "boa_build_trigger" {
   project     = var.app_cicd_project_id
-  description = "${each.value}- trigger."
+  description = "bank-of-anthos-source-trigger."
   trigger_template {
     branch_name = ".*"
-    repo_name   = each.value
+    repo_name   = "bank-of-anthos-source"
   }
   substitutions = {
-    _GAR_REPOSITORY       = local.gar_name
-    _ARTIFACT_BUCKET_NAME = google_storage_bucket.cloudbuild_artifacts["${each.value}-ab"].name
+    _GAR_REPOSITORY    = local.gar_name
+    _DEFAULT_REGION    = var.primary_location
+    _CACHE_BUCKET_NAME = "${var.app_cicd_project_id}_cloudbuild"
   }
   filename   = var.cloudbuild_yaml
   depends_on = [google_sourcerepo_repository.app_infra_repo]
+}
+
+resource "null_resource" "cloudbuild_image_builder" {
+  triggers = {
+    project_id_cloudbuild_project = var.app_cicd_project_id
+  }
+
+  provisioner "local-exec" {
+    command = <<EOT
+      gcloud builds submit ${path.module}/cloud-build-builder/ \
+      --project ${var.app_cicd_project_id} \
+      --config=${path.module}/cloud-build-builder/cloudbuild-skaffold-build-image.yaml \
+      --substitutions=_DEFAULT_REGION=${var.primary_location},_GAR_REPOSITORY=${local.gar_name}
+  EOT
+  }
 }
 
 /***********************************************
