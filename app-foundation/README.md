@@ -1,7 +1,7 @@
 # terraform-example-foundation-app/app-foundation
 
 ## Overview
-The `app-foundation` folder contains several distinct Terraform configurations that can supplement the CFT to deploy the necessary foundation for the Bank of Anthos example application. These configurations are meant to fit into the framework defined by [terraform-example-foundation](https://github.com/terraform-google-modules/terraform-example-foundation). Each folder contains its own directory that must be applied separately, and in sequence, to correctly deploy the application. The necessary steps are outlined below for the relevant folders.
+The `app-foundation` folder contains additional Terraform configurations required for Bank Of Anthos deployment and are meant to fit into the framework defined by [terraform-example-foundation](https://github.com/terraform-google-modules/terraform-example-foundation). Each folder contains its own directory that must be applied separately, and in sequence, to correctly deploy the application. The necessary steps are outlined below for the relevant folders.
 
 ### [3. networks](./3-networks/)
 
