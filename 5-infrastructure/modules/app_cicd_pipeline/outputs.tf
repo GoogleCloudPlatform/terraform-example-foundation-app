@@ -16,15 +16,15 @@
 
 output "bin_auth_attestor_names" {
   description = "Names of Attestors"
-  value       = module.cicd_pipeline.bin_auth_attestor_names
+  value       = [for attestor_name in var.attestor_names : module.attestors[attestor_name].attestor]
 }
 
 output "bin_auth_attestor_project_id" {
   description = "Project ID where attestors get created"
-  value       = module.cicd_pipeline.bin_auth_attestor_project_id
+  value       = var.app_cicd_project_id
 }
 
 output "boa_artifact_repo" {
   description = "GAR Repo created to store runner images"
-  value       = module.cicd_pipeline.boa_artifact_repo
+  value       = google_artifact_registry_repository.image_repo.name
 }

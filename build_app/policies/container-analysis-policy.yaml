@@ -12,11 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-options:
-  # Use higher CPU machines so the caching and build steps are faster.
-  machineType: 'N1_HIGHCPU_32'
-steps:
-- name: 'gcr.io/cloud-builders/docker'
-  args: [ 'build', '-t', 'gcr.io/${PROJECT_ID}/skaffold-builder', '.' ]
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'gcr.io/${PROJECT_ID}/skaffold-builder']
+apiVersion: kritis.grafeas.io/v1beta1
+kind: VulnzSigningPolicy
+metadata:
+  name: vulnerability-policy
+spec:
+  imageVulnerabilityRequirements:
+    maximumFixableSeverity: CRITICAL #MEDIUM
+    maximumUnfixableSeverity: ALLOW_ALL #MEDIUM
+    allowlistCVEs:
+      - projects/goog-vulnz/notes/CVE-2020-10543
+      - projects/goog-vulnz/notes/CVE-2020-1751
+      - projects/goog-vulnz/notes/CVE-2020-29562
+      - projects/goog-vulnz/notes/CVE-2019-25013
+      - projects/goog-vulnz/notes/CVE-2021-3326

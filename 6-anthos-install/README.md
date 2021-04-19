@@ -9,7 +9,7 @@ gcloud compute ssh gce-bastion-us-west1-b-01 \
   --project ${PROJECT_ID}
 ```
 
-## Insall required tools
+## Install required tools
 ```console
 sudo su
 yum install git

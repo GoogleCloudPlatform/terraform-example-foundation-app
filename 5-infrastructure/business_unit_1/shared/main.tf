@@ -14,17 +14,11 @@
  * limitations under the License.
  */
 
-output "bin_auth_attestor_names" {
-  description = "Names of Attestors"
-  value       = module.cicd_pipeline.bin_auth_attestor_names
-}
-
-output "bin_auth_attestor_project_id" {
-  description = "Project ID where attestors get created"
-  value       = module.cicd_pipeline.bin_auth_attestor_project_id
-}
-
-output "boa_artifact_repo" {
-  description = "GAR Repo created to store runner images"
-  value       = module.cicd_pipeline.boa_artifact_repo
+module "cicd_pipeline" {
+  app_cicd_build_sa   = var.app_cicd_build_sa
+  app_cicd_project_id = var.app_cicd_project_id
+  app_cicd_repos      = ["bank-of-anthos-source", "root-config-repo", "accounts", "transactions", "frontend"]
+  primary_location    = var.primary_location
+  attestor_names      = ["build", "quality", "security"]
+  cloudbuild_yaml     = "cloudbuild-build-boa.yaml"
 }
