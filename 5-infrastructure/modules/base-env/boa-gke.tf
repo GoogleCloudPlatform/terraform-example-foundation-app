@@ -85,6 +85,10 @@ module "bastion" {
   network_project_id           = var.gcp_shared_vpc_project_id
 }
 
+data "google_project" "gke_project" {
+  project_id = var.boa_gke_project_id
+}
+
 module "clusters" {
   source   = "terraform-google-modules/kubernetes-engine/google//modules/safer-cluster"
   version  = "~> 14.0.1"
@@ -108,6 +112,9 @@ module "clusters" {
       }
     ]
   )
+  cluster_resource_labels = {
+    "mesh_id" = "proj-${data.google_project.gke_project.number}"
+  }
   node_pools_tags = {
     "np-${each.value.region}" : ["boa-${each.key}-cluster", "allow-google-apis"]
   }
