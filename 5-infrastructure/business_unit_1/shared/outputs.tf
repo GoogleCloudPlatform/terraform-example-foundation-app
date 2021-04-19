@@ -23,3 +23,8 @@ output "bin_auth_attestor_project_id" {
   description = "Project ID where attestors get created"
   value       = module.cicd_pipeline.bin_auth_attestor_project_id
 }
+
+output "boa_artifact_repo" {
+  description = "GAR Repo created to store runner images"
+  value       = module.cicd_pipeline.boa_artifact_repo
+}

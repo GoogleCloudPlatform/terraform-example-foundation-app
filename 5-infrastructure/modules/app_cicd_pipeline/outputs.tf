@@ -23,3 +23,8 @@ output "bin_auth_attestor_project_id" {
   description = "Project ID where attestors get created"
   value       = var.app_cicd_project_id
 }
+
+output "boa_artifact_repo" {
+  description = "GAR Repo created to store runner images"
+  value       = google_artifact_registry_repository.image_repo.name
+}
