@@ -15,6 +15,7 @@
  */
 
 module "cicd_pipeline" {
+  source              = "../../modules/app_cicd_pipeline"  
   app_cicd_build_sa   = var.app_cicd_build_sa
   app_cicd_project_id = var.app_cicd_project_id
   app_cicd_repos      = ["bank-of-anthos-source", "root-config-repo", "accounts", "transactions", "frontend"]
