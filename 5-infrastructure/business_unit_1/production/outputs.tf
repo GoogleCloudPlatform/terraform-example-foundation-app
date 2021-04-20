@@ -105,3 +105,12 @@ output "mci_region" {
   description = "MCI Cluster Region"
   value       = module.env.gke_outputs.mci["Region"]
 }
+
+/******************************************
+  External IP Outputs
+*****************************************/
+
+output "external_ip_address" {
+  description = "The external IP for HTTP load balancing."
+  value       = module.env.external_ip_address
+}

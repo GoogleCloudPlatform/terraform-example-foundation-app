@@ -65,7 +65,8 @@ module "boa_gke_project" {
     "iap.googleapis.com",
     "storage-api.googleapis.com",
     "oslogin.googleapis.com",
-    "binaryauthorization.googleapis.com"
+    "binaryauthorization.googleapis.com",
+    "privateca.googleapis.com"
   ]
 
   # Metadata
