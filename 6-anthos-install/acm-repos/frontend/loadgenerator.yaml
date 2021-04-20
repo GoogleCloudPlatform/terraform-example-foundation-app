@@ -33,7 +33,7 @@ spec:
       restartPolicy: Always
       containers:
         - name: loadgenerator
-          image: gcr.io/prj-bu1-d-boa-gke-ecb0/loadgenerator@sha256:51241c8334950384f929b8743b4824b1914f6ded62ad7a314a4cd6b1859fc230
+          image: <Region - us-east1>-docker.pkg.dev/<Project ID - prj-bu1-s-app-cicd-xxxx>/<GAR_REPOSITORY - prj-bu1-s-app-cicd-xxxx-boa-image-repo>/loadgenerator@sha256:51241c8334950384f929b8743b4824b1914f6ded62ad7a314a4cd6b1859fc230
           env:
             - name: FRONTEND_ADDR
               value: "frontend:80"
