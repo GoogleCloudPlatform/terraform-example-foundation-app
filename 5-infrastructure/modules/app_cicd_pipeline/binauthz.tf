@@ -14,12 +14,16 @@
  * limitations under the License.
  */
 
-resource "random_id" "keyring-name" {
-  byte_length = 4
+resource "random_string" "keyring_name" {
+  length  = 4
+  special = false
+  number  = true
+  upper   = false
+  lower   = true
 }
 
 resource "google_kms_key_ring" "keyring" {
-  name     = "attestor-key-ring-${random_id.keyring-name.id}"
+  name     = "attestor-key-ring-${random_string.keyring_name.id}"
   location = var.primary_location
   lifecycle {
     prevent_destroy = false

@@ -13,6 +13,6 @@
 |------|-------------|
 | bin\_auth\_attestor\_names | Names of Attestors |
 | bin\_auth\_attestor\_project\_id | Project ID where attestors get created |
-| boa\_artifact\_repo | GAR Repo created to store runner images |
+| boa\_artifact\_repo | GAR Repo created to store BoA images |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

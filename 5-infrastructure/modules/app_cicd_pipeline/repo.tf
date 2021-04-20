@@ -65,7 +65,7 @@ resource "google_cloudbuild_trigger" "boa_build_trigger" {
   substitutions = {
     _GAR_REPOSITORY    = local.gar_name
     _DEFAULT_REGION    = var.primary_location
-    _CACHE_BUCKET_NAME = "${var.app_cicd_project_id}_cloudbuild"
+    _CACHE_BUCKET_NAME = google_storage_bucket.cache_bucket.name
   }
   filename   = var.cloudbuild_yaml
   depends_on = [google_sourcerepo_repository.app_infra_repo]

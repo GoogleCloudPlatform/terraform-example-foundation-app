@@ -8,7 +8,7 @@ This demonstration uses Bank of Anthos to simulate a company building and deploy
 
 1. Clone Bank of Anthos Repo into `bank-of-anthos-source` Cloud Source Repo in project `prj-bu1-s-app-cicd-xxxx` under folder `fldr-common`
 1. Copy in files `cloudbuild-build-boa.yaml` and `policies` folder into above repo
-1. Run `sed -i.bak "s|gcr.io/bank-of-anthos|$_DEFAULT_REGION-docker.pkg.dev/$PROJECT_ID/$_GAR_REPOSITORY|g" skaffold.yaml` and `sed -i.bak "s|gitCommit: {}|sha256: {}|g" skaffold.yaml` at the root folder level while replacing the variables with the outputs obtained from runnning 5-infrastructure/business-unit-1/shared
+1. Run `sed -i.bak "s|gcr.io/bank-of-anthos|$_DEFAULT_REGION-docker.pkg.dev/$PROJECT_ID/$_GAR_REPOSITORY|g" skaffold.yaml && sed -i.bak "s|gitCommit: {}|sha256: {}|g" skaffold.yaml` at the root folder level while replacing the variables with the outputs obtained from runnning 5-infrastructure/business-unit-1/shared
 
 # Run the Demo
 
@@ -45,32 +45,8 @@ This first stage will build all candidate artifacts (docker-based images).
 ## 2. Artifact before deployment
 This next stage is to verify the artifact before it has been deployed
 
-```mermaid
-flowchart TB
-    D2(Container Structure Test)
-    D3(Container Analysis)
-    CR[[Container Registry]]
+![image](https://user-images.githubusercontent.com/63249609/115388860-02485200-a1a2-11eb-9293-219ff2e61eeb.png)
 
-    subgraph before [Artifact Before Deploy]
-        CR:::stage2 --> D2:::stage3
-        CR --> D3:::stage3
-    end
-
-    img(Image Creation) --> before
-
-    %% Apply a "Google" theme for fun
-    classDef subg stroke:#000,stroke-width:4px,fill:#fff,color:#000,font-size:normal
-    classDef stage0 stroke:#fff,fill:#80868B,color:#000
-    classDef stage1 stroke:#fff,fill:#EA4335,color:#fff
-    classDef stage2 stroke:#fff,fill:#34A853,color:#fff
-    classDef stage3 stroke:#fff,fill:#4285F4,color:#fff
-    classDef stage4 stroke:#fff,fill:#FBBC04,color:#fff
-    classDef bg fill:#fff,stroke:#80868B,color:#202124
-
-    class img stage2
-    class before subg
-    class before bg;
-```
 ### Steps
 * Container Structure Tests - Verify that the container built conforms to the organizational standards
 * Container Analysis - Verify that the container does not contain Common Vulnerabilities or Exposures (CVEs) per the organization's standards
@@ -92,27 +68,8 @@ flowchart TB
 ## 3. Create Security Attestation
 The final step in the `Continuous Integration` phase is to create an Attestation to attest to the fact that the container has successfully completed the previous steps.
 
-```mermaid
-flowchart TB
+![image](https://user-images.githubusercontent.com/63249609/115388948-20ae4d80-a1a2-11eb-864e-3378b682fffd.png)
 
-    subgraph attestation [Security Acceptance]
-        SA(Create Security Attestation):::stage4 --> T[/Trigger Next Phase/]:::stage4
-    end
-
-    before(Artifact Before Deploy) --> attestation
-
-    %% Apply a "Google" theme for fun
-    classDef subg stroke:#000,stroke-width:4px,fill:#fff,color:#000,font-size:normal
-    classDef stage0 stroke:#fff,fill:#80868B,color:#000
-    classDef stage1 stroke:#fff,fill:#EA4335,color:#fff
-    classDef stage2 stroke:#fff,fill:#34A853,color:#fff
-    classDef stage3 stroke:#fff,fill:#4285F4,color:#fff
-    classDef stage4 stroke:#fff,fill:#FBBC04,color:#fff
-    classDef bg fill:#fff,stroke:#80868B,color:#202124
-
-    class before stage3
-    class attestation bg;
-```
 ### Steps
 * Create Attestation - The only step in this phase is to create an attestation for the artifact. This requires the artifact's image-digest as well as access to the Actor/Signer for automated security.
 
