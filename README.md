@@ -28,7 +28,7 @@ Google Cloud organization that you've created.</td>
 <tr>
 <td><a
 href="https://github.com/GoogleCloudPlatform/terraform-example-foundation-app/tree/main/app-foundation/3-networks-extension">3-networks-extension/</a></td>
-<td>Sets up base shared VPCs with .</td>
+<td>Sets up base shared VPCs with BOA Subnets and Firewall Rules, need only run the bash script to complete this step.</td>
 </tr>
 <tr>
 <td><a
