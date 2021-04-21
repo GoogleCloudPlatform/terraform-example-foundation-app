@@ -20,6 +20,8 @@ parent_dir=$( dirname "$(pwd)" )
 if [[ ! -d "$parent_dir/3-networks" ]]; then
     git clone --depth 1 --filter=blob:none https://github.com/terraform-google-modules/terraform-example-foundation example-foundation
     mv example-foundation/3-networks/ "$parent_dir"
+    mv example-foundation/build/cloudbuild-tf-* "$parent_dir"/../build
+    mv example-foundation/build/tf-wrapper.sh "$parent_dir"/../build
     rm -rf example-foundation
 fi
 if [[ ! -f "$parent_dir/3-networks/envs/development/boa_*" ]]; then
