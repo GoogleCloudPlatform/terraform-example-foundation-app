@@ -31,7 +31,7 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
         - name: ledgerwriter
-          image: gcr.io/prj-bu1-d-boa-gke-ecb0/ledgerwriter@sha256:5d20e35e20b57974142dcdd5de4ab36cc9cca0e274650d418985c404c68f63d1
+          image: gcr.io/bank-of-anthos/ledgerwriter:v0.4.3
           volumeMounts:
             - name: publickey
               mountPath: "/root/.ssh"

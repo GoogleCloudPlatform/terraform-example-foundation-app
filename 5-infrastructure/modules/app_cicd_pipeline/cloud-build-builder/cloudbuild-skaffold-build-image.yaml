@@ -17,6 +17,9 @@ options:
   machineType: 'N1_HIGHCPU_32'
 steps:
 - name: 'gcr.io/cloud-builders/docker'
-  args: [ 'build', '-t', 'gcr.io/${PROJECT_ID}/skaffold-builder', '.' ]
+  args: [ 'build', '-t', '$_DEFAULT_REGION-docker.pkg.dev/$PROJECT_ID/$_GAR_REPOSITORY/skaffold-builder', '.' ]
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'gcr.io/${PROJECT_ID}/skaffold-builder']
+  args: ['push', '$_DEFAULT_REGION-docker.pkg.dev/$PROJECT_ID/$_GAR_REPOSITORY/skaffold-builder']
+substitutions:
+  _DEFAULT_REGION: 'us-east1' # default value
+  _GAR_REPOSITORY: '$PROJECT_ID-boa-image-repo' # default value

@@ -14,12 +14,16 @@
  * limitations under the License.
  */
 
-resource "random_id" "keyring-name" {
-  byte_length = 4
+resource "random_string" "keyring_name" {
+  length  = 4
+  special = false
+  number  = true
+  upper   = false
+  lower   = true
 }
 
 resource "google_kms_key_ring" "keyring" {
-  name     = "attestor-key-ring-${random_id.keyring-name.id}"
+  name     = "attestor-key-ring-${random_string.keyring_name.id}"
   location = var.primary_location
   lifecycle {
     prevent_destroy = false
@@ -47,7 +51,7 @@ resource "google_secret_manager_secret_version" "keyring-secret-version" {
 module "attestors" {
   source   = "terraform-google-modules/kubernetes-engine/google//modules/binary-authorization"
   version  = "~> 14.1"
-  for_each = toset(var.attestor_names)
+  for_each = toset(var.attestor_names_prefix)
 
   project_id    = var.app_cicd_project_id
   attestor-name = each.key

@@ -90,3 +90,9 @@ resource "google_service_account_iam_member" "app_cicd_build_sa_impersonate_perm
   role               = "roles/iam.serviceAccountTokenCreator"
   member             = "serviceAccount:${module.app_infra_cloudbuild_project.project_number}@cloudbuild.gserviceaccount.com"
 }
+
+resource "google_project_iam_member" "app_cicd_cloudbuild_sa_roles" {
+  project = module.app_cicd_project.project_id
+  role    = "roles/source.admin"
+  member  = "serviceAccount:${module.app_cicd_project.project_number}@cloudbuild.gserviceaccount.com"
+}

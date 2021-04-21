@@ -19,12 +19,6 @@ variable "app_cicd_build_sa" {
   type        = string
 }
 
-variable "app_cicd_repos" {
-  description = "A list of Cloud Source Repos to be created to hold app infra Terraform configs"
-  type        = list(string)
-  default     = ["root-config-repo", "accounts", "transactions", "frontend"]
-}
-
 variable "app_cicd_project_id" {
   type        = string
   description = "Project ID for CICD Pipeline Project"
@@ -34,16 +28,4 @@ variable "primary_location" {
   type        = string
   description = "Region used for key-ring"
   default     = "us-east1"
-}
-
-variable "attestor_names" {
-  description = "A list of Cloud Source Repos to be created to hold app infra Terraform configs"
-  type        = list(string)
-  default     = ["build", "quality", "security"]
-}
-
-variable "cloudbuild_yaml" {
-  type        = string
-  description = "Name of cloudbuild file"
-  default     = "cloudbuild.yaml"
 }

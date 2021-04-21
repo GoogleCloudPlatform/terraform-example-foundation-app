@@ -29,7 +29,9 @@ locals {
       "roles/storage.objectViewer",
       "roles/iap.admin",
       "roles/iam.roleAdmin",
-      "roles/binaryauthorization.policyEditor"
+      "roles/binaryauthorization.policyEditor",
+      "roles/compute.securityAdmin",
+      "roles/compute.publicIpAdmin"
     ],
     ops = [
       "roles/logging.configWriter",
