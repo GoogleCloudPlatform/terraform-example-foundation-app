@@ -4,7 +4,8 @@
 
 This module contains additional Terraform configurations that are meant to extend and modify the framework defined by [terraform-example-foundation](https://github.com/terraform-google-modules/terraform-example-foundation).
 These additional configurations can be used to securely deploy the Bank of Anthos example application.
-**This is not a complete configuration - this configuration is expected to be used in conjunction with [terraform-example-foundation](https://github.com/terraform-google-modules/terraform-example-foundation/)**
+**This is not a complete configuration - this configuration is expected to be used in conjunction with [terraform-example-foundation](https://github.com/terraform-google-modules/terraform-example-foundation/).**
+Within this supplemental configuration, hub-and-spoke mode is enabled be default. If you wish to use this configuration without modifications, please ensure that hub-and-spoke mode was enabled on step `1-org` from [terraform-example-foundation](https://github.com/terraform-google-modules/terraform-example-foundation/) or go back and enable it so the necessary hub-and-spoke infrastructure is built.
 After steps `0-bootstrap`, `1-org` and `2-environments` from [terraform-example-foundation](https://github.com/terraform-google-modules/terraform-example-foundation/) are configured completely, this module can be used to supplement the remaining steps. Each folder contains its own directory that must be applied separately, and in the following order, to correctly deploy the application:
 
 ## Order of Execution
@@ -73,7 +74,6 @@ href="https://github.com/GoogleCloudPlatform/terraform-example-foundation-app/tr
 
 1. Enable optional firewall rules in your shared VPC by modifying your 3-networks/envs/dev/main.tf and adding the following `optional_fw_rules_enabled = true`
 1. Ensure that you have enabled the following APIs in your project, by adding `activate_apis = ["container.googleapis.com", "iap.googleapis.com"]`
-1. Ensure that the user running terraform has the necessary permissions, including `roles/billing.user, roles/resourcemanager.organizationAdmin, roles/resourcemanager.projectCreator, roles/resourcemanager.folderAdmin, roles/iam.serviceAccountTokenCreator, roles/orgpolicy.policyAdmin, roles/logging.admin, roles/accesscontextmanager.policyAdmin, roles/securitycenter.admin, roles/compute.xpnAdmin, roles/compute.orgSecurityPolicyAdmin, and roles/compute.orgSecurityResourceAdmin` at the **org level** and `roles/owner` at the **project level**.
 1. Set necessary variables as env vars or use a tfvars file. These will be outputs (TODO:example-foundation) after spinning up a project.
 1. Perform the following commands on the root folder: `terraform init` to get the plugins, `terraform plan` to see the infrastructure plan and `terraform apply` to apply the infrastructure build
 1. Run the command `gcloud compute ssh ... ` given by the output `bastion_ssh` in terminal window. This will open an ssh tunnel.
