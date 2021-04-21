@@ -59,7 +59,7 @@ resource "google_storage_bucket_iam_member" "cloudbuild_artifacts_iam" {
   bucket     = google_storage_bucket.cache_bucket.name
   role       = "roles/storage.admin"
   member     = "serviceAccount:${data.google_project.app_cicd_project.number}@cloudbuild.gserviceaccount.com"
-  depends_on = [google_storage_bucket.cloudbuild_artifacts]
+  depends_on = [google_storage_bucket.cache_bucket]
 }
 
 /***********************************************
