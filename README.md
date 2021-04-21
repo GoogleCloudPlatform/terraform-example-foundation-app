@@ -1,5 +1,12 @@
 # Deploy Bank of Anthos on example-foundations
 
+## Overview
+
+This module contains additional Terraform configurations that are meant to extend and modify the framework defined by [terraform-example-foundation](https://github.com/terraform-google-modules/terraform-example-foundation).
+These additional configurations can be used to securely deploy the Bank of Anthos example application.
+**This is not a complete configuration - this configuration is expected to be used in conjunction with [terraform-example-foundation](https://github.com/terraform-google-modules/terraform-example-foundation/)**
+After steps `0-bootstrap`, `1-org` and `2-environments` from [terraform-example-foundation](https://github.com/terraform-google-modules/terraform-example-foundation/) are configured completely, this module can be used to supplement the remaining steps. Each folder contains its own directory that must be applied separately, and in the following order, to correctly deploy the application:
+
 ## Order of Execution
 
 <table>
@@ -62,15 +69,6 @@ href="https://github.com/GoogleCloudPlatform/terraform-example-foundation-app/tr
 </tbody>
 </table>
 
-# Deploy Bank of Anthos on example-foundations
-
-## Overview
-
-This module contains additional Terraform configurations that are meant to fit into and modify the framework defined by [terraform-example-foundation](https://github.com/terraform-google-modules/terraform-example-foundation).
-These additional configurations can be used to securely deploy the Bank of Anthos example application.
-**This is not a complete configuration - this configuration is expected to be used in conjunction with [terraform-example-foundation](https://github.com/terraform-google-modules/terraform-example-foundation/)**
-After steps `0-bootstrap`, `1-org` and `2-environments` from [terraform-example-foundation](https://github.com/terraform-google-modules/terraform-example-foundation/) are configured completely, this module can be used to supplement the remaining steps. Each folder contains its own directory that must be applied separately, and in the following order, to correctly deploy the application:
-
 ## Instructions
 
 1. Enable optional firewall rules in your shared VPC by modifying your 3-networks/envs/dev/main.tf and adding the following `optional_fw_rules_enabled = true`
@@ -84,22 +82,23 @@ After steps `0-bootstrap`, `1-org` and `2-environments` from [terraform-example-
 1. Run `./deploy.sh` to deploy HipsterShop.
 1. Run `HTTPS_PROXY=localhost:8888 kubectl get svc frontend-external` and wait till an external ip address has been assigned.
 
-### [3. networks-extension](./app-foundation/3-networks/)
+### [3. networks-extension](./app-foundation/3-networks-extension/)
 
 This step - a network *extension* - adds on top of the 3-networks layer that is part of [terraform-example-foundation/3-networks](https://github.com/terraform-google-modules/terraform-example-foundation/tree/master/3-networks).
 This step focuses on creating a shared VPC per environment (`development`, `non-production` & `production`) that is configured with subnets, secondary ranges, additional firewall rules, and a [network_prepare.sh](https://github.com/GoogleCloudPlatform/terraform-example-foundation-app/blob/main/app-foundation/3-networks-extension/network_prepare.sh) script included in the configuration that can be used to automatically populate or replace configurations in [terraform-example-foundation/3-networks](https://github.com/terraform-google-modules/terraform-example-foundation/tree/master/3-networks) with the configurations in the Bank of Anthos example.
 Currently, this configuration includes:
 
 - **Example subnets** for the `development`, `non-production` & `production` environments
-- **Secondary ranges** for the application in all environments.
-- **VPC firewall rules** for the application in all environments.
-- **A Script** to automatically prepare the 3-networks layer in [terraform-example-foundation/3-networks](https://github.com/terraform-google-modules/terraform-example-foundation/tree/master/3-networks)
+- **Secondary ranges** for the subnets in all environments.
+- **VPC firewall rules** for the VPC network in all environments.
+
+**A Bash Script** to automatically prepare the 3-networks layer by auto-merging 3-networks-extension with the 3-networks from [terraform-example-foundation/3-networks](https://github.com/terraform-google-modules/terraform-example-foundation/tree/master/3-networks)
 
 ### [4. projects](./app-foundation/4-projects)
 
 This step focuses on creating service projects, including an application CI/CD pipeline project and an infrastructure pipeline project that are necessary for the Bank of Anthos configuration to work. Currently, this includes:
 
-- **5 Service projects** that are attached to the shared VPC
+- **5 Service projects** that are attached to the shared VPC for each environment
 - **An Application CI/CD pipeline project** that will help with deployment of the example application
 - **An Infrastructure pipeline project** that will also help with deployment of the example application
 
@@ -159,16 +158,18 @@ The purpose of this step is to deploy the infrastructure for the Bank of Anthos 
   - Cluster1 in the primary region (us-east1)
   - Cluster2 in the secondary region (us-west1)
   - MCI Cluster in the primary region (us-east1)
-- **A Bastion Host VM** in the secondary region (us-west1)
+- **Bastion Host VM** in the secondary region (us-west1)
 - **2 Postgres CLoudSQL instances** in the primary and secondary regions, respectively
-- **A Secret** to store the CloudSQL Admin Password
+- **Secret** to store the CloudSQL Admin Password
 - **4 KMS Keyrings and Keys**
   - 2 KMS Keyrings and Keys for GKE, one in each region
   - 2 KMS Keyrings and Keys for CloudSQL, one in each region
-- **A Service Account for KMS** to own/manage the Keyrings and Keys
-- **A Service Account for the Bastion Host VM** with roles to install Anthos Service Mesh
+- **Service Account for KMS** to own/manage the Keyrings and Keys
+- **Service Account for the Bastion Host VM** with roles to install Anthos Service Mesh
 - **4 Log Sinks**, one in each project
 - **Log Sink Destination Storage Bucket** that Log Sinks write logs to
+- **Cloud Armor Policy**
+- **External IP** for accessing the application externally
 
 ### [6. anthos-install](./6-anthos-install)
 
