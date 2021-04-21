@@ -31,7 +31,7 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
         - name: front
-          image: <Region - us-east1>-docker.pkg.dev/<Project ID - prj-bu1-s-app-cicd-xxxx>/<GAR_REPOSITORY - prj-bu1-s-app-cicd-xxxx-<gar_repo_name_suffix>>/frontend@sha256:ab60398db84cae98b930202900758163ed6f54fcc0d4109dac6d5ac86787e99f
+          image: gcr.io/bank-of-anthos/frontend:v0.4.3
           volumeMounts:
             - name: publickey
               mountPath: "/root/.ssh"

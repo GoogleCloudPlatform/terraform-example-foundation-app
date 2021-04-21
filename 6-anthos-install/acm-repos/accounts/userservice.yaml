@@ -31,7 +31,7 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
         - name: userservice
-          image: <Region - us-east1>-docker.pkg.dev/<Project ID - prj-bu1-s-app-cicd-xxxx>/<GAR_REPOSITORY - prj-bu1-s-app-cicd-xxxx-<gar_repo_name_suffix>>/userservice@sha256:e8ff955afc60877eba87a520911432cbc288785bf14fb925297398d881f374dc
+          image: gcr.io/bank-of-anthos/userservice:v0.4.3
           volumeMounts:
             - name: keys
               mountPath: "/root/.ssh"

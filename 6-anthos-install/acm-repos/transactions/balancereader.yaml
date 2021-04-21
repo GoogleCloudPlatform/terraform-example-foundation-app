@@ -31,7 +31,7 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
         - name: balancereader
-          image: <Region - us-east1>-docker.pkg.dev/<Project ID - prj-bu1-s-app-cicd-xxxx>/<GAR_REPOSITORY - prj-bu1-s-app-cicd-xxxx-<gar_repo_name_suffix>>/balancereader@sha256:7f9a9e2ff37fd17c262048d97d7ddd8c30a8f13f60c29bc39e8cd22e6b7788e5
+          image: gcr.io/bank-of-anthos/balancereader:v0.4.3
           volumeMounts:
             - name: publickey
               mountPath: "/root/.ssh"
