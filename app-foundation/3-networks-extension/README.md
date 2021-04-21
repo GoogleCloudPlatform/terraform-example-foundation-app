@@ -21,8 +21,9 @@ This is an additional Terraform configuration for [example-foundation 3-Networks
 
 1. Clone [example_foundation 3-Networks](https://github.com/terraform-google-modules/terraform-example-foundation/tree/master/3-networks)
 1. Merge files from 3-networks-extensions/envs into 3-networks/envs for the respective environments
+1. Copy `cloudbuild-tf-*` and `tf-wrapper.sh` files from [example-foundation/build](https://github.com/terraform-google-modules/terraform-example-foundation/tree/master/build) to the build folder in the root of this repo.
 1. Change Primary Region in [example_foundation 3-networks/common.auto.tfvars](https://github.com/terraform-google-modules/terraform-example-foundation/blob/master/3-networks/common.auto.example.tfvars) from us-central1 to us-east1 to be consistent with BOA 4-projects and 5-infrastructure
-1. Remove Base Shared VPC defined in main.tf of [example_foundation 3-Networks](https://github.com/terraform-google-modules/terraform-example-foundation/tree/master/3-networks) as boa_vpc.tf replaces it with new subnets.
+1. Remove Base Shared VPC defined in main.tf of [example_foundation 3-Networks](https://github.com/terraform-google-modules/terraform-example-foundation/tree/master/3-networks) as boa_vpc_fw.tf replaces it with new subnets.
 
 ## Local Run Troubleshooting
 

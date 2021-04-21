@@ -28,7 +28,8 @@ module "app_infra_cloudbuild_project" {
   activate_apis = [
     "cloudbuild.googleapis.com",
     "sourcerepo.googleapis.com",
-    "cloudkms.googleapis.com"
+    "cloudkms.googleapis.com",
+    "artifactregistry.googleapis.com"
   ]
 
   # Metadata
