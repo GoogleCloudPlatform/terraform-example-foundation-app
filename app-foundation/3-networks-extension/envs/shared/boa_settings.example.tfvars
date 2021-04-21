@@ -18,5 +18,5 @@
  Tfvars for BoA shared VPC
 *****************************************/
 
-enable_hub_and_spoke              = "true"
-enable_hub_and_spoke_transitivity = "true"
+enable_hub_and_spoke              = true
+enable_hub_and_spoke_transitivity = true

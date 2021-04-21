@@ -18,7 +18,7 @@
  Tfvars for BoA shared VPC
 *****************************************/
 
-enable_hub_and_spoke              = "true"
-enable_hub_and_spoke_transitivity = "true"
-nat_enabled                       = "true"
-optional_firewall_rules_enabled   = "true"
+enable_hub_and_spoke              = true
+enable_hub_and_spoke_transitivity = true
+nat_enabled                       = true
+optional_firewall_rules_enabled   = true
