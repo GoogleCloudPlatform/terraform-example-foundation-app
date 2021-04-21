@@ -476,19 +476,19 @@ steps:
           case $$IMG in
               frontend|loadgenerator)
                   pushd frontend > /dev/null # repo folder
-                    COMPARE="$_DEFAULT_REGION-docker.pkg.dev/$PROJECT_ID/$_GAR_REPOSITORY/$${IMG}*" FULL_IMAGE="$${IMAGES[$$INDEX]}" yq eval -i '(.spec | select(documentIndex == 0) |.template.spec.containers[].image | select(. == strenv(COMPARE))) |= strenv(FULL_IMAGE)' $$IMG.yaml
+                    GAR="$_DEFAULT_REGION-docker.pkg.dev/$PROJECT_ID/$_GAR_REPOSITORY/$${IMG}*" GCR="gcr.io/$PROJECT_ID/$${IMG}*" BOA="gcr.io/bank-of-anthos/$${IMG}*" FULL_IMAGE="$${IMAGES[$$INDEX]}" yq eval -i '(.spec | select(documentIndex == 0) |.template.spec.containers[].image | select(. == strenv(GAR) or . == strenv(GCR) or . == strenv(BOA))) |= strenv(FULL_IMAGE)' $$IMG.yaml
                   popd > /dev/null
                   ;;
               userservice|contacts)
                   echo "ACCOUNTS - $${IMAGE}"
                   pushd accounts > /dev/null # repo folder
-                    COMPARE="$_DEFAULT_REGION-docker.pkg.dev/$PROJECT_ID/$_GAR_REPOSITORY/$${IMG}*" FULL_IMAGE="$${IMAGES[$$INDEX]}" yq eval -i '(.spec | select(documentIndex == 0) |.template.spec.containers[].image | select(. == strenv(COMPARE))) |= strenv(FULL_IMAGE)' $$IMG.yaml
+                    GAR="$_DEFAULT_REGION-docker.pkg.dev/$PROJECT_ID/$_GAR_REPOSITORY/$${IMG}*" GCR="gcr.io/$PROJECT_ID/$${IMG}*" BOA="gcr.io/bank-of-anthos/$${IMG}*" FULL_IMAGE="$${IMAGES[$$INDEX]}" yq eval -i '(.spec | select(documentIndex == 0) |.template.spec.containers[].image | select(. == strenv(GAR) or . == strenv(GCR) or . == strenv(BOA))) |= strenv(FULL_IMAGE)' $$IMG.yaml
                   popd > /dev/null
                   ;;
               balancereader|ledgerwriter|transactionhistory)
                   echo "TRANSACTIONS - $${IMAGE}"
                   pushd transactions > /dev/null # repo folder
-                    COMPARE="$_DEFAULT_REGION-docker.pkg.dev/$PROJECT_ID/$_GAR_REPOSITORY/$${IMG}*" FULL_IMAGE="$${IMAGES[$$INDEX]}" yq eval -i '(.spec | select(documentIndex == 0) |.template.spec.containers[].image | select(. == strenv(COMPARE))) |= strenv(FULL_IMAGE)' $$IMG.yaml
+                    GAR="$_DEFAULT_REGION-docker.pkg.dev/$PROJECT_ID/$_GAR_REPOSITORY/$${IMG}*" GCR="gcr.io/$PROJECT_ID/$${IMG}*" BOA="gcr.io/bank-of-anthos/$${IMG}*" FULL_IMAGE="$${IMAGES[$$INDEX]}" yq eval -i '(.spec | select(documentIndex == 0) |.template.spec.containers[].image | select(. == strenv(GAR) or . == strenv(GCR) or . == strenv(BOA))) |= strenv(FULL_IMAGE)' $$IMG.yaml
                   popd > /dev/null
                   ;;
           esac

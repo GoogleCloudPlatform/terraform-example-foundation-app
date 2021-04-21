@@ -15,11 +15,14 @@
  */
 
 module "cicd_pipeline" {
-  source              = "../../modules/app_cicd_pipeline"
-  app_cicd_build_sa   = var.app_cicd_build_sa
-  app_cicd_project_id = var.app_cicd_project_id
-  app_cicd_repos      = ["bank-of-anthos-source", "root-config-repo", "accounts", "transactions", "frontend"]
-  primary_location    = var.primary_location
-  attestor_names      = ["build", "quality", "security"]
-  cloudbuild_yaml     = "cloudbuild-build-boa.yaml"
+  source                = "../../modules/app_cicd_pipeline"
+  app_cicd_build_sa     = var.app_cicd_build_sa
+  app_cicd_project_id   = var.app_cicd_project_id
+  app_cicd_repos        = ["bank-of-anthos-source", "root-config-repo", "accounts", "transactions", "frontend"]
+  boa_build_repo        = "bank-of-anthos-source"
+  gar_repo_name_suffix  = "boa-image-repo"
+  primary_location      = var.primary_location
+  attestor_names_prefix = ["build", "quality", "security"]
+  build_app_yaml        = "cloudbuild-build-boa.yaml"
+  build_image_yaml      = "cloudbuild-skaffold-build-image.yaml"
 }

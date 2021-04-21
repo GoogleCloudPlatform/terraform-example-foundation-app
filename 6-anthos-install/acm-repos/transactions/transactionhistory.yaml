@@ -31,7 +31,7 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
         - name: transactionhistory
-          image: <Region - us-east1>-docker.pkg.dev/<Project ID - prj-bu1-s-app-cicd-xxxx>/<GAR_REPOSITORY - prj-bu1-s-app-cicd-xxxx-boa-image-repo>/transactionhistory@sha256:26829d0042ca06a336b699589907fc70958d1376bdc21906c10ce783f6368d73
+          image: <Region - us-east1>-docker.pkg.dev/<Project ID - prj-bu1-s-app-cicd-xxxx>/<GAR_REPOSITORY - prj-bu1-s-app-cicd-xxxx-<gar_repo_name_suffix>>/transactionhistory@sha256:26829d0042ca06a336b699589907fc70958d1376bdc21906c10ce783f6368d73
           volumeMounts:
             - name: publickey
               mountPath: "/root/.ssh"

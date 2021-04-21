@@ -31,7 +31,7 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
         - name: contacts
-          image: <Region - us-east1>-docker.pkg.dev/<Project ID - prj-bu1-s-app-cicd-xxxx>/<GAR_REPOSITORY - prj-bu1-s-app-cicd-xxxx-boa-image-repo>/contacts@sha256:bddc2b1bae8e77605fbda4997382f5e8e320a0b89f42d5dfbfe99d441ed5f1ff
+          image: <Region - us-east1>-docker.pkg.dev/<Project ID - prj-bu1-s-app-cicd-xxxx>/<GAR_REPOSITORY - prj-bu1-s-app-cicd-xxxx-<gar_repo_name_suffix>>/contacts@sha256:bddc2b1bae8e77605fbda4997382f5e8e320a0b89f42d5dfbfe99d441ed5f1ff
           volumeMounts:
             - name: publickey
               mountPath: "/root/.ssh"
