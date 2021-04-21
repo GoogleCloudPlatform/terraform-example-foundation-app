@@ -66,7 +66,7 @@ href="https://github.com/GoogleCloudPlatform/terraform-example-foundation-app/tr
 
 ## Overview
 
-This module contains additional Terraform configurations that are meant to fit into and modify the framework defined by [terraform-example-foundation](https://github.com/terraform-google-modules/terraform-example-foundation). 
+This module contains additional Terraform configurations that are meant to fit into and modify the framework defined by [terraform-example-foundation](https://github.com/terraform-google-modules/terraform-example-foundation).
 These additional configurations can be used to securely deploy the Bank of Anthos example application.
 **This is not a complete configuration - this configuration is expected to be used in conjunction with [terraform-example-foundation](https://github.com/terraform-google-modules/terraform-example-foundation/)**
 After steps `0-bootstrap`, `1-org` and `2-environments` from [terraform-example-foundation](https://github.com/terraform-google-modules/terraform-example-foundation/) are configured completely, this module can be used to supplement the remaining steps. Each folder contains its own directory that must be applied separately, and in the following order, to correctly deploy the application:
@@ -86,7 +86,7 @@ After steps `0-bootstrap`, `1-org` and `2-environments` from [terraform-example-
 
 ### [3. networks-extension](./app-foundation/3-networks/)
 
-This step - a network *extension* - adds on top of the 3-networks layer that is part of [terraform-example-foundation/3-networks](https://github.com/terraform-google-modules/terraform-example-foundation/tree/master/3-networks). 
+This step - a network *extension* - adds on top of the 3-networks layer that is part of [terraform-example-foundation/3-networks](https://github.com/terraform-google-modules/terraform-example-foundation/tree/master/3-networks).
 This step focuses on creating a shared VPC per environment (`development`, `non-production` & `production`) that is configured with subnets, secondary ranges, additional firewall rules, and a [network_prepare.sh](https://github.com/GoogleCloudPlatform/terraform-example-foundation-app/blob/main/app-foundation/3-networks-extension/network_prepare.sh) script included in the configuration that can be used to automatically populate or replace configurations in [terraform-example-foundation/3-networks](https://github.com/terraform-google-modules/terraform-example-foundation/tree/master/3-networks) with the configurations in the Bank of Anthos example.
 Currently, this configuration includes:
 
@@ -181,7 +181,7 @@ The purpose of this step is to install the Anthos components required for the Ba
 
 The purpose of this step is to utilize an opinionated repository to demonstrate Cloud Build based builds of Bank of Anthos with secure CI/CD principles applied. The example herein simulates a company building and deploying the Bank of Anthos example application to a multi-tier kubernetes cluster using asynchronous GitOps. Currently, this includes:
 
-1. **Source Code** 
+1. **Source Code**
    - Unit tests are run for all source code
    - Static code analysis is performed on all source code
    - Secrets scanner looks for secrets embedded in source code
@@ -192,7 +192,7 @@ The purpose of this step is to utilize an opinionated repository to demonstrate 
    - Container analysis to verify that the container does not contain Common Vulnerabilities and Exposures
 
 1. **Security Attestation**
-   - Creates an an attestation for the artifact  
+   - Creates an an attestation for the artifact
 
 ## Source Code Headers
 
