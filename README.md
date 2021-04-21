@@ -70,19 +70,7 @@ href="https://github.com/GoogleCloudPlatform/terraform-example-foundation-app/tr
 </tbody>
 </table>
 
-## Instructions
-
-1. Enable optional firewall rules in your shared VPC by modifying your 3-networks/envs/dev/main.tf and adding the following `optional_fw_rules_enabled = true`
-1. Ensure that you have enabled the following APIs in your project, by adding `activate_apis = ["container.googleapis.com", "iap.googleapis.com"]`
-1. Set necessary variables as env vars or use a tfvars file. These will be outputs (TODO:example-foundation) after spinning up a project.
-1. Perform the following commands on the root folder: `terraform init` to get the plugins, `terraform plan` to see the infrastructure plan and `terraform apply` to apply the infrastructure build
-1. Run the command `gcloud compute ssh ... ` given by the output `bastion_ssh` in terminal window. This will open an ssh tunnel.
-1. In a seperate terminal window run `gcloud container clusters ... ` given by the output `connect_svpc_cluster_internal`. This will generate the kubeconfig.
-1. Run command `HTTPS_PROXY=localhost:8888 kubectl get pods --all-namespaces` given by the output `example_kubectl_command` to verify the setup. This should list all pods across all ns.
-1. Run `./deploy.sh` to deploy HipsterShop.
-1. Run `HTTPS_PROXY=localhost:8888 kubectl get svc frontend-external` and wait till an external ip address has been assigned.
-
-### [3. networks-extension](./app-foundation/3-networks-extension/)
+## [3. networks-extension](./app-foundation/3-networks-extension/)
 
 This step - a network *extension* - adds on top of the 3-networks layer that is part of [terraform-example-foundation/3-networks](https://github.com/terraform-google-modules/terraform-example-foundation/tree/master/3-networks).
 This step focuses on creating a shared VPC per environment (`development`, `non-production` & `production`) that is configured with subnets, secondary ranges, additional firewall rules, and a [network_prepare.sh](https://github.com/GoogleCloudPlatform/terraform-example-foundation-app/blob/main/app-foundation/3-networks-extension/network_prepare.sh) script included in the configuration that can be used to automatically populate or replace configurations in [terraform-example-foundation/3-networks](https://github.com/terraform-google-modules/terraform-example-foundation/tree/master/3-networks) with the configurations in the Bank of Anthos example.
@@ -94,7 +82,7 @@ Currently, this configuration includes:
 
 **A Bash Script** to automatically prepare the 3-networks layer by auto-merging 3-networks-extension with the 3-networks from [terraform-example-foundation/3-networks](https://github.com/terraform-google-modules/terraform-example-foundation/tree/master/3-networks)
 
-### [4. projects](./app-foundation/4-projects)
+## [4. projects](./app-foundation/4-projects)
 
 This step focuses on creating service projects, including an application CI/CD pipeline project and an infrastructure pipeline project that are necessary for the Bank of Anthos configuration to work. Currently, this includes:
 
@@ -150,7 +138,7 @@ example-organization/
     └── prj-p-shared-restricted
 ```
 
-### [5. infrastructure](./5-infrastructure)
+## [5. infrastructure](./5-infrastructure)
 
 The purpose of this step is to deploy the infrastructure for the Bank of Anthos example application using the infra pipeline setup in 4-projects. There is also a [Source Repository](https://cloud.google.com/source-repositories) to push the code to be deployed. All infrastructure components will be created using the base network created during step [3-networks-extension](./app-foundation/3-networks/). Curretnly, this includes:
 
@@ -171,14 +159,14 @@ The purpose of this step is to deploy the infrastructure for the Bank of Anthos 
 - **Cloud Armor Policy**
 - **External IP** for accessing the application externally
 
-### [6. anthos-install](./6-anthos-install)
+## [6. anthos-install](./6-anthos-install)
 
 The purpose of this step is to install the Anthos components required for the Bank of Anthos example application - Anthos Config Management and Anthos Service Mesh. **This step in the process is currently manual.**  Anthos Config Management can help you create a common configuration across all your infrastructure, including custom policies, and apply it both on-premises and across clouds. Anthos Service Mesh lets you easily manage the security and telemetry of complex environments.  Currently, this includes:
 
 - All required components to install **Anthos Config Management**
 - All required components to install **Anthos Service Mesh**
 
-### [7. build_app](./build_app)
+## [7. build_app](./build_app)
 
 The purpose of this step is to utilize an opinionated repository to demonstrate Cloud Build based builds of Bank of Anthos with secure CI/CD principles applied. The example herein simulates a company building and deploying the Bank of Anthos example application to a multi-tier kubernetes cluster using asynchronous GitOps. Currently, this includes:
 
@@ -194,26 +182,3 @@ The purpose of this step is to utilize an opinionated repository to demonstrate 
 
 1. **Security Attestation**
    - Creates an an attestation for the artifact
-
-## Source Code Headers
-
-Every file containing source code must include copyright and license
-information. This includes any JS/CSS files that you might be serving out to
-browsers. (This is to help well-intentioned people avoid accidental copying that
-doesn't comply with the license.)
-
-Apache header:
-
-    Copyright 2021 Google LLC
-
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-        https://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
