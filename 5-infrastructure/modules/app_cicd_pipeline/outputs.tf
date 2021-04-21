@@ -16,7 +16,7 @@
 
 output "bin_auth_attestor_names" {
   description = "Names of Attestors"
-  value       = [for attestor_name in var.attestor_names : module.attestors[attestor_name].attestor]
+  value       = [for attestor_name in var.attestor_names_prefix : module.attestors[attestor_name].attestor]
 }
 
 output "bin_auth_attestor_project_id" {
