@@ -17,6 +17,6 @@
 terraform {
   backend "gcs" {
     bucket = "UPDATE_ME"
-    prefix = "terraform/infra/production"
+    prefix = "terraform/app-infra/production"
   }
 }

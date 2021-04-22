@@ -48,6 +48,9 @@ If your user does not have access to run the commands above and you are in the o
 1. Merge changes to non-production with `git checkout -b non-production` and `git push origin non-production`.
     1. Review the apply output in your cloud build project. https://console.cloud.google.com/cloud-build/builds?project=YOUR_CLOUD_BUILD_PROJECT_ID
 
+**Troubleshooting:**
+If your user does not have access to run the terraform modules locally and you are in the organization admins group, you can append `--impersonate-service-account=org-terraform@<SEED_PROJECT_ID>.iam.gserviceaccount.com` to run terraform modules as the service  account.
+
 ### TF Validate (Optional)
 To use the `validate` option of the `tf-wrapper.sh` script, the latest version of `terraform-validator` must be [installed](https://github.com/forseti-security/policy-library/blob/master/docs/user_guide.md#how-to-use-terraform-validator) in your system and in you `PATH`.
 1. Run `./tf-wrapper.sh init production`.

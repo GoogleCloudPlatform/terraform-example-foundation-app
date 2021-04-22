@@ -17,6 +17,6 @@
 terraform {
   backend "gcs" {
     bucket = "UPDATE_ME"
-    prefix = "terraform/infra/shared"
+    prefix = "terraform/app-infra/shared"
   }
 }

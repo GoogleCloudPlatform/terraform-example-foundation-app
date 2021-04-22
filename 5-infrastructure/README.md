@@ -28,17 +28,14 @@ All infrastructure components will be created using the base network created dur
 1. [0-bootstrap](https://github.com/terraform-google-modules/terraform-example-foundation/blob/master/0-bootstrap/README.md) executed successfully.
 1. [1-org](https://github.com/terraform-google-modules/terraform-example-foundation/blob/master/1-org/README.md) executed successfully.
 1. [2-environments](https://github.com/terraform-google-modules/terraform-example-foundation/blob/master/2-environments/README.md) executed successfully.
-1. [3-networks](https://github.com/terraform-google-modules/terraform-example-foundation/blob/master/3-networks/README.md) executed successfully.
+1. [3-networks](../app-foundation/3-networks/README.md) executed successfully.
 1. [4-projects](../app-foundation/4-projects/README.md) executed successfully.
-
-**Troubleshooting:**
-If your user does not have access to run the commands above and you are in the organization admins group, you can append `--impersonate-service-account="boa-terraform-<z>-sa@prj-bu1-<z>-boa-sec-<xxxx>.iam.gserviceaccount.com"` for dev/npd/prd envs or `--impersonate-service-account="cicd-build-sa@prj-bu1-s-app-cicd-<xxxx>.iam.gserviceaccount.com"` for shared env to run the command as the terraform service account.
 
 ## Usage
 
 ### Setup to run via Cloud Build
-1. Clone repo `gcloud source repos clone bu1-example-app --project=prj-bu1-c-infra-pipeline-<random>`. (this is from the terraform output from the previous section, run `terraform output cloudbuild_project_id` in the `4-projects/business_unit_1/shared` folder)
-1. Navigate into the repo `cd bu1-example-app`.
+1. Clone repo `gcloud source repos clone boa-infra --project=prj-bu1-s-infra-pipeline-<random>`. (this is from the terraform output from the previous section, run `terraform output cloudbuild_project_id` in the `4-projects/business_unit_1/shared` folder)
+1. Navigate into the repo `cd boa-infra`.
 1. Change freshly cloned repo and change to non master branch `git checkout -b plan`.
 1. Copy contents of foundation to new repo `cp -RT ../terraform-example-foundation-app/5-infrastructure/ .` (modify accordingly based on your current directory).
 1. Copy cloud build configuration files for terraform `cp ../terraform-example-foundation-app/build/cloudbuild-tf-* . ` (modify accordingly based on your current directory).
@@ -72,6 +69,9 @@ If your user does not have access to run the commands above and you are in the o
 
 We will now deploy each of our environments(development/production/non-production) using this script.
 When using Cloud Build or Jenkins as your CI/CD tool each environment corresponds to a branch is the repository for 5-app-infra step and only the corresponding environment is applied.
+
+**Troubleshooting:**
+If your user does not have access to run the terraform modules locally and you are in the organization admins group, you can append `--impersonate-service-account="boa-terraform-<z>-sa@prj-bu1-<z>-boa-sec-<xxxx>.iam.gserviceaccount.com"` for dev/npd/prd envs or `--impersonate-service-account="cicd-build-sa@prj-bu1-s-app-cicd-<xxxx>.iam.gserviceaccount.com"` for shared env to run terraform modules as the service  account.
 
 ### TF Validate (Optional)
 To use the `validate` option of the `tf-wrapper.sh` script, the latest version of `terraform-validator` must be [installed](https://github.com/forseti-security/policy-library/blob/master/docs/user_guide.md#how-to-use-terraform-validator) in your system and in you `PATH`.
