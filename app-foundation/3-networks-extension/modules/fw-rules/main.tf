@@ -59,6 +59,12 @@ locals {
       target_tags        = ["boa-mci-cluster"]
       allow_protocol     = "tcp"
       allow_ports        = ["443", "10250"]
+    },
+    "fw-shared-base-e-allow-ssh-from-bastion-to-iap" = {
+      destination_ranges = ["0.0.0.0/0"]
+      target_tags        = ["bastion"]
+      allow_protocol     = "all"
+      allow_ports        = []
     }
   }
 }
