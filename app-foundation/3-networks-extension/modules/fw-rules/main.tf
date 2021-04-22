@@ -60,7 +60,7 @@ locals {
       allow_protocol     = "tcp"
       allow_ports        = ["443", "10250"]
     },
-    "fw-shared-base-e-allow-ssh-from-bastion-to-iap" = {
+    "fw-${var.environment_code}-shared-base-e-bastion-allow-all" = {
       destination_ranges = ["0.0.0.0/0"]
       target_tags        = ["bastion"]
       allow_protocol     = "all"
