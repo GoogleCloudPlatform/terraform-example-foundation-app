@@ -6,44 +6,58 @@ All infrastructure components will be created using the base network created dur
 
 ## Components
 
-- 3 GKE Clusters
-    - Cluster1 in Primary Region
-    - CLuster2 in Secondary Region
-    - MCI Cluster is Primary Region
-- Bastion Host VM in the Secondary Region
-- 2 Postgres CLoudSQL instances in primary and secondary region respectively
-- Private Services Access for CloudSQL Instances
-- 1 Secret to store CloudSQL Admin Password
-- 4 KMS Keyrings and Keys
-    - 2 KMS Keyrings and Keys for GKE, one in each region
-    - 2 KMS Keyrings and Keys for CloudSQL, one in each region
-- Service Account for KMS to own/manage the Keyrings and Keys
-- Service Account for Bastion VM with roles to install Anthos Service Mesh
-- 4 Log Sinks, one in each project
-- Log Sink Destination Storage Bucket that Log Sinks write logs to
+- **3 GKE Clusters**
+  - Cluster1 in the primary region (us-east1)
+  - Cluster2 in the secondary region (us-west1)
+  - MCI Cluster in the primary region (us-east1)
+- **Bastion Host VM** in the secondary region (us-west1)
+- **2 Postgres CLoudSQL instances** in the primary and secondary regions, respectively
+- **Secret** to store the CloudSQL Admin Password
+- **4 KMS Keyrings and Keys**
+  - 2 KMS Keyrings and Keys for GKE, one in each region
+  - 2 KMS Keyrings and Keys for CloudSQL, one in each region
+- **Service Account for KMS** to own/manage the Keyrings and Keys
+- **Service Account for the Bastion Host VM** with roles to install Anthos Service Mesh
+- **4 Log Sinks**, one in each project
+- **Log Sink Destination Storage Bucket** that Log Sinks write logs to
+- **Cloud Armor Policy**
+- **External IP** for accessing the application externally
 
 ## Prerequisites
 
-1. 0-bootstrap executed successfully.
-1. 1-org executed successfully.
-1. 2-environments executed successfully.
-1. 3-networks executed successfully.
-1. 4-projects executed successfully.
+1. [0-bootstrap](https://github.com/terraform-google-modules/terraform-example-foundation/blob/master/0-bootstrap/README.md) executed successfully.
+1. [1-org](https://github.com/terraform-google-modules/terraform-example-foundation/blob/master/1-org/README.md) executed successfully.
+1. [2-environments](https://github.com/terraform-google-modules/terraform-example-foundation/blob/master/2-environments/README.md) executed successfully.
+1. [3-networks](../app-foundation/3-networks/README.md) executed successfully.
+1. [4-projects](../app-foundation/4-projects/README.md) executed successfully.
+
 ## Usage
 
 ### Setup to run via Cloud Build
-1. Clone repo `gcloud source repos clone bu1-example-app --project=prj-bu1-c-infra-pipeline-<random>`. (this is from the terraform output from the previous section, run `terraform output cloudbuild_project_id` in the `4-projects/business_unit_1/shared` folder)
-1. Navigate into the repo `cd bu1-example-app`.
+1. Clone repo `gcloud source repos clone boa-infra --project=prj-bu1-s-infra-pipeline-<random>`. (this is from the terraform output from the previous section, run `terraform output cloudbuild_project_id` in the `4-projects/business_unit_1/shared` folder)
+1. Navigate into the repo `cd boa-infra`.
 1. Change freshly cloned repo and change to non master branch `git checkout -b plan`.
-1. Copy contents of foundation to new repo `cp -RT ../terraform-example-foundation/5-app-infra/ .` (modify accordingly based on your current directory).
-1. Copy cloud build configuration files for terraform `cp ../terraform-example-foundation/build/cloudbuild-tf-* . ` (modify accordingly based on your current directory).
-1. Copy terraform wrapper script `cp ../terraform-example-foundation/build/tf-wrapper.sh . ` to the root of your new repository (modify accordingly based on your current directory).
+1. Copy contents of foundation to new repo `cp -RT ../terraform-example-foundation-app/5-infrastructure/ .` (modify accordingly based on your current directory).
+1. Copy cloud build configuration files for terraform `cp ../terraform-example-foundation-app/build/cloudbuild-tf-* . ` (modify accordingly based on your current directory).
+1. Copy terraform wrapper script `cp ../terraform-example-foundation-app/build/tf-wrapper.sh . ` to the root of your new repository (modify accordingly based on your current directory).
 1. Ensure wrapper script can be executed `chmod 755 ./tf-wrapper.sh`.
-1. Rename `common.auto.example.tfvars` to `common.auto.tfvars` and update the file with values from your environment.
-1. Rename `bu1-development.auto.example.tfvars` to `bu1-development.auto.tfvars` and update the file with values from your environment.
-1. Rename `bu1-non-production.auto.example.tfvars` to `bu1-non-production.auto.tfvars` and update the file with values from your environment.
-1. Rename `bu1-production.auto.example.tfvars` to `bu1-production.auto.tfvars` and update the file with values from your environment.
 1. Commit changes with `git add .` and `git commit -m 'Your message'`.
+
+### Run terraform locally
+1. Change into `cd 5-infrastructure/business_unit_1/shared` folder.
+1. Run `cp ../../tf-wrapper.sh .`
+1. Run `chmod 755 tf-wrapper.sh`
+1. Rename `shared.auto.example.tfvars` to `shared.auto.tfvars` and update the file with values from your environment and bootstrap.
+1. Update backend.tf with your bucket from infra pipeline example. You can run
+```for i in `find -name 'backend.tf'`; do sed -i 's/UPDATE_ME/<YOUR-BUCKET-NAME>/' $i; done```.
+1. Run `terraform init`
+1. Run `terraform plan`, this should report xx changes to be added if using the default config.
+1. Run `terraform apply` ensure you have the correct permissions before doing this.
+
+### Run cloudbuild dev/npd/prd envs
+1. Rename `development.auto.example.tfvars` to `development.auto.tfvars` in business_unit_1/development folder and update the file with values from your environment.
+1. Rename `non-production.auto.example.tfvars` to `non-production.auto.tfvars` in business_unit_1/non-production folder and update the file with values from your environment.
+1. Rename `production.auto.example.tfvars` to `production.auto.tfvars` in business_unit_1/production folder and update the file with values from your environment.
 1. Push your plan branch to trigger a plan for all environments `git push --set-upstream origin plan` (the branch `plan` is not a special one. Any branch which name is different from `development`, `non-production` or `production` will trigger a terraform plan).
     1. Review the plan output in your cloud build project https://console.cloud.google.com/cloud-build/builds?project=YOUR_CLOUD_BUILD_PROJECT_ID
 1. Merge changes to development with `git checkout -b development` and `git push origin development`.
@@ -53,19 +67,14 @@ All infrastructure components will be created using the base network created dur
 1. Merge changes to production branch with `git checkout -b production` and `git push origin production`.
     1. Review the apply output in your cloud build project https://console.cloud.google.com/cloud-build/builds?project=YOUR_CLOUD_BUILD_PROJECT_ID
 
-### Run terraform locally
-1. Change into 5-app-infra folder.
-1. Run `cp ../build/tf-wrapper.sh .`
-1. Run `chmod 755 ./tf-wrapper.sh`.
-1. Rename `common.auto.example.tfvars` to `common.auto.tfvars` and update the file with values from your environment and bootstrap.
-1. Update backend.tf with your bucket from infra pipeline example. You can run
-```for i in `find -name 'backend.tf'`; do sed -i 's/UPDATE_ME/<YOUR-BUCKET-NAME>/' $i; done```.
-
 We will now deploy each of our environments(development/production/non-production) using this script.
 When using Cloud Build or Jenkins as your CI/CD tool each environment corresponds to a branch is the repository for 5-app-infra step and only the corresponding environment is applied.
 
-To use the `validate` option of the `tf-wrapper.sh` script, the latest version of `terraform-validator` must be [installed](https://github.com/forseti-security/policy-library/blob/master/docs/user_guide.md#how-to-use-terraform-validator) in your system and in you `PATH`.
+**Troubleshooting:**
+If your user does not have access to run the terraform modules locally and you are in the organization admins group, you can append `--impersonate-service-account="boa-terraform-<z>-sa@prj-bu1-<z>-boa-sec-<xxxx>.iam.gserviceaccount.com"` for dev/npd/prd envs or `--impersonate-service-account="cicd-build-sa@prj-bu1-s-app-cicd-<xxxx>.iam.gserviceaccount.com"` for shared env to run terraform modules as the service  account.
 
+### TF Validate (Optional)
+To use the `validate` option of the `tf-wrapper.sh` script, the latest version of `terraform-validator` must be [installed](https://github.com/forseti-security/policy-library/blob/master/docs/user_guide.md#how-to-use-terraform-validator) in your system and in you `PATH`.
 1. Run `./tf-wrapper.sh init production`.
 1. Run `./tf-wrapper.sh plan production` and review output.
 1. Run `./tf-wrapper.sh validate production $(pwd)/../policy-library <YOUR_INFRA_PIPELINE_PROJECT>` and check for violations.

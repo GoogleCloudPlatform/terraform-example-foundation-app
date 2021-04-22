@@ -1,0 +1,110 @@
+# Copyright 2021 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: contacts
+spec:
+  selector:
+    matchLabels:
+      app: boa
+      service: contacts
+  template:
+    metadata:
+      labels:
+        app: boa
+        service: contacts
+    spec:
+      serviceAccountName: accounts
+      terminationGracePeriodSeconds: 5
+      containers:
+        - name: contacts
+          image: gcr.io/bank-of-anthos/contacts:v0.4.3
+          volumeMounts:
+            - name: publickey
+              mountPath: "/root/.ssh"
+              readOnly: true
+          env:
+            - name: VERSION
+              value: "v0.4.3"
+            - name: PORT
+              value: "8080"
+            - name: ENABLE_TRACING
+              value: "true"
+            # Valid levels are debug, info, warning, error, critical.
+            # If no valid level is set, will default to info.
+            - name: LOG_LEVEL
+              value: "info"
+          envFrom:
+            - configMapRef:
+                name: environment-config
+            - configMapRef:
+                name: accounts-db-config
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 10
+        - command:
+          - /cloud_sql_proxy
+          - -instances=$(CONNECTION_NAME)=tcp:5432
+          env:
+          - name: CONNECTION_NAME
+            valueFrom:
+              secretKeyRef:
+                key: connectionName
+                name: cloud-sql-admin
+          image: gcr.io/cloudsql-docker/gce-proxy:1.19.0-alpine
+          imagePullPolicy: IfNotPresent
+          name: cloudsql-proxy
+          resources:
+            limits:
+              cpu: 200m
+              memory: 100Mi
+          securityContext:
+            runAsNonRoot: true
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+      volumes:
+        - name: publickey
+          secret:
+            secretName: jwt-key
+            items:
+              - key: jwtRS256.key.pub
+                path: publickey
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: contacts
+spec:
+  type: ClusterIP
+  selector:
+    app: boa
+    service: contacts
+  ports:
+    - name: http-web
+      port: 8080
+      targetPort: 8080
+
