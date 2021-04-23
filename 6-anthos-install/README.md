@@ -6,7 +6,8 @@ You can also connect to this instance by tunnelling SSH traffic through IAP.
 # Replace YOUR_PROJECT_ID with your GKE project ID.
 export PROJECT_ID=YOUR_PROJECT_ID
 gcloud compute ssh gce-bastion-us-west1-b-01 \
-  --project ${PROJECT_ID}
+  --project ${PROJECT_ID} \
+  --zone us-west-b
 ```
 
 ## Install required tools
@@ -277,6 +278,16 @@ This repository is the root repository that host cluster-scoped and namespace-sc
     ```console
     cd ${HOME}/bank-of-anthos-repos/root-config-repo
     ```
+1. Update the project name for the service account
+replace the project id in the following files:
+
+- "${HOME}/terraform-example-foundation-app/6-anthos-install/acm-repos/root-config-repo/namespaces/boa/accounts/accounts-sa.yaml"
+- "${HOME}/terraform-example-foundation-app/6-anthos-install/acm-repos/root-config-repo/namespaces/boa/transactions/transactions-sa.yaml"
+
+You need to change this part:
+
+- `prj-bu1-d-boa-gke-ecb0`
+
 1. push the content to the root-config-repo
     ```console
     git add .
