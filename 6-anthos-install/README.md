@@ -12,8 +12,8 @@ gcloud compute ssh gce-bastion-us-west1-b-01 \
 
 ## Install required tools
 ```console
-yum sudo update
 sudo su
+yum update
 yum install git -y
 yum install google-cloud-sdk-kpt -y
 yum install jq -y
@@ -284,7 +284,7 @@ This repository is the root repository that host cluster-scoped and namespace-sc
 ```
 1. Copy the content of `acm-repos/root-config-repo` to `${HOME}/bank-of-anthos-repos/root-config-repo`
     ```console
-    cp -r ${HOME}/terraform-example-foundation-app/6-anthos-install/acm-repos/root-config-repo/ ${HOME}/bank-of-anthos-repos/root-config-repo
+    cp -RT ${HOME}/terraform-example-foundation-app/6-anthos-install/acm-repos/root-config-repo/ ${HOME}/bank-of-anthos-repos/root-config-repo
     ```
 1. Move to the new folder
     ```console
@@ -298,12 +298,12 @@ replace the project id in the following files:
 
 You need to change this part:
 
-- `prj-bu1-d-boa-gke-ecb0`
+- `PROJECT_ID`
 
 1. push the content to the root-config-repo
     ```console
     git add .
-    git commit -m “adding config repo”
+    git commit -m "adding config repo"
     git push origin master
     ```
 #### accounts namespace
@@ -315,7 +315,7 @@ This repository will host the deployment and service manifests for `userservice`
 ```
 1. Copy the content of `acm-repos/accounts` to `${HOME}/accounts`
     ```console
-    cp -r ${HOME}/terraform-example-foundation-app/6-anthos-install/acm-repos/accounts/ ${HOME}/bank-of-anthos-repos/accounts
+    cp -RT ${HOME}/terraform-example-foundation-app/6-anthos-install/acm-repos/accounts/ ${HOME}/bank-of-anthos-repos/accounts
     ```
 1. Move to the new folder
     ```console
@@ -324,7 +324,7 @@ This repository will host the deployment and service manifests for `userservice`
 1. push the content to the accounts repo
     ```console
     git add .
-    git commit -m “adding accounts repo”
+    git commit -m "adding accounts repo"
     git push origin master
     ```
 #### frontend namespace
@@ -336,7 +336,7 @@ This repository will host the deployment and service manifests for `frontend` mi
 ```
 1. Copy the content of `acm-repos/frontend` to `${HOME}/frontend`
     ```console
-    cp -r ${HOME}/terraform-example-foundation-app/6-anthos-install/acm-repos/frontend/ ${HOME}/bank-of-anthos-repos/frontend
+    cp -RT ${HOME}/terraform-example-foundation-app/6-anthos-install/acm-repos/frontend/ ${HOME}/bank-of-anthos-repos/frontend
     ```
 
 1. Move to the new folder
@@ -347,7 +347,7 @@ This repository will host the deployment and service manifests for `frontend` mi
 
     ```console
     git add .
-    git commit -m “adding frontend repo”
+    git commit -m "adding frontend repo"
     git push origin master
     ```
 
@@ -360,7 +360,7 @@ This repository will host the deployment and service manifests for `transactionh
 ```
 1. Copy the content of `acm-repos/transactions` to `${HOME}/transactions`
     ```console
-    cp -r ${HOME}/terraform-example-foundation-app/6-anthos-install/acm-repos/transactions/ ${HOME}/bank-of-anthos-repos/transactions
+    cp -RT ${HOME}/terraform-example-foundation-app/6-anthos-install/acm-repos/transactions/ ${HOME}/bank-of-anthos-repos/transactions
     ```
 
 1. Move to the new folder
@@ -370,7 +370,7 @@ This repository will host the deployment and service manifests for `transactionh
 1. push the content to the transactions repo
     ```console
     git add .
-    git commit -m “adding transactions repo”
+    git commit -m "adding transactions repo"
     git push origin master
     ```
 #### Configure syncing from the root repository

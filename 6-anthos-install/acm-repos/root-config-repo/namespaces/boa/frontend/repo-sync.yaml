@@ -19,9 +19,10 @@ metadata:
   namespace: frontend
 spec:
   git:
-   repo: ssh://dkassab@google.com@source.developers.google.com:2022/p/prj-bu1-d-boa-gke-ecb0/r/frontend
+   #repo: ssh://dkassab@google.com@source.developers.google.com:2022/p/prj-bu1-d-boa-gke-ecb0/r/frontend
+   repo: https://source.developers.google.com/p/PROJECT_ID/r/frontend
    branch: master
    dir: /
-   auth: ssh
-   secretRef:
-     name: git-creds
+   auth: gcenode
+   #secretRef:
+    # name: git-creds
