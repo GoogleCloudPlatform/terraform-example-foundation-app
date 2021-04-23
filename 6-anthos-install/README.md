@@ -75,7 +75,8 @@ gcloud container clusters get-credentials ${CLUSTER_INGRESS} --region ${CLUSTER_
 The following commands run the script for a new installation of ASM on Cluster1 and Cluster2. By default, ASM uses Mesh CA. The `--enable_cluster_roles` flag allows the script to attempt to bind the service account running the script to the cluster-admin role on the cluster. `--enable_cluster_labels` flag allow the script to set the required cluster labels.
 
 1. Install ASM on Cluster 1
-    ```console ./install_asm \
+    ```console 
+    ./install_asm \
     --project_id ${PROJECT_ID} \
     --cluster_name ${CLUSTER_1} \
     --cluster_location ${CLUSTER_1_REGION} \
@@ -86,7 +87,8 @@ The following commands run the script for a new installation of ASM on Cluster1 
     ```
 
 1. Install ASM on cluster 2
-    ```console ./install_asm \
+    ```console
+    ./install_asm \
     --project_id ${PROJECT_ID} \
     --cluster_name ${CLUSTER_2} \
     --cluster_location ${CLUSTER_2_REGION} \
@@ -166,7 +168,7 @@ With MCI, we need to select a cluster to be the configuration cluster. In this c
     metadata:
       name: istio-ingressgateway-multicluster-ingress
       annotations:
-        networking.gke.io/static-ip: https://www.googleapis.com/compute/v1/projects/prj-bu1-d-boa-gke-ecb0/global/addresses/mci-ip
+        networking.gke.io/static-ip: https://www.googleapis.com/compute/v1/projects/${PROJECT_ID}/global/addresses/mci-ip
         networking.gke.io/pre-shared-certs: "boa-ssl-cert"
     spec:
       template:
@@ -215,7 +217,7 @@ With MCI, we need to select a cluster to be the configuration cluster. In this c
         port: 15020
         requestPath: /healthz/ready
       securityPolicy:
-        Name: cloud-armor-xss-policy
+        name: cloud-armor-xss-policy
     EOF
     ```
 1. create the resources defined above.
@@ -244,9 +246,9 @@ With MCI, we need to select a cluster to be the configuration cluster. In this c
 
 ### Configure ACM
     ```console
-    kubectl apply --context=${CTX_1} -f ${HOME}/terraform-example-foundation-app/acm-configs/config-management-gke-east.yaml
+    kubectl apply --context=${CTX_1} -f ${HOME}/terraform-example-foundation-app/6-anthos-install/acm-configs/config-management-gke-east.yaml
 
-    kubectl apply --context=${CTX_2} -f ${HOME}/terraform-example-foundation-app/acm-config/config-management-gke-west.yaml
+    kubectl apply --context=${CTX_2} -f ${HOME}/terraform-example-foundation-app/6-anthos-install/acm-config/config-management-gke-west.yaml
     ```
 
 ### Populate the CSR repos
@@ -256,63 +258,71 @@ For configuring and deploying the applicaiton, we are using multi-repo mode in A
     ```console
     export CICD_PROJECT_ID=YOUR_CICD_PROJECT_ID
     ```
+2. create a new folder to host the content of your repositories, and navigate to that folder.
 
+    ```console
+    mkdir ${HOME}/bank-of-anthos-repos && cd ${HOME}/bank-of-anthos-repos
+    ```
 #### root config repo
 This repository is the root repository that host cluster-scoped and namespace-scoped configs for the bank of anthos application, such as resource policies, network polices and security policies.
-
-1. Copy the content of `acm-repos/root-config-repo` to `${HOME}/root-config-repo`
+1. Clone the `root-config-repo` that was created through the infrastructure pipeline
+```console
+    gcloud source repos clone root-config-repo --project ${CICD_PROJECT_ID}
+```
+1. Copy the content of `acm-repos/root-config-repo` to `${HOME}/bank-of-anthos-repos/root-config-repo`
     ```console
-    cd ${HOME}
-    cp ${HOME}/terraform-example-foundation-app/acm-repos/root-config-repo ${HOME}/root-config-repo
+    cp -r ${HOME}/terraform-example-foundation-app/6-anthos-install/acm-repos/root-config-repo/ ${HOME}/bank-of-anthos-repos/root-config-repo
     ```
-
 1. Move to the new folder
     ```console
-    cd ${HOME}/root-config-repo
+    cd ${HOME}/bank-of-anthos-repos/root-config-repo
     ```
 1. push the content to the root-config-repo
     ```console
-    gcloud source repos clone config-root-repo --project ${CICD_PROJECT_ID}
     git add .
     git commit -m “adding config repo”
     git push origin master
     ```
 #### accounts namespace
 This repository will host the deployment and service manifests for `userservice` and `contacts` microservices.
+1. Clone the `accounts` that was created through the infrastructure pipeline
+```console
+    cd ${HOME}/bank-of-anthos-repos
+    gcloud source repos clone accounts --project ${CICD_PROJECT_ID}
+```
 1. Copy the content of `acm-repos/accounts` to `${HOME}/accounts`
     ```console
-    cd ${HOME}
-    cp ${HOME}/terraform-example-foundation-app/acm-repos/accounts ${HOME}/accounts
+    cp -r ${HOME}/terraform-example-foundation-app/6-anthos-install/acm-repos/accounts/ ${HOME}/bank-of-anthos-repos/accounts
     ```
-
 1. Move to the new folder
     ```console
-    cd ${HOME}/accounts
+    cd ${HOME}/bank-of-anthos-repos/accounts
     ```
 1. push the content to the accounts repo
     ```console
-    gcloud source repos clone accounts --project ${CICD_PROJECT_ID}
     git add .
     git commit -m “adding accounts repo”
     git push origin master
     ```
 #### frontend namespace
 This repository will host the deployment and service manifests for `frontend` microservice, as well as a load generator service.
-
+1. Clone the `frontend` that was created through the infrastructure pipeline
+```console
+    cd ${HOME}/bank-of-anthos-repos
+    gcloud source repos clone frontend --project ${CICD_PROJECT_ID}
+```
 1. Copy the content of `acm-repos/frontend` to `${HOME}/frontend`
     ```console
-    cd ${HOME}
-    cp ${HOME}/terraform-example-foundation-app/acm-repos/frontend ${HOME}/frontend
+    cp -r ${HOME}/terraform-example-foundation-app/6-anthos-install/acm-repos/frontend/ ${HOME}/bank-of-anthos-repos/frontend
     ```
 
 1. Move to the new folder
     ```console
-    cd ${HOME}/frontend
+    cd ${HOME}/bank-of-anthos-repos/frontend
     ```
 1. push the content to the frontend repo
 
     ```console
-    gcloud source repos clone frontend --project ${CICD_PROJECT_ID}
     git add .
     git commit -m “adding frontend repo”
     git push origin master
@@ -320,27 +330,29 @@ This repository will host the deployment and service manifests for `frontend` mi
 
 #### transactions namespace
 This repository will host the deployment and service manifests for `transactionhistory`, `balancereader` and `ledgerwriter` microservices.
-
+1. Clone the `transactions` that was created through the infrastructure pipeline
+```console
+    cd ${HOME}/bank-of-anthos-repos
+    gcloud source repos clone transactions --project ${CICD_PROJECT_ID}
+```
 1. Copy the content of `acm-repos/transactions` to `${HOME}/transactions`
     ```console
-    cd ${HOME}
-    cp ${HOME}/terraform-example-foundation-app/acm-repos/transactions ${HOME}/transactions
+    cp -r ${HOME}/terraform-example-foundation-app/6-anthos-install/acm-repos/transactions/ ${HOME}/bank-of-anthos-repos/transactions
     ```
 
 1. Move to the new folder
     ```console
-    cd ${HOME}/transactions
+    cd ${HOME}/bank-of-anthos-repos/transactions
     ```
 1. push the content to the transactions repo
     ```console
-    gcloud source repos clone transactions --project ${CICD_PROJECT_ID}
     git add .
     git commit -m “adding transactions repo”
     git push origin master
     ```
 #### Configure syncing from the root repository
     ```console
-    kubectl apply --context=${CTX_1} -f ${HOME}/terraform-example-foundation-app/acm-configs/root-sync.yaml
+    kubectl apply --context=${CTX_1} -f ${HOME}/terraform-example-foundation-app/6-anthos-install/acm-configs/root-sync.yaml
 
-    kubectl apply --context=${CTX_2} -f ${HOME}/terraform-example-foundation-app/acm-config/root-sync.yaml
+    kubectl apply --context=${CTX_2} -f ${HOME}/terraform-example-foundation-app/6-anthos-install/acm-config/root-sync.yaml
     ```
