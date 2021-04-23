@@ -45,9 +45,9 @@ export MESH_ID="proj-${PROJECT_NUM}"
 export ASM_VERSION=1.8
 export ISTIO_VERSION=1.8.3-asm.2
 export ASM_LABEL=asm-183-2
-export CTX_1=gke_${PROJECT_ID}_${CLUSTER_1_REGION}_{CLUSTER_1}
-export CTX_2=gke_${PROJECT_ID}_${CLUSTER_2_REGION}_{CLUSTER_2}
-export CTX_INGRESS=gke_${PROJECT_ID}_${CLUSTER_INGRESS_REGION}_{CLUSTER_INGRESS}
+export CTX_1=gke_${PROJECT_ID}_${CLUSTER_1_REGION}_${CLUSTER_1}
+export CTX_2=gke_${PROJECT_ID}_${CLUSTER_2_REGION}_${CLUSTER_2}
+export CTX_INGRESS=gke_${PROJECT_ID}_${CLUSTER_INGRESS_REGION}_${CLUSTER_INGRESS}
 ```
 ## Generate Kubeconfig Entries
 In order to install ASM, we need to authenticate to clusters.
