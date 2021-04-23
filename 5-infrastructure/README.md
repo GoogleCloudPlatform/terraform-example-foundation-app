@@ -60,7 +60,7 @@ All infrastructure components will be created using the base network created dur
 
 ### Run terraform locally (Alternate)
 1. Change into `cd business_unit_1/shared` folder.
-1. Run `cp ../../../tf-wrapper.sh .`
+1. Run `cp ../../tf-wrapper.sh .`
 1. Run `chmod 755 tf-wrapper.sh`
 1. Update backend.tf with your bucket from infra pipeline example. You can run
 ```for i in `find -name 'backend.tf'`; do sed -i 's/UPDATE_ME/<YOUR-BUCKET-NAME>/' $i; done```.

@@ -117,7 +117,7 @@ module "clusters" {
     "mesh_id" = "proj-${data.google_project.gke_project.number}"
   }
   node_pools_tags = {
-    "np-${each.value.region}" : ["boa-${each.key}-cluster", "allow-google-apis"]
+    "np-${each.value.region}" : ["boa-${each.key}-cluster", "allow-google-apis", "egress-internet"]
   }
   node_pools = [
     {
