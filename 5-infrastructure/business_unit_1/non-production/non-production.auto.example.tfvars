@@ -25,8 +25,3 @@ terraform_service_account = "boa-terraform-z-sa@prj-bu1-z-boa-sec-xxxx.iam.gserv
 enforce_bin_auth_policy      = true
 bin_auth_attestor_names      = ["build-attestor", "quality-attestor", "security-attestor"]
 bin_auth_attestor_project_id = "prj-bu1-s-app-cicd-xxxx"
-
-# Optional
-# gke_cluster_1_cidr_block     = "000.000.000.000/00"
-# gke_cluster_2_cidr_block     = "000.000.000.000/00"
-# gke_mci_cluster_cidr_block   = "000.000.000.000/00"

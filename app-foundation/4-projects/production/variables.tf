@@ -96,5 +96,5 @@ variable "shared_vpc_network_name" {
 variable "environment_code" {
   description = "Short form of current running environment (e.g. d for development)"
   type        = string
-  default     = "d"
+  default     = "p"
 }

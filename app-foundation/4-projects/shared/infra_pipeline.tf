@@ -43,8 +43,9 @@ module "app_infra_cloudbuild_project" {
 
 module "infra_pipelines" {
   source                = "github.com/terraform-google-modules/terraform-example-foundation/4-projects/modules/infra_pipelines"
-  cloudbuild_project_id = module.app_infra_cloudbuild_project.project_id
-  billing_account       = var.billing_account
-  default_region        = var.primary_location
-  app_infra_repos       = ["boa-infra"]
+  cloudbuild_project_id    = module.app_infra_cloudbuild_project.project_id
+  billing_account          = var.billing_account
+  default_region           = var.primary_location
+  app_infra_repos          = ["boa-infra"]
+  terraform_apply_branches = ["development", "non-production", "production", "shared"]
 }
