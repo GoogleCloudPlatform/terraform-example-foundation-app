@@ -58,7 +58,7 @@ locals {
     }
   }
   bin_auth_attestors = [for attestor in var.bin_auth_attestor_names : "projects/${var.bin_auth_attestor_project_id}/attestors/${attestor}"]
-  allowlist_patterns = ["quay.io/random-containers/*", "k8s.gcr.io/more-random/*", "gcr.io/${var.boa_gke_project_id}/*"] # Example
+  allowlist_patterns = ["quay.io/random-containers/*", "k8s.gcr.io/more-random/*", "gcr.io/${var.boa_gke_project_id}/*", "gcr.io/config-management-release/*"] # Example
 }
 
 module "sink_gke" {
@@ -83,6 +83,7 @@ module "bastion" {
   bastion_subnet               = var.bastion_subnet_name
   bastion_region               = var.location_secondary
   network_project_id           = var.gcp_shared_vpc_project_id
+  repo_project_id              = var.bin_auth_attestor_project_id
 }
 
 data "google_project" "gke_project" {

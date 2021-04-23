@@ -22,6 +22,9 @@ locals {
     ],
     sql = [
       "roles/cloudsql.client"
+    ],
+    cicd = [
+      "roles/source.reader"
     ]
   }
 }
@@ -32,7 +35,7 @@ module "boa_gke_project" {
   org_id                      = var.org_id
   billing_account             = var.billing_account
   folder_id                   = data.google_active_folder.env.name
-  environment                 = "production"
+  environment                 = "development"
   vpc_type                    = "base"
   enable_hub_and_spoke        = var.enable_hub_and_spoke
   alert_spent_percents        = var.alert_spent_percents
@@ -68,7 +71,8 @@ module "boa_gke_project" {
     "binaryauthorization.googleapis.com",
     "privateca.googleapis.com",
     "containerscanning.googleapis.com",
-    "multiclusteringress.googleapis.com"
+    "multiclusteringress.googleapis.com",
+    "serviceusage.googleapis.com"
   ]
 
   # Metadata
@@ -97,6 +101,13 @@ resource "google_project_iam_member" "boa_gsa_sa_roles_gke" {
 resource "google_project_iam_member" "boa_gsa_sa_roles_sql" {
   for_each = toset(local.gsa_sa_roles.sql)
   project  = module.boa_sql_project.project_id
+  role     = each.value
+  member   = "serviceAccount:${google_service_account.boa_gsa_sa.email}"
+}
+
+resource "google_project_iam_member" "boa_gsa_sa_roles_sql" {
+  for_each = toset(local.gsa_sa_roles.cicd)
+  project  = var.app_cicd_project_id
   role     = each.value
   member   = "serviceAccount:${google_service_account.boa_gsa_sa.email}"
 }

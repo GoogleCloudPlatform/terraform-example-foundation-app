@@ -64,7 +64,7 @@ href="https://github.com/GoogleCloudPlatform/terraform-example-foundation-app/tr
 </tr>
 <tr>
 <td><a
-href="https://github.com/GoogleCloudPlatform/terraform-example-foundation-app/tree/main/build-app">BoA Build</a></td>
+href="https://github.com/GoogleCloudPlatform/terraform-example-foundation-app/tree/main/7-app-build-deploy">BoA App Build</a></td>
 <td>Set up Bank of Anthos Application.</td>
 </tr>
 </tbody>
@@ -166,7 +166,7 @@ The purpose of this step is to install the Anthos components required for the Ba
 - All required components to install **Anthos Config Management**
 - All required components to install **Anthos Service Mesh**
 
-## [7. build_app](./build_app)
+## [7. build_app](./7-app-build-deploy)
 
 The purpose of this step is to utilize an opinionated repository to demonstrate Cloud Build based builds of Bank of Anthos with secure CI/CD principles applied. The example herein simulates a company building and deploying the Bank of Anthos example application to a multi-tier kubernetes cluster using asynchronous GitOps. Currently, this includes:
 
