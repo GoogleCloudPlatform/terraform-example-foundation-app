@@ -49,7 +49,7 @@ All infrastructure components will be created using the base network created dur
 1. When using Cloud Build or Jenkins as your CI/CD tool each environment corresponds to a branch is the repository for 5-app-infra step and only the corresponding environment is applied.
 1. Push your plan branch to trigger a plan for all environments `git push --set-upstream origin plan` (the branch `plan` is not a special one. Any branch which name is different from `shared`, `development`, `non-production` or `production` will trigger a terraform plan).
     1. Review the plan output in your cloud build project https://console.cloud.google.com/cloud-build/builds?project=YOUR_CLOUD_BUILD_PROJECT_ID
-1. Merge changes to development with `git checkout -b shared` and `git push origin shared`.
+1. Merge changes to plan with `git checkout -b shared` and `git push origin shared`.
     1. Review the apply output in your cloud build project https://console.cloud.google.com/cloud-build/builds?project=YOUR_CLOUD_BUILD_PROJECT_ID
 1. Merge changes to development with `git checkout -b development` and `git push origin development`.
     1. Review the apply output in your cloud build project https://console.cloud.google.com/cloud-build/builds?project=YOUR_CLOUD_BUILD_PROJECT_ID

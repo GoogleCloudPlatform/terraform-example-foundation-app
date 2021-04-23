@@ -25,7 +25,7 @@ If your user does not have access to run the commands above and you are in the o
 
 ### Run terraform locally
 1. You will need to only once manually plan + apply the `shared` pipeline environments since `development`, `non-production` and `production` will depend on it.
-1. Change into `shared` folder.
+1. Change into `business_unit_1/shared` folder.
 1. Run `cp ../../tf-wrapper.sh .`
 1. Run `chmod 755 tf-wrapper.sh`.
 1. Rename `shared.auto.example.tfvars` to `shared.auto.tfvars` and update the file with values from your environment and bootstrap.
