@@ -23,7 +23,6 @@
 
 | Name | Description |
 |------|-------------|
-| boa\_anthoshub\_project\_id | Project ID for Anthos Hub Project |
 | boa\_gke\_project\_id | Project ID for GKE Project |
 | boa\_gsa\_sa\_email | SA email for boa-gsa service account |
 | boa\_ops\_project\_id | Project ID for Ops Project |
