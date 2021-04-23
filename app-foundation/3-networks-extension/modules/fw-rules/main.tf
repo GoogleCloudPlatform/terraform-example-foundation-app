@@ -59,6 +59,12 @@ locals {
       target_tags        = ["boa-mci-cluster"]
       allow_protocol     = "tcp"
       allow_ports        = ["443", "10250"]
+    },
+    "fw-${var.environment_code}-shared-base-e-bastion-allow-all" = {
+      destination_ranges = ["0.0.0.0/0"]
+      target_tags        = ["bastion"]
+      allow_protocol     = "all"
+      allow_ports        = null
     }
   }
 }
