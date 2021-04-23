@@ -66,7 +66,9 @@ module "boa_gke_project" {
     "storage-api.googleapis.com",
     "oslogin.googleapis.com",
     "binaryauthorization.googleapis.com",
-    "privateca.googleapis.com"
+    "privateca.googleapis.com",
+    "containerscanning.googleapis.com",
+    "multiclusteringress.googleapis.com"
   ]
 
   # Metadata

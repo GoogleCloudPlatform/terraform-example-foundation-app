@@ -30,7 +30,7 @@ If your user does not have access to run the commands above and you are in the o
 1. Run `chmod 755 tf-wrapper.sh`.
 1. Rename `shared.auto.example.tfvars` to `shared.auto.tfvars` and update the file with values from your environment and bootstrap.
 1. Update backend.tf with your bucket from infra pipeline example. You can run
-```for i in `find -name 'backend.tf'`; do sed -i 's/UPDATE_ME/<YOUR-BUCKET-NAME>/' $i; done```.
+```cd .. && for i in `find -name 'backend.tf'`; do sed -i 's/UPDATE_ME/<YOUR-BUCKET-NAME>/' $i; done && cd shared```.
 1. Run `terraform init`
 1. Run `terraform plan`, this should report 63 changes to be added if using the default config.
 1. Run `terraform apply` ensure you have the correct permissions before doing this.

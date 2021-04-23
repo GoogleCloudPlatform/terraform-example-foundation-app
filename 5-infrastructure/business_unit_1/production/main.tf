@@ -27,9 +27,9 @@ module "env" {
   boa_ops_project_id           = var.boa_ops_project_id
   boa_sec_project_id           = var.boa_sec_project_id
   boa_sql_project_id           = var.boa_sql_project_id
-  gke_cluster_1_cidr_block     = var.gke_cluster_1_cidr_block
-  gke_cluster_2_cidr_block     = var.gke_cluster_2_cidr_block
-  gke_mci_cluster_cidr_block   = var.gke_mci_cluster_cidr_block
+  gke_cluster_1_cidr_block     = "100.64.206.0/28" # Cluster control plane same is defined in 3-networks/envs/production/boa_vpc_fw.tf
+  gke_cluster_2_cidr_block     = "100.65.198.0/28" # Cluster control plane same is defined in 3-networks/envs/production/boa_vpc_fw.tf
+  gke_mci_cluster_cidr_block   = "100.64.198.0/28" # Cluster control plane same is defined in 3-networks/envs/production/boa_vpc_fw.tf
   enforce_bin_auth_policy      = var.enforce_bin_auth_policy
   bin_auth_attestor_names      = var.bin_auth_attestor_names
   bin_auth_attestor_project_id = var.bin_auth_attestor_project_id

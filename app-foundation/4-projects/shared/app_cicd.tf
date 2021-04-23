@@ -18,7 +18,7 @@ locals {
     "roles/viewer",
     "roles/storage.admin",
     "roles/cloudkms.admin",
-    "roles/binaryauthorization.attestorsViewer",
+    "roles/binaryauthorization.attestorsEditor",
     "roles/cloudkms.signerVerifier",
     "roles/containeranalysis.occurrences.editor",
     "roles/containeranalysis.notes.occurrences.viewer",

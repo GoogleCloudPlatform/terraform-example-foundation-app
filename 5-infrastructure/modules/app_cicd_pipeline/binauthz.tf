@@ -25,6 +25,7 @@ resource "random_string" "keyring_name" {
 resource "google_kms_key_ring" "keyring" {
   name     = "attestor-key-ring-${random_string.keyring_name.id}"
   location = var.primary_location
+  project  = var.app_cicd_project_id
   lifecycle {
     prevent_destroy = false
   }

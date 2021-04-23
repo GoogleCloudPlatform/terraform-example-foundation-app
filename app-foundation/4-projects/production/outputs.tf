@@ -14,11 +14,6 @@
  * limitations under the License.
  */
 
-output "boa_anthoshub_project_id" {
-  description = "Project ID for Anthos Hub Project"
-  value       = module.boa_anthoshub_project.project_id
-}
-
 output "boa_gke_project_id" {
   description = "Project ID for GKE Project"
   value       = module.boa_gke_project.project_id
