@@ -10,7 +10,7 @@
 | billing\_account | The ID of the billing account to associated this project with | `string` | n/a | yes |
 | budget\_amount | The amount to use as the budget | `number` | `1000` | no |
 | enable\_hub\_and\_spoke | Enable Hub-and-Spoke architecture. | `bool` | `false` | no |
-| environment\_code | Short form of current running environment (e.g. d for development) | `string` | `"d"` | no |
+| environment\_code | Short form of current running environment (e.g. d for development) | `string` | `"p"` | no |
 | folder\_prefix | Name prefix to use for folders created. | `string` | `"fldr"` | no |
 | org\_id | The organization id for the associated services | `string` | n/a | yes |
 | parent\_folder | Optional - if using a folder for testing. | `string` | `""` | no |

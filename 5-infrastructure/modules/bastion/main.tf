@@ -53,5 +53,5 @@ module "iap_bastion" {
   ]
   shielded_vm = false
   members     = var.bastion_members
-  tags        = ["bastion", "allow-google-apis","egress-internet"]
+  tags        = ["bastion", "allow-google-apis", "egress-internet"]
 }
