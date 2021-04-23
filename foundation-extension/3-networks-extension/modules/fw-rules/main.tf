@@ -65,6 +65,24 @@ locals {
       target_tags        = ["bastion"]
       allow_protocol     = "all"
       allow_ports        = null
+    },
+    "fw-${var.environment_code}-shared-base-e-gke1-allow-2022" = {
+      destination_ranges = ["0.0.0.0/0"]
+      target_tags        = ["boa-gke1-cluster"]
+      allow_protocol     = "all"
+      allow_ports        = ["2022"]
+    },
+    "fw-${var.environment_code}-shared-base-e-gke2-2022" = {
+      destination_ranges = ["0.0.0.0/0"]
+      target_tags        = ["boa-gke2-cluster"]
+      allow_protocol     = "all"
+      allow_ports        = ["2022"]
+    },
+    "fw-${var.environment_code}-shared-base-e-mci-2022" = {
+      destination_ranges = ["0.0.0.0/0"]
+      target_tags        = ["boa-mci-cluster"]
+      allow_protocol     = "all"
+      allow_ports        = ["2022"]
     }
   }
 }
