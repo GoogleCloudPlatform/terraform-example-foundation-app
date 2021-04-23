@@ -64,7 +64,7 @@ locals {
       destination_ranges = ["0.0.0.0/0"]
       target_tags        = ["bastion"]
       allow_protocol     = "all"
-      allow_ports        = []
+      allow_ports        = null
     }
   }
 }
