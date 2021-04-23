@@ -12,11 +12,12 @@ gcloud compute ssh gce-bastion-us-west1-b-01 \
 
 ## Install required tools
 ```console
+yum sudo update
 sudo su
-yum install git
-yum install google-cloud-sdk-kpt
+yum install git -y
+yum install google-cloud-sdk-kpt -y
 yum install jq -y
-yum install kubectl
+yum install kubectl -y
 exit
 ```
 
@@ -33,20 +34,20 @@ When indicated, make sure to replace the values below with the appropriate value
 # For example: prj-bu1-d-boa-gke-ecb0
 export PROJECT_ID=YOUR_PROJECT_ID
 export PROJECT_NUM=$(gcloud projects describe ${PROJECT_ID} --format='value(projectNumber)')
-export CLUSTER_1=gke-boa-us-east1-001
+export CLUSTER_1=gke-1-boa-d-us-east1
 export CLUSTER_1_REGION=us-east1
-export CLUSTER_2=gke-boa-us-west1-001
+export CLUSTER_2=gke-1-boa-d-us-west1
 export CLUSTER_2_REGION=us-west1
-export CLUSTER_INGRESS=gke-mci-us-east1-001
+export CLUSTER_INGRESS=mci-d-us-east1
 export CLUSTER_INGRESS_REGION=us-east1
 export WORKLOAD_POOL=${PROJECT_ID}.svc.id.goog
 export MESH_ID="proj-${PROJECT_NUM}"
 export ASM_VERSION=1.8
 export ISTIO_VERSION=1.8.3-asm.2
 export ASM_LABEL=asm-183-2
-export CTX_1=$PROJECT_ID_$CLUSTER_1_REGION_CLUSTER_1
-export CTX_2=$PROJECT_ID_$CLUSTER_2_REGION_CLUSTER_2
-export CTX_INGRESS=$PROJECT_ID_$CLUSTER_INGRESS_REGION_CLUSTER_INGRESS
+export CTX_1=gke_${PROJECT_ID}_${CLUSTER_1_REGION}_{CLUSTER_1}
+export CTX_2=gke_${PROJECT_ID}_${CLUSTER_2_REGION}_{CLUSTER_2}
+export CTX_INGRESS=gke_${PROJECT_ID}_${CLUSTER_INGRESS_REGION}_{CLUSTER_INGRESS}
 ```
 ## Generate Kubeconfig Entries
 In order to install ASM, we need to authenticate to clusters.
@@ -99,6 +100,11 @@ The following commands run the script for a new installation of ASM on Cluster1 
     ```
 ### Configure endpoint discovery between clusters
 We need to configure endpoint discovery for cross-cluster load balancing and communication.
+1. Add ASM to your path:
+    ```console
+    ./install_asm --version # parse to get the version
+    export PATH=$PATH:$HOME/asm-1.8/istio-1.8.5-asm.2/bin/
+    ```
 1. Creates a secret that grants access to the Kube API Server for cluster 1
     ```console
     ./istioctl x create-remote-secret \
@@ -170,7 +176,7 @@ With MCI, we need to select a cluster to be the configuration cluster. In this c
       name: istio-ingressgateway-multicluster-ingress
       annotations:
         networking.gke.io/static-ip: https://www.googleapis.com/compute/v1/projects/${PROJECT_ID}/global/addresses/mci-ip
-        networking.gke.io/pre-shared-certs: "boa-ssl-cert"
+        #networking.gke.io/pre-shared-certs: "boa-ssl-cert"
     spec:
       template:
         spec:
