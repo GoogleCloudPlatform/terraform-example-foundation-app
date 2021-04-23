@@ -7,7 +7,7 @@ You can also connect to this instance by tunnelling SSH traffic through IAP.
 export PROJECT_ID=YOUR_PROJECT_ID
 gcloud compute ssh gce-bastion-us-west1-b-01 \
   --project ${PROJECT_ID} \
-  --zone us-west-b
+  --zone us-west1-b
 ```
 
 ## Install required tools
@@ -32,13 +32,13 @@ When indicated, make sure to replace the values below with the appropriate value
 ```console
 # replace YOUR_PROJECT_ID with the project id for the project that hosts your clusters.
 # For example: prj-bu1-d-boa-gke-ecb0
-export PROJECT_ID=YOUR_PROJECT_ID
+export PROJECT_ID=$(gcloud projects )
 export PROJECT_NUM=$(gcloud projects describe ${PROJECT_ID} --format='value(projectNumber)')
 export CLUSTER_1=gke-1-boa-d-us-east1
 export CLUSTER_1_REGION=us-east1
-export CLUSTER_2=gke-1-boa-d-us-west1
+export CLUSTER_2=gke-2-boa-d-us-west1
 export CLUSTER_2_REGION=us-west1
-export CLUSTER_INGRESS=mci-d-us-east1
+export CLUSTER_INGRESS=mci-boa-d-us-east1
 export CLUSTER_INGRESS_REGION=us-east1
 export WORKLOAD_POOL=${PROJECT_ID}.svc.id.goog
 export MESH_ID="proj-${PROJECT_NUM}"
@@ -181,8 +181,8 @@ With MCI, we need to select a cluster to be the configuration cluster. In this c
       template:
         spec:
           backend:
-          serviceName: istio-ingressgateway-multicluster-svc
-          servicePort: 80
+            serviceName: istio-ingressgateway-multicluster-svc
+            servicePort: 80
     EOF
     ```
 
@@ -211,6 +211,7 @@ With MCI, we need to select a cluster to be the configuration cluster. In this c
     EOF
     ```
 
+
 1. create a backend config
     ```console
     cat <<EOF > $HOME/backendconfig.yaml
@@ -235,15 +236,18 @@ With MCI, we need to select a cluster to be the configuration cluster. In this c
     ```
 
 ## Install and Configure ACM
-### Create a Private Key
-    ```console
-    kubectl create ns config-management-system --context ${CTX_1} && kubectl create secret generic git-creds --namespace=config-management-system --context ${CTX_1} --from-file=ssh="id_rsa.nomos"
+### Generate a Private/Public Key Pairs
 
-    kubectl create ns config-management-system --context ${CTX_2} && kubectl create secret generic git-creds --namespace=config-management-system --context ${CTX_2} --from-file=ssh="id_rsa.nomos"
+### Create a Private Key
+Create a secret with your private key in both clusters
+    ```console
+    kubectl create ns config-management-system --context ${CTX_1} && kubectl create secret generic git-creds --namespace=config-management-system --context ${CTX_1} --from-file=ssh="id_rsa"
+
+    kubectl create ns config-management-system --context ${CTX_2} && kubectl create secret generic git-creds --namespace=config-management-system --context ${CTX_2} --from-file=ssh="id_rsa"
     ```
 
 ### Download and install ACM
-
+Note: Change 
     ```console
     gsutil cp gs://config-management-release/released/1.7.0/config-management-operator.yaml config-management-operator.yaml
 
@@ -253,13 +257,15 @@ With MCI, we need to select a cluster to be the configuration cluster. In this c
 
 ### Configure ACM
     ```console
-    kubectl apply --context=${CTX_1} -f ${HOME}/terraform-example-foundation-app/6-anthos-install/acm-configs/config-management-gke-east.yaml
+    kubectl apply --context=${CTX_1} -f ${HOME}/terraform-example-foundation-app/6-anthos-install/acm-configs/config-management-east.yaml
 
-    kubectl apply --context=${CTX_2} -f ${HOME}/terraform-example-foundation-app/6-anthos-install/acm-config/config-management-gke-west.yaml
+    kubectl apply --context=${CTX_2} -f ${HOME}/terraform-example-foundation-app/6-anthos-install/acm-config/config-management-west.yaml
     ```
 
 ### Populate the CSR repos
 For configuring and deploying the applicaiton, we are using multi-repo mode in ACM. This mode allows syncing from multiple repositories. In this excample, we have one root repository that hosts the cluster-wide and namespace-scoped configurations, and three namespace repositories to host the application manifests.
+
+Find the Project ID for your CI/CD project. It will look something like this: "prj-bu1-s-app-cicd-<random>"
 
 1. Define an environment variable to set the project where the pipeline will run. Make sure to replace `YOUR_CICD_PROJECT_ID` with the appropriate project ID.
     ```console
@@ -368,8 +374,11 @@ This repository will host the deployment and service manifests for `transactionh
     git push origin master
     ```
 #### Configure syncing from the root repository
+1. update the repository url to point to your repository
+
+1. apply the root-sync.yaml file.
     ```console
     kubectl apply --context=${CTX_1} -f ${HOME}/terraform-example-foundation-app/6-anthos-install/acm-configs/root-sync.yaml
 
-    kubectl apply --context=${CTX_2} -f ${HOME}/terraform-example-foundation-app/6-anthos-install/acm-config/root-sync.yaml
+    kubectl apply --context=${CTX_2} -f ${HOME}/terraform-example-foundation-app/6-anthos-install/acm-configs/root-sync.yaml
     ```
