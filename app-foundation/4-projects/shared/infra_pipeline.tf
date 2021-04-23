@@ -47,5 +47,5 @@ module "infra_pipelines" {
   billing_account          = var.billing_account
   default_region           = var.primary_location
   app_infra_repos          = ["boa-infra"]
-  terraform_apply_branches = ["development", "non-production", "production", "shared"]
+  terraform_apply_branches = ["development", "non\\-production", "production", "shared"]
 }
