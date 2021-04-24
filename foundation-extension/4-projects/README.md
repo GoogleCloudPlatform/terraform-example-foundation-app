@@ -9,9 +9,6 @@ The purpose of this step is to set up a folder structure, projects, and infrastr
 1. [2-environments](https://github.com/terraform-google-modules/terraform-example-foundation/blob/master/2-environments/README.md) executed successfully.
 1. [3-networks](https://github.com/terraform-google-modules/terraform-example-foundation/blob/master/3-networks/README.md) executed successfully.
 
-**Troubleshooting:**
-If your user does not have access to run the commands above and you are in the organization admins group, you can append `--impersonate-service-account=org-terraform@<SEED_PROJECT_ID>.iam.gserviceaccount.com` to run the command as the terraform service account.
-
 ## Usage
 
 ### Setup to run via Cloud Build
@@ -29,27 +26,28 @@ If your user does not have access to run the commands above and you are in the o
 1. Run `cp ../../tf-wrapper.sh .`
 1. Run `chmod 755 tf-wrapper.sh`.
 1. Rename `shared.auto.example.tfvars` to `shared.auto.tfvars` and update the file with values from your environment and bootstrap.
-1. Update backend.tf with your bucket from infra pipeline example. You can run
+1. Update backend.tf with your bucket from example-foundation. You can run
 ```cd .. && for i in `find -name 'backend.tf'`; do sed -i 's/UPDATE_ME/<YOUR-BUCKET-NAME>/' $i; done && cd shared```.
 1. Run `terraform init`
 1. Run `terraform plan`, this should report 63 changes to be added if using the default config.
 1. Run `terraform apply` ensure you have the correct permissions before doing this.
 
 ### Run cloudbuild dev/npd/prd envs
-1. Rename `development.auto.example.tfvars` to `development.auto.tfvars` in development folder and update the file with values from your environment and 4-projects/shared outputs
-1. Rename `non-production.auto.example.tfvars` to `non-production.auto.tfvars` in non-production folder and update the file values from your environment and 4-projects/shared outputs
-1. Rename `production.auto.example.tfvars` to `production.auto.tfvars` in production folder and update the file with values from your environment and 4-projects/shared outputs
+1. Go back to root folder `cd ../..`
+1. Rename `mv business_unit_1/development/development.auto.example.tfvars business_unit_1/development/development.auto.tfvars` and update the file with values from your environment and outputs from 4-projects/shared.
+1. Rename `mv business_unit_1/non-production/non-production.auto.example.tfvars business_unit_1/non-production/non-production.auto.tfvars` and update the file with values from your environment and outputs from 4-projects/shared.
+1. Rename `mv business_unit_1/production/production.auto.example.tfvars business_unit_1/production/production.auto.tfvars` and update the file with values from your environment and outputs from 4-projects/shared.
 1. Push your plan branch to trigger a plan `git push --set-upstream origin plan` (the branch `plan` is not a special one. Any branch which name is different from `development`, `non-production` or `production` will trigger a terraform plan).
-    1. Review the plan output in your cloud build project https://console.cloud.google.com/cloud-build/builds?project=YOUR_CLOUD_BUILD_PROJECT_ID
-1. Merge changes to production with `git checkout -b production` and `git push origin production`.
-    1. Review the apply output in your cloud build project. https://console.cloud.google.com/cloud-build/builds?project=YOUR_CLOUD_BUILD_PROJECT_ID
+    1. Review the plan output in your cloud build project https://console.cloud.google.com/cloud-build/builds?project=prj-b-cicd-xxxx
 1. Merge changes to development with `git checkout -b development` and `git push origin development`.
-    1. Review the apply output in your cloud build project https://console.cloud.google.com/cloud-build/builds?project=YOUR_CLOUD_BUILD_PROJECT_ID
+    1. Review the apply output in your cloud build project https://console.cloud.google.com/cloud-build/builds?project=prj-b-cicd-xxxx
 1. Merge changes to non-production with `git checkout -b non-production` and `git push origin non-production`.
-    1. Review the apply output in your cloud build project. https://console.cloud.google.com/cloud-build/builds?project=YOUR_CLOUD_BUILD_PROJECT_ID
+    1. Review the apply output in your cloud build project. https://console.cloud.google.com/cloud-build/builds?project=prj-b-cicd-xxxx
+1. Merge changes to production with `git checkout -b production` and `git push origin production`.
+    1. Review the apply output in your cloud build project. https://console.cloud.google.com/cloud-build/builds?project=prj-b-cicd-xxxx
 
 **Troubleshooting:**
-If your user does not have access to run the terraform modules locally and you are in the organization admins group, you can append `--impersonate-service-account=org-terraform@<SEED_PROJECT_ID>.iam.gserviceaccount.com` to run terraform modules as the service  account.
+If your user does not have access to run the terraform modules locally and you are in the organization admins group, you can append `--impersonate-service-account=org-terraform@prj-b-cicd-xxxx.iam.gserviceaccount.com` to run terraform modules as the service  account.
 
 ### TF Validate (Optional)
 To use the `validate` option of the `tf-wrapper.sh` script, the latest version of `terraform-validator` must be [installed](https://github.com/forseti-security/policy-library/blob/master/docs/user_guide.md#how-to-use-terraform-validator) in your system and in you `PATH`.
