@@ -42,9 +42,21 @@ locals {
     }
   }
   egress_rules = {
-    "fw-${var.environment_code}-shared-base-e-gke-nodes-allow-master-cidr" = {
-      destination_ranges = [var.boa_gke_cluster1_master_cidr, var.boa_gke_cluster2_master_cidr, var.boa_gke_mci_master_cidr]
-      target_tags        = ["boa-cluster"]
+    "fw-${var.environment_code}-shared-base-e-gke1-allow-master-cidr" = {
+      destination_ranges = [var.boa_gke_cluster1_master_cidr]
+      target_tags        = ["boa-gke1-cluster"]
+      allow_protocol     = "tcp"
+      allow_ports        = ["443", "10250"]
+    },
+    "fw-${var.environment_code}-shared-base-e-gke2-allow-master-cidr" = {
+      destination_ranges = [var.boa_gke_cluster2_master_cidr]
+      target_tags        = ["boa-gke2-cluster"]
+      allow_protocol     = "tcp"
+      allow_ports        = ["443", "10250"]
+    },
+    "fw-${var.environment_code}-shared-base-e-mci-allow-master-cidr" = {
+      destination_ranges = [var.boa_gke_mci_master_cidr]
+      target_tags        = ["boa-mci-cluster"]
       allow_protocol     = "tcp"
       allow_ports        = ["443", "10250"]
     },
