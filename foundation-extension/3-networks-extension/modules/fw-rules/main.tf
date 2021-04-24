@@ -29,34 +29,22 @@ locals {
       allow_ports    = ["8443"]
     },
     "fw-${var.environment_code}-shared-base-allow-pod-east-west" = {
-      source_ranges  = ["100.64.72.0/22"]
-      target_tags    = ["boa-gke2-cluster"]
+      source_ranges  = [var.boa_gke_cluster2_pod_range]
+      target_tags    = ["boa-gke1-cluster"]
       allow_protocol = "tcp"
       allow_ports    = ["443", "8080"]
     },
     "fw-${var.environment_code}-shared-base-allow-pod-west-east" = {
-      source_ranges  = ["100.65.64.0/22"]
-      target_tags    = ["boa-gke1-cluster"]
+      source_ranges  = [var.boa_gke_cluster1_pod_range]
+      target_tags    = ["boa-gke2-cluster"]
       allow_protocol = "tcp"
       allow_ports    = ["443", "8080"]
     }
   }
   egress_rules = {
-    "fw-${var.environment_code}-shared-base-e-gke1-allow-master-cidr" = {
-      destination_ranges = [var.boa_gke_cluster1_master_cidr]
-      target_tags        = ["boa-gke1-cluster"]
-      allow_protocol     = "tcp"
-      allow_ports        = ["443", "10250"]
-    },
-    "fw-${var.environment_code}-shared-base-e-gke2-allow-master-cidr" = {
-      destination_ranges = [var.boa_gke_cluster2_master_cidr]
-      target_tags        = ["boa-gke2-cluster"]
-      allow_protocol     = "tcp"
-      allow_ports        = ["443", "10250"]
-    },
-    "fw-${var.environment_code}-shared-base-e-mci-allow-master-cidr" = {
-      destination_ranges = [var.boa_gke_mci_master_cidr]
-      target_tags        = ["boa-mci-cluster"]
+    "fw-${var.environment_code}-shared-base-e-gke-nodes-allow-master-cidr" = {
+      destination_ranges = [var.boa_gke_cluster1_master_cidr, var.boa_gke_cluster2_master_cidr, var.boa_gke_mci_master_cidr]
+      target_tags        = ["boa-cluster"]
       allow_protocol     = "tcp"
       allow_ports        = ["443", "10250"]
     },
@@ -66,22 +54,11 @@ locals {
       allow_protocol     = "all"
       allow_ports        = null
     },
-    "fw-${var.environment_code}-shared-base-e-gke1-allow-2022" = {
+    # TO-FIX/TUNE: FW rules to access source.googleapis.com to update repos using ssh auth on git
+    "fw-${var.environment_code}-shared-base-e-gke-allow-2022" = {
       destination_ranges = ["0.0.0.0/0"]
-      target_tags        = ["boa-gke1-cluster"]
-      allow_protocol     = "all"
-      allow_ports        = ["2022"]
-    },
-    "fw-${var.environment_code}-shared-base-e-gke2-2022" = {
-      destination_ranges = ["0.0.0.0/0"]
-      target_tags        = ["boa-gke2-cluster"]
-      allow_protocol     = "all"
-      allow_ports        = ["2022"]
-    },
-    "fw-${var.environment_code}-shared-base-e-mci-2022" = {
-      destination_ranges = ["0.0.0.0/0"]
-      target_tags        = ["boa-mci-cluster"]
-      allow_protocol     = "all"
+      target_tags        = ["boa-cluster"]
+      allow_protocol     = "tcp"
       allow_ports        = ["2022"]
     }
   }

@@ -57,7 +57,7 @@ module "iap_bastion" {
   tags                 = ["bastion", "allow-google-apis", "egress-internet"]
 }
 
-resource "google_project_iam_member" "app_cicd_cloudbuild_sa_roles" {
+resource "google_project_iam_member" "bastion_repo_access" {
   project = var.repo_project_id
   role    = "roles/source.writer"
   member  = "serviceAccount:${module.iap_bastion.service_account}"
