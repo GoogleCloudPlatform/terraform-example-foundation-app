@@ -293,8 +293,8 @@ This repository is the root repository that host cluster-scoped and namespace-sc
 1. Update the project name for the service account
 replace the project id in the following files:
 
-- "${HOME}/terraform-example-foundation-app/6-anthos-install/acm-repos/root-config-repo/namespaces/boa/accounts/accounts-sa.yaml"
-- "${HOME}/terraform-example-foundation-app/6-anthos-install/acm-repos/root-config-repo/namespaces/boa/transactions/transactions-sa.yaml"
+- "${HOME}/bank-of-anthos-repos/root-config-repo/namespaces/boa/accounts/accounts-sa.yaml"
+- "${HOME}/bank-of-anthos-repos/root-config-repo/namespaces/boa/transactions/transactions-sa.yaml"
 
 You need to change this part:
 
