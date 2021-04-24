@@ -68,7 +68,8 @@ module "boa_gke_project" {
     "binaryauthorization.googleapis.com",
     "privateca.googleapis.com",
     "containerscanning.googleapis.com",
-    "multiclusteringress.googleapis.com"
+    "multiclusteringress.googleapis.com",
+    "serviceusage.googleapis.com"
   ]
 
   # Metadata

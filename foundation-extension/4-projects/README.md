@@ -17,7 +17,7 @@ If your user does not have access to run the commands above and you are in the o
 ### Setup to run via Cloud Build
 1. Clone repo `gcloud source repos clone gcp-projects --project=YOUR_CLOUD_BUILD_PROJECT_ID`.
 1. Change freshly cloned repo and change to non master branch `git checkout -b plan` (the branch `plan` is not a special one. Any branch which name is different from `development`, `non-production` or `production` will trigger a terraform plan).
-1. Copy example foundation to new repo `cp -R ../terraform-example-foundation-app/app-foundation/4-projects/ .` (modify accordingly based on your current directory).
+1. Copy example foundation to new repo `cp -RT ../terraform-example-foundation-app/app-foundation/4-projects/ .` (modify accordingly based on your current directory).
 1. Copy cloud build configuration files for terraform `cp ../terraform-example-foundation-app/build/cloudbuild-tf-* . ` (modify accordingly based on your current directory).
 1. Copy terraform wrapper script `cp ../terraform-example-foundation-app/build/tf-wrapper.sh . ` to the root of your new repository (modify accordingly based on your current directory).
 1. Ensure wrapper script can be executed `chmod 755 ./tf-wrapper.sh`.
@@ -25,7 +25,7 @@ If your user does not have access to run the commands above and you are in the o
 
 ### Run terraform locally
 1. You will need to only once manually plan + apply the `shared` pipeline environments since `development`, `non-production` and `production` will depend on it.
-1. Change into `4-projects/shared` folder.
+1. Change into `business_unit_1/shared` folder.
 1. Run `cp ../../tf-wrapper.sh .`
 1. Run `chmod 755 tf-wrapper.sh`.
 1. Rename `shared.auto.example.tfvars` to `shared.auto.tfvars` and update the file with values from your environment and bootstrap.

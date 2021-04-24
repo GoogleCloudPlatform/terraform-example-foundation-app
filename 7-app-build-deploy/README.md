@@ -22,7 +22,7 @@ This demonstration uses Bank of Anthos to simulate a company building and deploy
 1. Navigate into the repo `cd bank-of-anthos-source`.
 1. Create main branch `git checkout -b main`.
 1. Copy contents of Bank of Anthos Github Repo to new repo `cp -RT ../bank-of-anthos .` (modify accordingly based on your current directory).
-1. Copy file `cloudbuild-build-boa.yaml` and `policies` folder from [build_app](.) to new repo `cp -RT ../terraform-example-foundation-app/build_app .` (modify accordingly based on your current directory).
+1. Copy file `cloudbuild-build-boa.yaml` and `policies` folder from [7-app-build-deploy](.) to new repo `cp -RT ../terraform-example-foundation-app/7-app-build-deploy .` (modify accordingly based on your current directory).
 1. Run `sed -i.bak "s|gcr.io/bank-of-anthos|<region>-docker.pkg.dev/prj-bu1-s-app-cicd-<random>/prj-bu1-s-app-cicd-<random>-boa-image-repo|g" skaffold.yaml && sed -i.bak "s|gitCommit: {}|sha256: {}|g" skaffold.yaml` at the root folder level while replacing the region from `5-infrastructure/business-unit-1/shared` and project from `4-projects/business_unit_1/shared` stage
 1. Commit changes with `git add .` and `git commit -m 'Your message'`. and push commit `git push origin main`.
 1. Cloudbuild will automatically run on push, confirm all stages of pipeline complete with a green check.

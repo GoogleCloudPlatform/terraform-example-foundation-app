@@ -37,19 +37,20 @@ All infrastructure components will be created using the base network created dur
 1. Clone repo `gcloud source repos clone boa-infra --project=prj-bu1-s-infra-pipeline-<random>`. (this is from the terraform output from the previous section, run `terraform output cloudbuild_project_id` in the `4-projects/business_unit_1/shared` folder)
 1. Navigate into the repo `cd boa-infra`.
 1. Change freshly cloned repo and change to non master branch `git checkout -b plan`.
-1. Copy contents of foundation to new repo `cp -R ../terraform-example-foundation-app/5-infrastructure/ .` (modify accordingly based on your current directory).
+1. Copy contents of foundation to new repo `cp -RT ../terraform-example-foundation-app/5-infrastructure/ .` (modify accordingly based on your current directory).
 1. Copy cloud build configuration files for terraform `cp ../terraform-example-foundation-app/build/cloudbuild-tf-* . ` (modify accordingly based on your current directory).
 1. Copy terraform wrapper script `cp ../terraform-example-foundation-app/build/tf-wrapper.sh . ` to the root of your new repository (modify accordingly based on your current directory).
 1. Ensure wrapper script can be executed `chmod 755 ./tf-wrapper.sh`.
+1. Rename `shared.auto.example.tfvars` to `shared.auto.tfvars` in business_unit_1/development folder and update the file with values from your environment and outputs from shared.
+1. Rename `development.auto.example.tfvars` to `development.auto.tfvars` in business_unit_1/development folder and update the file with values from your environment and outputs from 4-projects/shared.
+1. Rename `non-production.auto.example.tfvars` to `non-production.auto.tfvars` in business_unit_1/non-production folder and update the file with values from your environment and outputs from 4-projects/shared.
+1. Rename `production.auto.example.tfvars` to `production.auto.tfvars` in business_unit_1/production folder and update the file with values from your environment and outputs from 4-projects/shared.
 1. Commit changes with `git add .` and `git commit -m 'Your message'`.
 1. When using Cloud Build or Jenkins as your CI/CD tool each environment corresponds to a branch is the repository for 5-app-infra step and only the corresponding environment is applied.
 1. Push your plan branch to trigger a plan for all environments `git push --set-upstream origin plan` (the branch `plan` is not a special one. Any branch which name is different from `shared`, `development`, `non-production` or `production` will trigger a terraform plan).
-1. Merge changes to development with `git checkout -b shared` and `git push origin shared`.
-    1. Review the apply output in your cloud build project https://console.cloud.google.com/cloud-build/builds?project=YOUR_CLOUD_BUILD_PROJECT_ID
-1. Rename `development.auto.example.tfvars` to `development.auto.tfvars` in business_unit_1/development folder and update the file with values from your environment and outputs from shared.
-1. Rename `non-production.auto.example.tfvars` to `non-production.auto.tfvars` in business_unit_1/non-production folder and update the file with values from your environment and outputs from shared.
-1. Rename `production.auto.example.tfvars` to `production.auto.tfvars` in business_unit_1/production folder and update the file with values from your environment and outputs from shared.
     1. Review the plan output in your cloud build project https://console.cloud.google.com/cloud-build/builds?project=YOUR_CLOUD_BUILD_PROJECT_ID
+1. Merge changes to plan with `git checkout -b shared` and `git push origin shared`.
+    1. Review the apply output in your cloud build project https://console.cloud.google.com/cloud-build/builds?project=YOUR_CLOUD_BUILD_PROJECT_ID
 1. Merge changes to development with `git checkout -b development` and `git push origin development`.
     1. Review the apply output in your cloud build project https://console.cloud.google.com/cloud-build/builds?project=YOUR_CLOUD_BUILD_PROJECT_ID
 1. Merge changes to non-production with `git checkout -b non-production` and `git push origin non-production`.
@@ -58,8 +59,8 @@ All infrastructure components will be created using the base network created dur
     1. Review the apply output in your cloud build project https://console.cloud.google.com/cloud-build/builds?project=YOUR_CLOUD_BUILD_PROJECT_ID
 
 ### Run terraform locally (Alternate)
-1. Change into `cd 5-infrastructure/business_unit_1/shared` folder.
-1. Run `cp ../../../tf-wrapper.sh .`
+1. Change into `cd business_unit_1/shared` folder.
+1. Run `cp ../../tf-wrapper.sh .`
 1. Run `chmod 755 tf-wrapper.sh`
 1. Update backend.tf with your bucket from infra pipeline example. You can run
 ```for i in `find -name 'backend.tf'`; do sed -i 's/UPDATE_ME/<YOUR-BUCKET-NAME>/' $i; done```.

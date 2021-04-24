@@ -131,4 +131,6 @@ module "boa_firewall_rules" {
   boa_gke_cluster1_master_cidr = "100.64.206.0/28"
   boa_gke_cluster2_master_cidr = "100.65.198.0/28"
   boa_gke_mci_master_cidr      = "100.64.198.0/28"
+  boa_gke_cluster1_pod_range   = "100.64.200.0/22"
+  boa_gke_cluster2_pod_range   = "100.65.192.0/22"
 }

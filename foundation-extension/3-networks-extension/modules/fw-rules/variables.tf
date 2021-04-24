@@ -24,6 +24,16 @@ variable "boa_gke_cluster2_master_cidr" {
   type        = string
 }
 
+variable "boa_gke_cluster1_pod_range" {
+  description = "Pod Range for GKE Cluster 1"
+  type        = string
+}
+
+variable "boa_gke_cluster2_pod_range" {
+  description = "Pod Range for GKE Cluster 2"
+  type        = string
+}
+
 variable "boa_gke_mci_master_cidr" {
   description = "Master CIDR for MCI GKE Cluster"
   type        = string
