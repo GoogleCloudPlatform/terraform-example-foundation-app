@@ -57,7 +57,7 @@ All infrastructure components will be created using the base network created dur
     1. Review the apply output in your cloud build project https://console.cloud.google.com/cloud-build/builds?project=YOUR_CLOUD_BUILD_PROJECT_ID
 1. Merge changes to production branch with `git checkout -b production` and `git push origin production`.
     1. Review the apply output in your cloud build project https://console.cloud.google.com/cloud-build/builds?project=YOUR_CLOUD_BUILD_PROJECT_ID
-> **NOTE: If Terraform Apply Fails check Troubleshooting Section below**
+> **NOTE: If Terraform Apply Fails on any branch check Troubleshooting Section below**
 
 ### Run terraform locally (Alternate)
 1. Change into `cd business_unit_1/shared` folder.
@@ -73,17 +73,17 @@ All infrastructure components will be created using the base network created dur
 We will now deploy each of our environments(development/production/non-production) using this script.
 
 
-**Troubleshooting:**
-- Impersonate Error:
+### **Troubleshooting:**
+#### Impersonate Error:
     - If your user does not have access to run the terraform modules locally and you are in the organization admins group, you can append `--impersonate-service-account="boa-terraform-<z>-sa@prj-bu1-<z>-boa-sec-<xxxx>.iam.gserviceaccount.com"` for dev/npd/prd envs or `--impersonate-service-account="cicd-build-sa@prj-bu1-s-app-cicd-<xxxx>.iam.gserviceaccount.com"` for shared env to run terraform modules as the service  account.
-- CloudSQL Error: (`Error: Error waiting for Create Instance: on .terraform/modules/env.sql.boa_postgress_ha/modules/postgresql/read_replica.tf line 23, in resource "google_sql_database_instance" "replicas"`)
-    1. Clone repo `gcloud source repos clone boa-infra --project=prj-bu1-s-infra-pipeline-<random>` in Cloudshell and `git checkout <failed env>`
-    1. Change into directory for failed environment `cd business_unit_1/<env>`
-    1. Update backend.tf with your bucket for infra pipeline can be found in `prj-bu1-s-infra-pipeline-<random>` and bucket should be `boa-infra-tfstate-<random>`. You can run ```for i in `find -name 'backend.tf'`; do sed -i 's/UPDATE_ME/<YOUR-BUCKET-NAME>/' $i; done```.
+#### CloudSQL Error: (**`Error: Error waiting for Create Instance: on .terraform/modules/env.sql.boa_postgress_ha/modules/postgresql/read_replica.tf line 23, in resource "google_sql_database_instance" "replicas"`**)
+    1. Clone repo `gcloud source repos clone boa-infra --project=prj-bu1-s-infra-pipeline-<random>` in Cloudshell and `git checkout <failed environment>`
+    1. Change into directory for failed environment `cd business_unit_1/<failed environment>`
+    1. Update backend.tf with your bucket for infra pipeline can be found in `prj-bu1-s-infra-pipeline-<random>` and bucket should be `boa-infra-tfstate-<random>` if default config is used. You can run ```for i in `find -name 'backend.tf'`; do sed -i 's/UPDATE_ME/<YOUR-BUCKET-NAME>/' $i; done```.
     1. Run `terraform init`
     1. Run `terraform state list | grep sql | grep replicas`, depending on the output go to GCP console https://console.cloud.google.com/sql/instances?q=search&referrer=search&project=prj-bu1-d-boa-sql-xxxx and manually delete the replicas that you **do not** see a state for.
-    1. Note the intance sql1 or sql2 and head back to Cloudshell
-    1. Change the following command `<sql1/sql2>` according to the finding in previous step and run `terraform state list | grep <sql1/sql2> | grep suffix | xargs -I {} terraform taint {}`
+    1. Note the SQL Intance Name (sql1 or sql2) for which you deleted replicas and head back to Cloudshell
+    1. Run `terraform state list | grep <sql1/sql2> | grep suffix | xargs -I {} terraform taint {}` while replacing `<sql1/sql2>` according to the finding in previous step
     1. `git add -A && git commit -m 'SQL Deploy Error'` and `git push origin <failed environment>`
 
 ### TF Validate (Optional)
