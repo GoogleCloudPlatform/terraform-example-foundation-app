@@ -12,13 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
- #apiVersion: v1
- # kind: ResourceQuota
- # metadata:
- #   name: transactions
- # spec:
- #   hard:
- #     requests.cpu: "2"
- #     requests.memory: 4Gi
- #     limits.cpu: "3"
- #     limits.memory: 8Gi
+ apiVersion: v1
+ kind: ResourceQuota
+ metadata:
+   name: transactions
+ spec:
+   hard:
+     requests.cpu: "4"
+     requests.memory: 8Gi
+     limits.cpu: "6"
+     limits.memory: 16Gi
