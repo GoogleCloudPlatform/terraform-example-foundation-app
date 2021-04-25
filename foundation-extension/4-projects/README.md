@@ -12,6 +12,7 @@ The purpose of this step is to set up a folder structure, projects, and infrastr
 ## Usage
 
 ### Setup to run via Cloud Build
+1. Change directory to outside `terraform-example-foundation-app` using `cd ..`, to confirm you run `ls` and you should see `terraform-example-foundation-app` listed
 1. Clone repo `gcloud source repos clone gcp-projects --project=YOUR_CLOUD_BUILD_PROJECT_ID`.
 1. Change freshly cloned repo and change to non master branch `git checkout -b plan` (the branch `plan` is not a special one. Any branch which name is different from `development`, `non-production` or `production` will trigger a terraform plan).
 1. Copy example foundation to new repo `cp -RT ../terraform-example-foundation-app/app-foundation/4-projects/ .` (modify accordingly based on your current directory).

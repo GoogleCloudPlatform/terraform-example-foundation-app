@@ -34,6 +34,7 @@ All infrastructure components will be created using the base network created dur
 ## Usage
 
 ### Setup to run via Cloud Build
+1. Change directory to outside `terraform-example-foundation-app` using `cd ..`, to confirm you run `ls` and you should see `terraform-example-foundation-app` listed
 1. Clone repo `gcloud source repos clone boa-infra --project=prj-bu1-s-infra-pipeline-<random>`. (this is from the terraform output from the previous section, run `terraform output cloudbuild_project_id` in the `4-projects/business_unit_1/shared` folder)
 1. Navigate into the repo `cd boa-infra`.
 1. Change freshly cloned repo and change to non master branch `git checkout -b plan`.
