@@ -47,6 +47,6 @@ example-organization/
     ├── prj-bu1-p-boa-sec
     └── prj-bu1-p-boa-sql
 └── fldr-common
-    ├── prj-bu1-s-app-cicd
-    └── prj-bu1-s-infra-pipeline
+    ├── prj-bu1-c-app-cicd
+    └── prj-bu1-c-infra-pipeline
 ```

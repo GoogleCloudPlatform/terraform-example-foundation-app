@@ -95,8 +95,8 @@ example-organization/
     ├── prj-cloudbuild
     └── prj-seed
 └── fldr-common
-    ├── prj-bu1-s-app-cicd
-    ├── prj-bu1-s-infra-pipeline
+    ├── prj-bu1-c-app-cicd
+    ├── prj-bu1-c-infra-pipeline
     ├── prj-c-billing-logs
     ├── prj-c-dns-hub
     ├── prj-c-interconnect
