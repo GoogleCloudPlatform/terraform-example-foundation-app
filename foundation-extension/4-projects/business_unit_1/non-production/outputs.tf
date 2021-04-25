@@ -39,7 +39,12 @@ output "terraform_service_account" {
   value       = google_service_account.boa_terraform_deployment_sa.email
 }
 
-output "boa_gsa_sa_email" {
+output "boa_gsa_email" {
   description = "SA email for boa-gsa service account"
-  value       = google_service_account.boa_gsa_sa.email
+  value       = google_service_account.boa_gsa.email
+}
+
+output "boa_gke_nodes_gsa_email" {
+  description = "SA email for boa-gke-nodes-gsa service account"
+  value       = google_service_account.boa_gke_nodes_gsa.email
 }

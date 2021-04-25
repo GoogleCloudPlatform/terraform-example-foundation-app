@@ -21,6 +21,7 @@ boa_sql_project_id        = "prj-bu1-z-boa-sql-xxxx"  # 'z' is replaced by {d|n|
 gcp_shared_vpc_project_id = "prj-z-shared-base-xxxx"  # 'z' is replaced by {d|n|p} according to environment {development|non-production|production}
 shared_vpc_name           = "vpc-z-shared-base-spoke" # 'z' is replaced by {d|n|p} according to environment {development|non-production|production}
 terraform_service_account = "boa-terraform-z-sa@prj-bu1-z-boa-sec-xxxx.iam.gserviceaccount.com"
+boa_gke_nodes_gsa         = "boa-gke-nodes-z-gsa@prj-bu1-z-boa-gke-xxxx.iam.gserviceaccount.com"
 
 # Recommended Optional
 enforce_bin_auth_policy      = true

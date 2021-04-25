@@ -15,13 +15,26 @@
  */
 
 locals {
-  gsa_sa_roles = {
+  boa_gsa_roles = {
     gke = [
       "roles/cloudtrace.agent",
       "roles/monitoring.metricWriter"
     ],
     sql = [
-      "roles/cloudsql.client"
+      "roles/cloudsql.admin"
+    ]
+  }
+  boa_gke_nodes_gsa_roles = {
+    gke = [
+      "roles/logging.logWriter",
+      "roles/storage.objectViewer",
+      "roles/monitoring.metricWriter",
+      "roles/stackdriver.resourceMetadata.writer",
+      "roles/monitoring.viewer"
+    ],
+    cicd = [
+      "roles/artifactregistry.reader",
+      "roles/source.reader"
     ]
   }
 }
@@ -82,22 +95,43 @@ module "boa_gke_project" {
 }
 
 # Service account to allow  Bank of Anthos Pods to securely communicate with GCP APIs, in specific Cloud SQL and Cloud Operations
-resource "google_service_account" "boa_gsa_sa" {
+resource "google_service_account" "boa_gsa" {
   account_id  = "boa-gsa"
   description = "Service account to allow Bank of Anthos Pods to securely communicate with GCP APIs, in specific Cloud SQL and Cloud Operations"
   project     = module.boa_gke_project.project_id
 }
 
-resource "google_project_iam_member" "boa_gsa_sa_roles_gke" {
+resource "google_project_iam_member" "boa_gsa_roles_gke" {
   for_each = toset(local.gsa_sa_roles.gke)
   project  = module.boa_gke_project.project_id
   role     = each.value
-  member   = "serviceAccount:${google_service_account.boa_gsa_sa.email}"
+  member   = "serviceAccount:${google_service_account.boa_gsa.email}"
 }
 
-resource "google_project_iam_member" "boa_gsa_sa_roles_sql" {
+resource "google_project_iam_member" "boa_gsa_roles_sql" {
   for_each = toset(local.gsa_sa_roles.sql)
   project  = module.boa_sql_project.project_id
   role     = each.value
-  member   = "serviceAccount:${google_service_account.boa_gsa_sa.email}"
+  member   = "serviceAccount:${google_service_account.boa_gsa.email}"
+}
+
+# Service account to allow Bank of Anthos GKE Node Service Account with minimal permissions to run nodes and access artifact repos in cicd project
+resource "google_service_account" "boa_gke_nodes_gsa" {
+  account_id  = "boa-gke-nodes-${var.environment_code}-gsa"
+  description = "Service account to allow Bank of Anthos GKE Node Service Account with minimal permissions to run nodes and access artifact repos in cicd project"
+  project     = module.boa_gke_project.project_id
+}
+
+resource "google_project_iam_member" "boa_gke_nodes_gsa_roles_gke" {
+  for_each = toset(local.boa_gke_nodes_gsa_roles.gke)
+  project  = module.boa_gke_project.project_id
+  role     = each.value
+  member   = "serviceAccount:${google_service_account.boa_gke_nodes_gsa.email}"
+}
+
+resource "google_project_iam_member" "boa_gke_nodes_gsa_roles_cicd" {
+  for_each = toset(local.boa_gke_nodes_gsa_roles.cicd)
+  project  = var.app_cicd_project_id
+  role     = each.value
+  member   = "serviceAccount:${google_service_account.boa_gke_nodes_gsa.email}"
 }

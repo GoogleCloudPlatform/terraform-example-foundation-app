@@ -41,10 +41,10 @@ All infrastructure components will be created using the base network created dur
 1. Copy cloud build configuration files for terraform `cp ../terraform-example-foundation-app/build/cloudbuild-tf-* . ` (modify accordingly based on your current directory).
 1. Copy terraform wrapper script `cp ../terraform-example-foundation-app/build/tf-wrapper.sh . ` to the root of your new repository (modify accordingly based on your current directory).
 1. Ensure wrapper script can be executed `chmod 755 ./tf-wrapper.sh`.
-1. Rename `mv business_unit_1/shared/shared.auto.example.tfvars business_unit_1/shared/shared.auto.tfvars` and update the file with values from your environment and outputs from shared.
-1. Rename `mv business_unit_1/development/development.auto.example.tfvars business_unit_1/development/development.auto.tfvars` and update the file with values from your environment and outputs from 4-projects/shared.
-1. Rename `mv business_unit_1/non-production/non-production.auto.example.tfvars business_unit_1/non-production/non-production.auto.tfvars` and update the file with values from your environment and outputs from 4-projects/shared.
-1. Rename `mv business_unit_1/production/production.auto.example.tfvars business_unit_1/production/production.auto.tfvars` and update the file with values from your environment and outputs from 4-projects/shared.
+1. Rename `mv business_unit_1/shared/shared.auto.example.tfvars business_unit_1/shared/shared.auto.tfvars` and update the file with values from your environment and outputs from 4-projects.
+1. Rename `mv business_unit_1/development/development.auto.example.tfvars business_unit_1/development/development.auto.tfvars` and update the file with values from your environment and outputs from 4-projects.
+1. Rename `mv business_unit_1/non-production/non-production.auto.example.tfvars business_unit_1/non-production/non-production.auto.tfvars` and update the file with values from your environment and outputs from 4-projects.
+1. Rename `mv business_unit_1/production/production.auto.example.tfvars business_unit_1/production/production.auto.tfvars` and update the file with values from your environment and outputs from 4-projects.
 1. Commit changes with `git add .` and `git commit -m 'Your message'`.
 1. When using Cloud Build or Jenkins as your CI/CD tool each environment corresponds to a branch is the repository for 5-app-infra step and only the corresponding environment is applied.
 1. Push your plan branch to trigger a plan for all environments `git push --set-upstream origin plan` (the branch `plan` is not a special one. Any branch which name is different from `shared`, `development`, `non-production` or `production` will trigger a terraform plan).

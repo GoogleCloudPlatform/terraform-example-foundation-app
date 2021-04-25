@@ -20,8 +20,7 @@ locals {
       database_name = "ledger-db",
       replica_zones = {
         zone1 = "${var.sql_database_replication_region}-a",
-        zone2 = "${var.sql_database_replication_region}-c",
-        zone3 = "${var.sql_database_replication_region}-f"
+        zone2 = "${var.sql_database_replication_region}-c"
       }
       sql_instance_prefix = "boa-sql-1-${local.envs[var.env].short}-${var.location_primary}",
       database_region     = var.location_primary
@@ -31,8 +30,7 @@ locals {
       database_name = "accounts-db",
       replica_zones = {
         zone1 = "${var.sql_database_replication_region}-a",
-        zone2 = "${var.sql_database_replication_region}-c",
-        zone3 = "${var.sql_database_replication_region}-f"
+        zone2 = "${var.sql_database_replication_region}-c"
       }
       sql_instance_prefix = "boa-sql-2-${local.envs[var.env].short}-${var.location_secondary}",
       database_region     = var.location_secondary

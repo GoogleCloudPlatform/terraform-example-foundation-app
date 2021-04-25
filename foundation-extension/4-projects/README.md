@@ -18,7 +18,6 @@ The purpose of this step is to set up a folder structure, projects, and infrastr
 1. Copy cloud build configuration files for terraform `cp ../terraform-example-foundation-app/build/cloudbuild-tf-* . ` (modify accordingly based on your current directory).
 1. Copy terraform wrapper script `cp ../terraform-example-foundation-app/build/tf-wrapper.sh . ` to the root of your new repository (modify accordingly based on your current directory).
 1. Ensure wrapper script can be executed `chmod 755 ./tf-wrapper.sh`.
-1. Commit changes with `git add .` and `git commit -m 'Your message'`.
 
 ### Run terraform locally
 1. You will need to only once manually plan + apply the `shared` pipeline environments since `development`, `non-production` and `production` will depend on it.
@@ -37,6 +36,7 @@ The purpose of this step is to set up a folder structure, projects, and infrastr
 1. Rename `mv business_unit_1/development/development.auto.example.tfvars business_unit_1/development/development.auto.tfvars` and update the file with values from your environment and outputs from 4-projects/shared.
 1. Rename `mv business_unit_1/non-production/non-production.auto.example.tfvars business_unit_1/non-production/non-production.auto.tfvars` and update the file with values from your environment and outputs from 4-projects/shared.
 1. Rename `mv business_unit_1/production/production.auto.example.tfvars business_unit_1/production/production.auto.tfvars` and update the file with values from your environment and outputs from 4-projects/shared.
+1. Commit changes with `git add .` and `git commit -m 'Your message'`.
 1. Push your plan branch to trigger a plan `git push --set-upstream origin plan` (the branch `plan` is not a special one. Any branch which name is different from `development`, `non-production` or `production` will trigger a terraform plan).
     1. Review the plan output in your cloud build project https://console.cloud.google.com/cloud-build/builds?project=prj-b-cicd-xxxx
 1. Merge changes to development with `git checkout -b development` and `git push origin development`.

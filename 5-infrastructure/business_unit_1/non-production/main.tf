@@ -27,6 +27,7 @@ module "env" {
   boa_ops_project_id           = var.boa_ops_project_id
   boa_sec_project_id           = var.boa_sec_project_id
   boa_sql_project_id           = var.boa_sql_project_id
+  boa_gke_nodes_gsa            = var.boa_gke_nodes_gsa
   gke_cluster_1_cidr_block     = "100.64.142.0/28" # Cluster control plane same is defined in 3-networks/envs/non-production/boa_vpc_fw.tf
   gke_cluster_2_cidr_block     = "100.65.134.0/28" # Cluster control plane same is defined in 3-networks/envs/non-production/boa_vpc_fw.tf
   gke_mci_cluster_cidr_block   = "100.64.134.0/28" # Cluster control plane same is defined in 3-networks/envs/non-production/boa_vpc_fw.tf

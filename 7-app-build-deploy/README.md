@@ -18,6 +18,7 @@ This demonstration uses Bank of Anthos to simulate a company building and deploy
 
 ## Setup to run via Cloud Build
 1. Clone Bank of Anthos repo `git clone https://github.com/GoogleCloudPlatform/bank-of-anthos.git`
+1. Delete the `.git` folder from the Github Bank of Anthos Repo `rm -rf bank-of-anthos/.git`
 1. Clone repo `gcloud source repos clone bank-of-anthos-source --project=prj-bu1-s-app-cicd-<random>`. (this is from the terraform output from the previous section, run `terraform output cloudbuild_project_id` in the `4-projects/business_unit_1/shared` folder)
 1. Navigate into the repo `cd bank-of-anthos-source`.
 1. Create main branch `git checkout -b main`.

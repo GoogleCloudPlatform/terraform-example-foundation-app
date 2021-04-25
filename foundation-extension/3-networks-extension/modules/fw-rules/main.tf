@@ -28,6 +28,12 @@ locals {
       allow_protocol = "tcp"
       allow_ports    = ["8443"]
     },
+    "fw-${var.environment_code}-shared-base-allow-8676-acm-webhook" = {
+      source_ranges  = [var.boa_gke_cluster1_master_cidr, var.boa_gke_cluster2_master_cidr]
+      target_tags    = ["boa-gke1-cluster", "boa-gke2-cluster"]
+      allow_protocol = "tcp"
+      allow_ports    = ["8676"]
+    },
     "fw-${var.environment_code}-shared-base-allow-pod-east-west" = {
       source_ranges  = [var.boa_gke_cluster2_pod_range]
       target_tags    = ["boa-gke1-cluster"]

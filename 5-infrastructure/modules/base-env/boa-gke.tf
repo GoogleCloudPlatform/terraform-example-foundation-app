@@ -141,6 +141,7 @@ module "clusters" {
     ],
     "default-node-pool" : []
   }
+  compute_engine_service_account = var.boa_gke_nodes_gsa
 }
 
 resource "google_binary_authorization_policy" "policy" {
