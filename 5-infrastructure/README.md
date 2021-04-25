@@ -36,8 +36,7 @@ All infrastructure components will be created using the base network created dur
 ### Setup to run via Cloud Build
 1. Change directory to outside `terraform-example-foundation-app` using `cd ..`, to confirm you run `ls` and you should see `terraform-example-foundation-app` listed
 1. Clone repo `gcloud source repos clone boa-infra --project=prj-bu1-s-infra-pipeline-<random>`. (this is from the terraform output from the previous section, run `terraform output cloudbuild_project_id` in the `4-projects/business_unit_1/shared` folder)
-1. Navigate into the repo `cd boa-infra`.
-1. Change freshly cloned repo and change to non master branch `git checkout -b plan`.
+1. Change into freshly cloned repo `cd boa-infra` and change to non master branch `git checkout -b plan`.
 1. Copy contents of foundation to new repo `cp -RT ../terraform-example-foundation-app/5-infrastructure/ .` (modify accordingly based on your current directory).
 1. Copy cloud build configuration files for terraform `cp ../terraform-example-foundation-app/build/cloudbuild-tf-* . ` (modify accordingly based on your current directory).
 1. Copy terraform wrapper script `cp ../terraform-example-foundation-app/build/tf-wrapper.sh . ` to the root of your new repository (modify accordingly based on your current directory).
@@ -84,7 +83,7 @@ We will now deploy each of our environments(development/production/non-productio
     1. Run `terraform init`
     1. Run `terraform state list | grep sql | grep replicas`, depending on the output go to GCP console https://console.cloud.google.com/sql/instances?q=search&referrer=search&project=prj-bu1-d-boa-sql-xxxx and manually delete the replicas that you **do not** see a state for.
     1. Note the SQL Intance Name (sql1 or sql2) for which you deleted replicas and head back to Cloudshell
-    1. Run `terraform state list | grep <sql1/sql2> | grep suffix | xargs -I {} terraform taint {}` while replacing `<sql1/sql2>` according to the finding in previous step
+    1. Run `terraform taint 'module.env.module.sql["sql1"].module.boa_postgress_ha.random_id.suffix[0]'` or `terraform taint 'module.env.module.sql["sql2"].module.boa_postgress_ha.random_id.suffix[0]'` according to the finding in previous step
     1. `git add -A && git commit -m 'SQL Deploy Error'` and `git push origin <failed environment>`
 
 ### TF Validate (Optional)

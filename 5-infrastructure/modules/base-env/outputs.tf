@@ -27,11 +27,6 @@ output "sql_outputs" {
   KMS Outputs
 *****************************************/
 
-output "kms_sa" {
-  description = "KMS Service Account."
-  value       = google_service_account.kms_service_account.email
-}
-
 output "kms_outputs" {
   description = "Outputs for KMS Keyrings and Keys."
   value       = tomap({ for key, ring in module.kms_keyrings_keys : key => { "Keyring" = ring.keyring_name, "Keys" = ring.keys } })
