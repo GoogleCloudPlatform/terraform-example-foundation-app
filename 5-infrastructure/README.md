@@ -35,7 +35,7 @@ All infrastructure components will be created using the base network created dur
 
 ### Setup to run via Cloud Build
 1. Change directory to outside `terraform-example-foundation-app` using `cd ..`, to confirm you run `ls` and you should see `terraform-example-foundation-app` listed
-1. Clone repo `gcloud source repos clone boa-infra --project=prj-bu1-s-infra-pipeline-<random>`. (this is from the terraform output from the previous section, run `terraform output cloudbuild_project_id` in the `4-projects/business_unit_1/shared` folder)
+1. Clone repo `gcloud source repos clone boa-infra --project=prj-bu1-c-infra-pipeline-<random>`. (this is from the terraform output from the previous section, run `terraform output cloudbuild_project_id` in the `4-projects/business_unit_1/shared` folder)
 1. Change into freshly cloned repo `cd boa-infra` and change to non master branch `git checkout -b plan`.
 1. Copy contents of foundation to new repo `cp -RT ../terraform-example-foundation-app/5-infrastructure/ .` (modify accordingly based on your current directory).
 1. Copy cloud build configuration files for terraform `cp ../terraform-example-foundation-app/build/cloudbuild-tf-* . ` (modify accordingly based on your current directory).
@@ -63,7 +63,7 @@ All infrastructure components will be created using the base network created dur
 1. Change into `cd business_unit_1/shared` folder.
 1. Run `cp ../../tf-wrapper.sh .`
 1. Run `chmod 755 tf-wrapper.sh`
-1. Update backend.tf with your bucket for infra pipeline can be found in `prj-bu1-s-infra-pipeline-<random>` and bucket should be `boa-infra-tfstate-<random>` if default config is used. You can run ```for i in `find -name 'backend.tf'`; do sed -i 's/UPDATE_ME/<YOUR-BUCKET-NAME>/' $i; done```.
+1. Update backend.tf with your bucket for infra pipeline can be found in `prj-bu1-c-infra-pipeline-<random>` and bucket should be `boa-infra-tfstate-<random>` if default config is used. You can run ```for i in `find -name 'backend.tf'`; do sed -i 's/UPDATE_ME/<YOUR-BUCKET-NAME>/' $i; done```.
 1. Run `terraform init`
 1. Run `terraform plan`
 1. Run `terraform apply` ensure you have the correct permissions before doing this.
@@ -75,11 +75,11 @@ We will now deploy each of our environments(development/production/non-productio
 
 ### **Troubleshooting:**
 #### Impersonate Error:
-    - If your user does not have access to run the terraform modules locally and you are in the organization admins group, you can append `--impersonate-service-account="boa-terraform-<z>-sa@prj-bu1-<z>-boa-sec-<xxxx>.iam.gserviceaccount.com"` for dev/npd/prd envs or `--impersonate-service-account="cicd-build-sa@prj-bu1-s-app-cicd-<xxxx>.iam.gserviceaccount.com"` for shared env to run terraform modules as the service  account.
+    - If your user does not have access to run the terraform modules locally and you are in the organization admins group, you can append `--impersonate-service-account="boa-terraform-<z>-sa@prj-bu1-<z>-boa-sec-<xxxx>.iam.gserviceaccount.com"` for dev/npd/prd envs or `--impersonate-service-account="cicd-build-sa@prj-bu1-c-app-cicd-<xxxx>.iam.gserviceaccount.com"` for shared env to run terraform modules as the service  account.
 #### CloudSQL Error: (**`Error: Error waiting for Create Instance: on .terraform/modules/env.sql.boa_postgress_ha/modules/postgresql/read_replica.tf line 23, in resource "google_sql_database_instance" "replicas"`**)
-    1. Clone repo `gcloud source repos clone boa-infra --project=prj-bu1-s-infra-pipeline-<random>` in Cloudshell and `git checkout <failed environment>`
+    1. Clone repo `gcloud source repos clone boa-infra --project=prj-bu1-c-infra-pipeline-<random>` in Cloudshell and `git checkout <failed environment>`
     1. Change into directory for failed environment `cd business_unit_1/<failed environment>`
-    1. Update backend.tf with your bucket for infra pipeline can be found in `prj-bu1-s-infra-pipeline-<random>` and bucket should be `boa-infra-tfstate-<random>` if default config is used. You can run ```for i in `find -name 'backend.tf'`; do sed -i 's/UPDATE_ME/<YOUR-BUCKET-NAME>/' $i; done```.
+    1. Update backend.tf with your bucket for infra pipeline can be found in `prj-bu1-c-infra-pipeline-<random>` and bucket should be `boa-infra-tfstate-<random>` if default config is used. You can run ```for i in `find -name 'backend.tf'`; do sed -i 's/UPDATE_ME/<YOUR-BUCKET-NAME>/' $i; done```.
     1. Run `terraform init`
     1. Run `terraform state list | grep sql | grep replicas`, depending on the output go to GCP console https://console.cloud.google.com/sql/instances?q=search&referrer=search&project=prj-bu1-d-boa-sql-xxxx and manually delete the replicas that you **do not** see a state for.
     1. Note the SQL Intance Name (sql1 or sql2) for which you deleted replicas and head back to Cloudshell
