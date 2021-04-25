@@ -1,12 +1,12 @@
-# terraform-example-foundation-app/app-foundation
+# terraform-example-foundation-app/foundation-extension
 
 ## Overview
-The `app-foundation` folder contains additional Terraform configurations required for Bank Of Anthos deployment and are meant to fit into the framework defined by [terraform-example-foundation](https://github.com/terraform-google-modules/terraform-example-foundation). Each folder contains its own directory that must be applied separately, and in sequence, to correctly deploy the application. The necessary steps are outlined below for the relevant folders.
+The `foundation-extension` folder contains additional Terraform configurations required for Bank Of Anthos deployment and are meant to fit into the framework defined by [terraform-example-foundation](https://github.com/terraform-google-modules/terraform-example-foundation). Each folder contains its own directory that must be applied separately, and in sequence, to correctly deploy the application. The necessary steps are outlined below for the relevant folders.
 
 ### [3. networks](./3-networks-extension/)
 
 This step - a network *extension* - adds on top of the 3-networks layer that is part of [terraform-example-foundation/3-networks](https://github.com/terraform-google-modules/terraform-example-foundation/tree/master/3-networks).
-This step focuses on creating a shared VPC per environment (`development`, `non-production` & `production`) that is configured with subnets, secondary ranges, additional firewall rules, and a [network_prepare.sh](https://github.com/GoogleCloudPlatform/terraform-example-foundation-app/blob/main/app-foundation/3-networks-extension/network_prepare.sh) script included in the configuration that can be used to automatically populate or replace configurations in [terraform-example-foundation/3-networks](https://github.com/terraform-google-modules/terraform-example-foundation/tree/master/3-networks) with the configurations in the Bank of Anthos example.
+This step focuses on creating a shared VPC per environment (`development`, `non-production` & `production`) that is configured with subnets, secondary ranges, additional firewall rules, and a [network_prepare.sh](https://github.com/GoogleCloudPlatform/terraform-example-foundation-app/blob/main/foundation-extension/3-networks-extension/network_prepare.sh) script included in the configuration that can be used to automatically populate or replace configurations in [terraform-example-foundation/3-networks](https://github.com/terraform-google-modules/terraform-example-foundation/tree/master/3-networks) with the configurations in the Bank of Anthos example.
 Currently, this configuration includes:
 
 - **Example subnets** for the `development`, `non-production` & `production` environments

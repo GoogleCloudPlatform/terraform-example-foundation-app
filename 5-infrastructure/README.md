@@ -28,8 +28,8 @@ All infrastructure components will be created using the base network created dur
 1. [0-bootstrap](https://github.com/terraform-google-modules/terraform-example-foundation/blob/master/0-bootstrap/README.md) executed successfully.
 1. [1-org](https://github.com/terraform-google-modules/terraform-example-foundation/blob/master/1-org/README.md) executed successfully.
 1. [2-environments](https://github.com/terraform-google-modules/terraform-example-foundation/blob/master/2-environments/README.md) executed successfully.
-1. [3-networks](../app-foundation/3-networks/README.md) executed successfully.
-1. [4-projects](../app-foundation/4-projects/README.md) executed successfully.
+1. [3-networks](../foundation-extension/3-networks/README.md) executed successfully.
+1. [4-projects](../foundation-extension/4-projects/README.md) executed successfully.
 
 ## Usage
 

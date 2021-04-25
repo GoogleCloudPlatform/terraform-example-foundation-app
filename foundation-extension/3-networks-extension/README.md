@@ -15,7 +15,7 @@ This is an additional Terraform configuration for [example-foundation 3-Networks
 - Alternatively you can perform the steps of the bash script manually laid out in the next section
 
 ### After cloning 3-networks from example-foundation
-- Follow steps in [example_foundation 3-Networks](https://github.com/terraform-google-modules/terraform-example-foundation/tree/master/3-networks/README.md)
+- Follow steps in [example_foundation 3-Networks](https://github.com/terraform-google-modules/terraform-example-foundation/tree/master/3-networks/README.md), interchanging the path `terraform-example-foundation` with `terraform-example-foundation-app/foundation-extension`
 
 ## Steps performed in bash script
 

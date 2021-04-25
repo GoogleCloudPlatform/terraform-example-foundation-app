@@ -9,7 +9,7 @@ This demonstration uses Bank of Anthos to simulate a company building and deploy
 1. [1-org](https://github.com/terraform-google-modules/terraform-example-foundation/blob/master/1-org/README.md) executed successfully.
 1. [2-environments](https://github.com/terraform-google-modules/terraform-example-foundation/blob/master/2-environments/README.md) executed successfully.
 1. [3-networks](https://github.com/terraform-google-modules/terraform-example-foundation/blob/master/3-networks/README.md) executed successfully.
-1. [4-projects](../app-foundation/4-projects/README.md) executed successfully.
+1. [4-projects](../foundation-extension/4-projects/README.md) executed successfully.
 1. [5-infrastructure](../5-infrastructure/README.md) executed successfully.
 1. [Namespace repos created from 6-anthos-install](../6-anthos-install/README.md) created successfully.
    - frontend
