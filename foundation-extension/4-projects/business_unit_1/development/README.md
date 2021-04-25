@@ -23,8 +23,8 @@
 
 | Name | Description |
 |------|-------------|
-| boa\_gke\_project\_id | Project ID for GKE Project |
 | boa\_gke\_nodes\_gsa\_email | SA email for boa-gke-nodes-gsa service account |
+| boa\_gke\_project\_id | Project ID for GKE Project |
 | boa\_gsa\_email | SA email for boa-gsa service account |
 | boa\_ops\_project\_id | Project ID for Ops Project |
 | boa\_sec\_project\_id | Project ID for Secrets Project |

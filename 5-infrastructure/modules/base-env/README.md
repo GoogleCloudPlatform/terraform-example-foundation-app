@@ -29,8 +29,8 @@ The module provisions the following resources
 | bastion\_zone | The zone for the bastion VM in primary region. | `string` | `"us-west1-b"` | no |
 | bin\_auth\_attestor\_names | Binary Authorization Attestor Names set up in shared app\_cicd project. | `list(string)` | `[]` | no |
 | bin\_auth\_attestor\_project\_id | Project Id where binary attestors are created. | `string` | n/a | yes |
-| boa\_gke\_project\_id | Project ID for GKE. | `string` | n/a | yes |
 | boa\_gke\_nodes\_gsa | The Custom Service Account for GKE Nodes | `string` | n/a | yes |
+| boa\_gke\_project\_id | Project ID for GKE. | `string` | n/a | yes |
 | boa\_ops\_project\_id | Project ID for ops. | `string` | n/a | yes |
 | boa\_sec\_project\_id | Project ID for secrets. | `string` | n/a | yes |
 | boa\_sql\_project\_id | Project ID for SQL. | `string` | n/a | yes |

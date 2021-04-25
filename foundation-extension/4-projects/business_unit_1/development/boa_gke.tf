@@ -102,14 +102,14 @@ resource "google_service_account" "boa_gsa" {
 }
 
 resource "google_project_iam_member" "boa_gsa_roles_gke" {
-  for_each = toset(local.gsa_sa_roles.gke)
+  for_each = toset(local.boa_gsa_roles.gke)
   project  = module.boa_gke_project.project_id
   role     = each.value
   member   = "serviceAccount:${google_service_account.boa_gsa.email}"
 }
 
 resource "google_project_iam_member" "boa_gsa_roles_sql" {
-  for_each = toset(local.gsa_sa_roles.sql)
+  for_each = toset(local.boa_gsa_roles.sql)
   project  = module.boa_sql_project.project_id
   role     = each.value
   member   = "serviceAccount:${google_service_account.boa_gsa.email}"
