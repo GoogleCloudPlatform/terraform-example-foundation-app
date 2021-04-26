@@ -24,6 +24,7 @@ locals {
       "roles/cloudsql.admin"
     ]
   }
+  // workaround for ACM
   boa_gke_nodes_gsa_roles = {
     gke = [
       "roles/logging.logWriter",
