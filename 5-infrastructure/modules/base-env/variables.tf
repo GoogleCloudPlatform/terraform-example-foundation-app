@@ -165,11 +165,6 @@ variable "boa_sql_project_id" {
   description = "Project ID for SQL."
 }
 
-variable "boa_gke_nodes_gsa" {
-  type        = string
-  description = "The Custom Service Account for GKE Nodes"
-}
-
 variable "sql_database_replication_region" {
   type        = string
   description = "SQL Instance Replica Region."

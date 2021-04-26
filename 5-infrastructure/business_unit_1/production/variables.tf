@@ -61,11 +61,6 @@ variable "boa_sql_project_id" {
   description = "Project ID for SQL"
 }
 
-variable "boa_gke_nodes_gsa" {
-  type        = string
-  description = "The Custom Service Account for GKE Nodes"
-}
-
 variable "gke_cluster_1_cidr_block" {
   type        = string
   description = "The primary IPv4 cidr block for the first GKE cluster."
