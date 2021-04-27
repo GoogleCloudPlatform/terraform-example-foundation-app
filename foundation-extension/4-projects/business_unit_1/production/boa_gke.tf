@@ -21,7 +21,7 @@ locals {
       "roles/monitoring.metricWriter"
     ],
     sql = [
-      "roles/cloudsql.admin"
+      "roles/cloudsql.admin"  // TODO: reduce permissions
     ]
   }
   //
