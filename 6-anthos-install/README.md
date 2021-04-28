@@ -241,7 +241,6 @@ Generate a public/private key pairs, and then add the public key to the repo.
 You will be presented with a message to specify the file location, just accept the default location "~/.ssh/id_rsa". 
 
 Make sure to replace GIT_REPO_NAME with your username.
-
     ```console
     ssh-keygen -t rsa -b 4096 \
     -C "GIT_REPO_USERNAME" \
@@ -252,13 +251,13 @@ Don't forget to upload the public key "~/.ssh/id_rsa.pub" to your repository. Fo
 ### Create a Private Key
 Create a secret with your private key in both clusters
     ```console
-    kubectl create ns config-management-system --context ${CTX_1} && kubectl create secret generic git-creds --namespace=config-management-system --context ${CTX_1} --from-file=ssh="id_rsa"
-
-    kubectl create ns config-management-system --context ${CTX_2} && kubectl create secret generic git-creds --namespace=config-management-system --context ${CTX_2} --from-file=ssh="id_rsa"
+    kubectl create ns config-management-system --context ${CTX_1} && kubectl create secret generic git-creds --namespace=config-management-system --context ${CTX_1} --from-file=ssh="$HOME/.ssh/id_rsa"
+    ```
+    ```console
+    kubectl create ns config-management-system --context ${CTX_2} && kubectl create secret generic git-creds --namespace=config-management-system --context ${CTX_2} --from-file=ssh="$HOME/.ssh/id_rsa"
     ```
 
-### Download and install ACM
-Note: Change 
+### Download and install ACM 
     ```console
     gsutil cp gs://config-management-release/released/1.7.0/config-management-operator.yaml config-management-operator.yaml
 
@@ -307,7 +306,7 @@ replace the project id in the following files:
 - "${HOME}/bank-of-anthos-repos/root-config-repo/namespaces/boa/accounts/accounts-sa.yaml"
 - "${HOME}/bank-of-anthos-repos/root-config-repo/namespaces/boa/transactions/transactions-sa.yaml"
 
-You need to change this part:
+You need to change this part to your GKE project:
 
 - `PROJECT_ID`
 
@@ -397,7 +396,7 @@ This repository will host the deployment and service manifests for `transactionh
     ```
 #### Configure syncing from the root repository
 1. Update the repository url to point to your repository
-Replace PROJTECT_ID with your project ID for the CICD pipeline in the following files:
+Replace PROJTECT_ID with your project ID for the CICD pipeline in the following file:
 - ${HOME}/terraform-example-foundation-app/6-anthos-install/acm-configs/root-sync.yaml
 
 
