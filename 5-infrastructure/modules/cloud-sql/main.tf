@@ -82,18 +82,7 @@ module "boa_postgress_ha" {
       disk_size        = null
       disk_type        = "PD_HDD"
       user_labels      = {}
-    },
-    {
-      name             = "2"
-      zone             = var.replica_zones.zone3
-      tier             = "db-custom-2-13312"
-      ip_configuration = local.read_replica_ip_configuration
-      database_flags   = [{ name = "autovacuum", value = "off" }]
-      disk_autoresize  = null
-      disk_size        = null
-      disk_type        = "PD_HDD"
-      user_labels      = {}
-    },
+    }
   ]
 
   db_name      = var.database_name

@@ -15,7 +15,7 @@ This module is a wrapper for [CFT PostgreSQL Module](https://github.com/terrafor
 | database\_users | Additional Database Users | <pre>list(object({<br>    name     = string<br>    password = string<br>    host     = string<br>  }))</pre> | `[]` | no |
 | database\_zone | The database zone | `string` | n/a | yes |
 | project\_id | The GCP Project ID | `string` | n/a | yes |
-| replica\_zones | The GCP Zones | <pre>object({<br>    zone1 = string<br>    zone2 = string<br>    zone3 = string<br>  })</pre> | n/a | yes |
+| replica\_zones | The GCP Zones | <pre>object({<br>    zone1 = string<br>    zone2 = string<br>  })</pre> | n/a | yes |
 | sql\_instance\_prefix | The instance name prefix, random string is added as suffix | `string` | n/a | yes |
 | vpc\_self\_link | The self\_link of the VPC to be given private access | `string` | n/a | yes |
 

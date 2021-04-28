@@ -12,14 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Steps before this build can be run (these are supporting steps for the Cloud Build tool)
-# If running one-time-setup.sh, these are applied for you
-# 1. Pre-setup the /cache/.m2 folder structure inside GCS bucket
-# 2. Pre-seed the /cache/.m2 folder with a locally running cloudbuild to prevent each parallel stage
-#    from trying to download each dependency and causing a lockout
-# 3. Create folder for kaniko cache /.skaffold
-# 4. Create folder for pip cache /.cache/pip/wheels
-
 # Pipeline Setup
 #   Maven cache to reduce calls to Maven Central
 # test (in parallel)
@@ -47,7 +39,7 @@ options:
   substitution_option: 'ALLOW_LOOSE'
 artifacts:
   objects:
-    location: gs://${PROJECT_ID}_cloudbuild/artifacts
+    location: gs://$_CACHE_BUCKET_NAME/artifacts
     paths:
       - 'build-artifacts.json'
 # availableSecrets:
@@ -75,7 +67,7 @@ steps:
   - '-m'
   - 'rsync'
   - '-r'
-  - 'gs://${PROJECT_ID}_cloudbuild/cache/.m2'
+  - 'gs://$_CACHE_BUCKET_NAME/cache/.m2'
   - '/cache/.m2'
   volumes:
   - path: '/cache/.m2'
@@ -88,7 +80,7 @@ steps:
   - '-m'
   - 'rsync'
   - '-r'
-  - 'gs://${PROJECT_ID}_cloudbuild/cache/.cache/pip/wheels'
+  - 'gs://$_CACHE_BUCKET_NAME/cache/.cache/pip/wheels'
   - '/.cache/pip/wheels'
   volumes:
   - path: '/.cache/pip/wheels'
@@ -101,7 +93,7 @@ steps:
   - '-m'
   - 'rsync'
   - '-r'
-  - 'gs://${PROJECT_ID}_cloudbuild/cache/.skaffold'
+  - 'gs://$_CACHE_BUCKET_NAME/cache/.skaffold'
   - '/.skaffold'
   volumes:
   - path: '/.skaffold'
@@ -285,7 +277,7 @@ steps:
   - 'rsync'
   - '-r'
   - '/cache/.m2'
-  - 'gs://${PROJECT_ID}_cloudbuild/cache/.m2/'
+  - 'gs://$_CACHE_BUCKET_NAME/cache/.m2/'
   volumes:
   - path: '/cache/.m2'
     name: 'm2_cache'
@@ -298,7 +290,7 @@ steps:
   - 'rsync'
   - '-r'
   - '/.skaffold'
-  - 'gs://${PROJECT_ID}_cloudbuild/cache/.skaffold'
+  - 'gs://$_CACHE_BUCKET_NAME/cache/.skaffold'
   volumes:
   - path: '/.skaffold'
     name: 'skaffold_cache'
@@ -310,7 +302,7 @@ steps:
   - 'rsync'
   - '-r'
   - '/.cache/pip/wheels'
-  - 'gs://${PROJECT_ID}_cloudbuild/cache/.cache/pip/wheels'
+  - 'gs://$_CACHE_BUCKET_NAME/cache/.cache/pip/wheels'
   volumes:
   - path: '/.cache/pip/wheels'
     name: 'pip_cache'
@@ -319,7 +311,6 @@ steps:
   ################ Before Deployment Checks ####################
 
 # Create build-installation-image for each of the images
-# TODO: can I parameterize this to be ${PROJECT_ID} skaffold-builder
 - name: $_DEFAULT_REGION-docker.pkg.dev/$PROJECT_ID/$_GAR_REPOSITORY/skaffold-builder
   id: "before-container-structure"
   entrypoint: "/bin/bash"

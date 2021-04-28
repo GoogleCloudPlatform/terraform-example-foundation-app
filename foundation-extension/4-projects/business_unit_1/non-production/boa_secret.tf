@@ -55,7 +55,8 @@ locals {
       "roles/compute.securityAdmin"
     ],
     cicd = [
-      "roles/binaryauthorization.attestorsViewer"
+      "roles/binaryauthorization.attestorsViewer",
+      "roles/resourcemanager.projectIamAdmin"
     ]
   }
 }

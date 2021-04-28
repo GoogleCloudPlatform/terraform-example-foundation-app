@@ -14,6 +14,6 @@
  * limitations under the License.
  */
 
-app_cicd_build_sa   = "cicd-build-sa@prj-bu1-s-app-cicd-xxxx.iam.gserviceaccount.com"
-app_cicd_project_id = "prj-bu1-s-app-cicd-xxxx"
+app_cicd_build_sa   = "cicd-build-sa@prj-bu1-c-app-cicd-xxxx.iam.gserviceaccount.com"
+app_cicd_project_id = "prj-bu1-c-app-cicd-xxxx"
 primary_location    = "us-east1"
