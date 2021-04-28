@@ -186,7 +186,7 @@ With MCI, we need to select a cluster to be the configuration cluster. In this c
 
 1. create a multi-cluster service
     ```console
-    cat <<'EOF' > $HOME/mcs.yaml
+    cat <<EOF > $HOME/mcs.yaml
     apiVersion: networking.gke.io/v1beta1
     kind: MultiClusterService
     metadata:
@@ -237,7 +237,17 @@ Note: Make sure the environment variables in the mcs.yaml file are updated ${CLU
 
 ## Install and Configure ACM
 ### Generate a Private/Public Key Pairs
-Generate a public/private key pairs, and the public repo 
+Generate a public/private key pairs, and then add the public key to the repo.
+You will be presented with a message to specify the file location, just accept the default location "~/.ssh/id_rsa". 
+
+Make sure to replace GIT_REPO_NAME with your username.
+
+    ```console
+    ssh-keygen -t rsa -b 4096 \
+    -C "GIT_REPO_USERNAME" \
+    -N ''
+    ```
+Don't forget to upload the public key "~/.ssh/id_rsa.pub" to your repository. For cloud source repository, see [this link](https://cloud.google.com/source-repositories/docs/authentication)
 
 ### Create a Private Key
 Create a secret with your private key in both clusters

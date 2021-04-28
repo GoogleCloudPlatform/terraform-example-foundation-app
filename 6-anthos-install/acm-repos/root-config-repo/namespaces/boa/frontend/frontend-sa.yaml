@@ -17,5 +17,4 @@ kind: ServiceAccount
 metadata:
   name: frontend
  # annotations:
-   # iam.gke.io/gcp-service-account: boa-gsa@gke-boa-usw1-01.iam.gserviceaccount.com
-  #  iam.gke.io/gcp-service-account: boa-gsa@multi-cluster-asm-dk.iam.gserviceaccount.com
+  #  iam.gke.io/gcp-service-account: boa-gsa@PROJECT_ID.iam.gserviceaccount.com
