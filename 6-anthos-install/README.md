@@ -13,7 +13,7 @@ gcloud compute ssh gce-bastion-us-west1-b-01 \
 ## Install required tools
 ```console
 sudo su
-yum update
+yum update -y
 yum install git -y
 yum install google-cloud-sdk-kpt -y
 yum install jq -y
@@ -30,9 +30,7 @@ git clone https://github.com/GoogleCloudPlatform/terraform-example-foundation-ap
 ## Define required environment variables
 When indicated, make sure to replace the values below with the appropriate values based on the outcome of terraform.
 ```console
-# replace YOUR_PROJECT_ID with the project id for the project that hosts your clusters.
-# For example: prj-bu1-d-boa-gke-ecb0
-export PROJECT_ID=$(gcloud projects )
+export PROJECT_ID=$(gcloud config get-value project)
 export PROJECT_NUM=$(gcloud projects describe ${PROJECT_ID} --format='value(projectNumber)')
 export CLUSTER_1=gke-1-boa-d-us-east1
 export CLUSTER_1_REGION=us-east1
@@ -206,10 +204,12 @@ With MCI, we need to select a cluster to be the configuration cluster. In this c
             port: 80 # servicePort defined in MCI
             targetPort: 8080 # port on the istio-ingressgateway pod req gets sent to (container port)
       clusters:
-      - link: "${CLUSTER_1_REGION}/${CLUSTER_1}"
-      - link: "${CLUSTER_2_REGION}/${CLUSTER_2}"
+      - link: ${CLUSTER_1_REGION}/${CLUSTER_1}
+      - link: ${CLUSTER_2_REGION}/${CLUSTER_2}
     EOF
     ```
+
+Note: Make sure the environment variables in the mcs.yaml file are updated ${CLUSTER_1_REGION}, ${CLUSTER_1}, ${CLUSTER_2_REGION} and ${CLUSTER_2}
 
 
 1. create a backend config
@@ -237,6 +237,7 @@ With MCI, we need to select a cluster to be the configuration cluster. In this c
 
 ## Install and Configure ACM
 ### Generate a Private/Public Key Pairs
+Generate a public/private key pairs, and the public repo 
 
 ### Create a Private Key
 Create a secret with your private key in both clusters
@@ -299,6 +300,17 @@ replace the project id in the following files:
 You need to change this part:
 
 - `PROJECT_ID`
+
+1. Update the repository url for each namespace to point to the repository you cloned.
+
+a. Replace PROJTECT_ID with your project ID for the CICD pipeline
+a. Replace the USER_EMAIL with your GCP cloud identity email address.
+The changes need to be applied on the following files:
+
+- ${HOME}/bank-of-anthos-repos/root-config-repo/namespaces/boa/accounts/root-sync.yaml
+- ${HOME}/bank-of-anthos-repos/root-config-repo/namespaces/boa/transactions/root-sync.yaml
+- ${HOME}/bank-of-anthos-repos/root-config-repo/namespaces/boa/frontend/root-sync.yaml
+
 
 1. push the content to the root-config-repo
     ```console
@@ -374,11 +386,81 @@ This repository will host the deployment and service manifests for `transactionh
     git push origin master
     ```
 #### Configure syncing from the root repository
-1. update the repository url to point to your repository
+1. Update the repository url to point to your repository
+Replace PROJTECT_ID with your project ID for the CICD pipeline in the following files:
+- ${HOME}/terraform-example-foundation-app/6-anthos-install/acm-configs/root-sync.yaml
+
 
 1. apply the root-sync.yaml file.
     ```console
     kubectl apply --context=${CTX_1} -f ${HOME}/terraform-example-foundation-app/6-anthos-install/acm-configs/root-sync.yaml
 
     kubectl apply --context=${CTX_2} -f ${HOME}/terraform-example-foundation-app/6-anthos-install/acm-configs/root-sync.yaml
+    ```
+1. create private key secret in "accounts", "transactions" and "fronted" namespaces.
+    ```console
+    # On Cluster 1
+    kubectl create secret generic git-creds --namespace=transactions --context ${CTX_1} --from-file=ssh="${HOME}/.ssh/id_rsa"
+
+    kubectl create secret generic git-creds --namespace=accounts --context ${CTX_1} --from-file=ssh="${HOME}/.ssh/id_rsa"
+
+    kubectl create secret generic git-creds --namespace=frontend --context ${CTX_1} --from-file=ssh="${HOME}/.ssh/id_rsa"
+
+    # On Cluster 2
+    kubectl create secret generic git-creds --namespace=transactions --context ${CTX_2} --from-file=ssh="${HOME}/.ssh/id_rsa"
+
+    kubectl create secret generic git-creds --namespace=accounts --context ${CTX_2} --from-file=ssh="${HOME}/.ssh/id_rsa"
+
+    kubectl create secret generic git-creds --namespace=frontend --context ${CTX_2} --from-file=ssh="${HOME}/.ssh/id_rsa"
+    ```
+
+#### Required Updates
+1. Provide a secret for the application to access CloudSQL.
+
+Bank of Anthos uses two databases, one for the services in the accounts namespace and one for the services in the transactions namespace. 
+
+We will assume that the accounts database in the us-west1 region and the transactions database in the us-east1 region. You would need to get the instances' names, and the project ID.
+
+    ```console
+    export SQL_PROJECT_ID=YOUR_SQL_PROJECT_ID
+    export SQL_INSTANCE_NAME_WEST=YOUR_SQL_INSTANCE_NAME_WEST
+    export SQL_INSTANCE_NAME_EAST=YOUR_SQL_INSTANCE_NAME_EAST
+    ```
+Example:
+    - export SQL_PROJECT_ID=prj-bu1-d-boa-sql-1aec
+    - export SQL_INSTANCE_NAME_WEST=boa-sql-2-d-us-west1-78a54a8f
+    - export SQL_INSTANCE_NAME_EAST=boa-sql-1-d-us-east1-65de84c0
+
+1. create the CloudSQL secrets
+
+    ```console
+    # Secret for accessing accounts db
+    kubectl create secret generic cloud-sql-admin --context $CTX_1 --namespace=accounts --from-literal connectionName=$SQL_PROJECT_ID:us-west1:$SQL_INSTANCE_NAME_WEST --from-literal=username=admin --from-literal=password=admin
+
+    kubectl create secret generic cloud-sql-admin --context $CTX_2 --namespace=accounts --from-literal connectionName=$SQL_PROJECT_ID:us-west1:$SQL_INSTANCE_NAME_WEST --from-literal=username=admin --from-literal=password=admin
+
+    # Secret for accessing transactions db
+    kubectl create secret generic cloud-sql-admin --context $CTX_1 --namespace=transactions --from-literal connectionName=$SQL_PROJECT_ID:us-east1:$SQL_INSTANCE_NAME_EAST --from-literal=username=admin --from-literal=password=admin
+
+    kubectl create secret generic cloud-sql-admin --context $CTX_2 --namespace=transactions --from-literal connectionName=$SQL_PROJECT_ID:us-east1:$SQL_INSTANCE_NAME_EAST --from-literal=username=admin --from-literal=password=admin
+    ```
+
+1. Add IAM binding
+    ```console
+    gcloud iam service-accounts add-iam-policy-binding \
+    --role roles/iam.workloadIdentityUser \
+    --member "serviceAccount:$PROJECT_ID.svc.id.goog[accounts/accounts]" \
+    boa-gsa@$PROJECT_ID.iam.gserviceaccount.com
+
+    gcloud iam service-accounts add-iam-policy-binding \
+    --role roles/iam.workloadIdentityUser \
+    --member "serviceAccount:$PROJECT_ID.svc.id.goog[transactions/transactions]" \
+    boa-gsa@$PROJECT_ID.iam.gserviceaccount.com
+    ```
+
+1. Run script to populate database ledger 
+    ```console
+    kubectl apply -n transactions --context ${CTX_1} -f ${HOME}/terraform-example-foundation-app/6-anthos-install/db-scripts/populate-ledger-db.yaml
+
+    kubectl apply -n transactions --context ${CTX_2} -f ${HOME}/terraform-example-foundation-app/6-anthos-install/db-scripts/populate-ledger-db.yaml
     ```
