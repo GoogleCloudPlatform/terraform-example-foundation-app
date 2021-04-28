@@ -21,7 +21,7 @@ locals {
       "roles/monitoring.metricWriter"
     ],
     sql = [
-      "roles/cloudsql.admin"  // TODO: reduce permissions
+      "roles/cloudsql.admin" // TODO: reduce permissions
     ]
   }
   // workaround for ACM
