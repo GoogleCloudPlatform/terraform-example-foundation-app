@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-org_id                    = "xxxxxx-xxxxxx-xxxxxx"
-billing_account           = "xxxxxxxxxxxx"
-terraform_service_account = "org-terraform@prj-seed-xxxx.iam.gserviceaccount.com"
+org_id                           = "000000000000"
+billing_account                  = "000000-000000-000000"
+terraform_service_account        = "org-terraform@prj-b-seed-2334.iam.gserviceaccount.com"
 
-# Optional
-# parent_folder = ""
+// Optional - for an organization with existing projects or for development/validation.
+// Must be the same value used in previous steps.
+//parent_folder = "01234567890"
