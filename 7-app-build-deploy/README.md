@@ -60,8 +60,8 @@ This demonstration uses Bank of Anthos to simulate a company building and deploy
    git commit -m 'Your message'
    git push origin main
    ```
-1. Cloudbuild will automatically run on push, confirm all stages of pipeline complete with a green check in https://console.cloud.google.com/cloud-build/builds?project=prj-bu1-c-app-cicd-&lt;random&gt;
-1. Check files mentioned in proceeding section have been changed in their respective repos.
+1. Cloudbuild will automatically run on push, confirm all stages of pipeline complete with a green check in https://console.cloud.google.com/cloud-build/builds?project=prj-bu1-c-app-cicd-xxxx
+1. Check files mentioned in proceeding section have been changed in their respective repos (https://source.cloud.google.com/prj-bu1-c-app-cicd-xxxx).
 
 ## Files/Images edited by pipeline each run
 ```
