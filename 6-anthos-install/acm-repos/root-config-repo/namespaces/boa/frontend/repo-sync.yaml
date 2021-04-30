@@ -20,7 +20,6 @@ metadata:
 spec:
   git:
    repo: ssh://USER_EMAIL@source.developers.google.com:2022/p/PROJECT_ID/r/frontend
-   #repo: https://source.developers.google.com/p/PROJECT_ID/r/frontend
    branch: master
    dir: /
    auth: ssh

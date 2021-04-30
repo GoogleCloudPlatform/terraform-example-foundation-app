@@ -241,10 +241,11 @@ Generate a public/private key pairs, and then add the public key to the repo.
 You will be presented with a message to specify the file location, just accept the default location "~/.ssh/id_rsa". 
 
 Make sure to replace GIT_REPO_NAME with your username.
+
     ```console
-    ssh-keygen -t rsa -b 4096 \
+    ssh-keygent -t rsa -b 4096 \
     -C "GIT_REPO_USERNAME" \
-    -N ''
+    -N ""
     ```
 Don't forget to upload the public key "~/.ssh/id_rsa.pub" to your repository. For cloud source repository, see [this link](https://cloud.google.com/source-repositories/docs/authentication)
 
@@ -252,8 +253,7 @@ Don't forget to upload the public key "~/.ssh/id_rsa.pub" to your repository. Fo
 Create a secret with your private key in both clusters
     ```console
     kubectl create ns config-management-system --context ${CTX_1} && kubectl create secret generic git-creds --namespace=config-management-system --context ${CTX_1} --from-file=ssh="$HOME/.ssh/id_rsa"
-    ```
-    ```console
+
     kubectl create ns config-management-system --context ${CTX_2} && kubectl create secret generic git-creds --namespace=config-management-system --context ${CTX_2} --from-file=ssh="$HOME/.ssh/id_rsa"
     ```
 
