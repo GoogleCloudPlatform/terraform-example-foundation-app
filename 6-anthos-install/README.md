@@ -252,7 +252,8 @@ Make sure to replace GIT_REPO_NAME with your username.
 Don't forget to upload the public key "~/.ssh/id_rsa.pub" to your repository. For cloud source repository, see [this link](https://cloud.google.com/source-repositories/docs/authentication)
 
 ### Create a Private Key
-Create a secret with your private key in both clusters
+Create a secret with your private key in both clusters.
+
     ```
     kubectl create ns config-management-system --context ${CTX_1} && kubectl create secret generic git-creds --namespace=config-management-system --context ${CTX_1} --from-file=ssh="$HOME/.ssh/id_rsa"
 
