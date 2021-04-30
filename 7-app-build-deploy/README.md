@@ -49,7 +49,7 @@ This demonstration uses Bank of Anthos to simulate a company building and deploy
 1. Run the following command at the root folder level while replacing the region from `5-infrastructure/business-unit-1/shared` and project from `4-projects/business_unit_1/shared` stage.
    ```
    export REGION=<your_region>
-   export PROJECT_ID=<your_project_name>
+   export PROJECT_ID=prj-bu1-c-app-cicd-<random>
    sed -i.bak \
       "s|gcr.io/bank-of-anthos|${REGION}-docker.pkg.dev/${PROJECT_ID}/${PROJECT_ID}-boa-image-repo|g" skaffold.yaml && \
       sed -i.bak "s|gitCommit: {}|sha256: {}|g" skaffold.yaml
