@@ -1,5 +1,5 @@
 # Deploying Bank of Anthos
-Before you begin, you need to be able to access the bastion host using IAP TCP forwarding. Follow these [instructions](https://cloud.google.com/iap/docs/using-tcp-forwarding#grant-permission) if you don't already have this access.
+Before you begin, you need to be able to access the bastion host using IAP TCP forwarding. Follow these [instructions](https://cloud.google.com/iap/docs/using-tcp-forwarding#grant-permission) to grant this access to your user.
 
 These instructions need to be run on the bastion host. To access the bastion host, open the Google Cloud console, and navigate to Compute Engine in the GKE project. In my instance, `prj-bu1-d-boa-gke` Then, select the `gce-bastion-us-west1-b-01` and click on `ssh`.
 
