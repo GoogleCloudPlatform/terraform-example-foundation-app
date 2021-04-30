@@ -17,7 +17,7 @@ This demonstration uses Bank of Anthos to simulate a company building and deploy
    - transactions
 
 ## Setup to run via Cloud Build
-1. Change directory to outside `terraform-example-foundation-app` using `cd ..`, to confirm you run `ls` and you should see `terraform-example-foundation-app` listed
+1. Change directory to outside `terraform-example-foundation-app` using `cd ..`, to confirm you run `ls` and you should see `terraform-example-foundation-app` listed.
 1. Clone Bank of Anthos repo.
    ```
    git clone https://github.com/GoogleCloudPlatform/bank-of-anthos.git
@@ -48,7 +48,11 @@ This demonstration uses Bank of Anthos to simulate a company building and deploy
    ```
 1. Run the following command at the root folder level while replacing the region from `5-infrastructure/business-unit-1/shared` and project from `4-projects/business_unit_1/shared` stage.
    ```
-   sed -i.bak "s|gcr.io/bank-of-anthos|<region>-docker.pkg.dev/prj-bu1-c-app-cicd-<random>/prj-bu1-c-app-cicd-<random>-boa-image-repo|g" skaffold.yaml && sed -i.bak "s|gitCommit: {}|sha256: {}|g" skaffold.yaml
+   export REGION=<your_region>
+   export PROJECT_ID=<your_project_name>
+   sed -i.bak \
+      "s|gcr.io/bank-of-anthos|${REGION}-docker.pkg.dev/${PROJECT_ID}/${PROJECT_ID}-boa-image-repo|g" skaffold.yaml && \
+      sed -i.bak "s|gitCommit: {}|sha256: {}|g" skaffold.yaml
    ```
 1. Commit and push the changes.
    ```
