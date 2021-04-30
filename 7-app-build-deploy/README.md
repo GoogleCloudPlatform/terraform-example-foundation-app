@@ -26,7 +26,7 @@ This demonstration uses Bank of Anthos to simulate a company building and deploy
    ```
    rm -rf bank-of-anthos/.git
    ```
-1. Clone bank-of-anthos-source repo. Replace the Cloudbuild project id by the correct one (you can rerun `terraform output cloudbuild_project_id` in the `4-projects/business_unit_1/shared` folder)
+1. Clone bank-of-anthos-source repo. Replace the Cloudbuild project id by the correct one (you can rerun `terraform output cloudbuild_project_id` in the `gcp-projects/business_unit_1/shared` folder)
    ```
    gcloud source repos clone bank-of-anthos-source --project=prj-bu1-c-app-cicd-<random>
    ```
@@ -46,7 +46,7 @@ This demonstration uses Bank of Anthos to simulate a company building and deploy
    ```
    cp -RT ../terraform-example-foundation-app/7-app-build-deploy .
    ```
-1. Run the following command at the root folder level while replacing the region from `5-infrastructure/business-unit-1/shared` and project from `4-projects/business_unit_1/shared` stage.
+1. Run the following command at the root folder level while replacing the region from `boa-infra/business-unit-1/shared` and project from `gcp-projects/business_unit_1/shared` stage.
    ```
    export REGION=<your_region>
    export PROJECT_ID=prj-bu1-c-app-cicd-<random>
