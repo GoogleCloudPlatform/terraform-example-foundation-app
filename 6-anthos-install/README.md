@@ -255,6 +255,7 @@ Don't forget to upload the public key "~/.ssh/id_rsa.pub" to your repository. Fo
 Create a secret with your private key in both clusters.
     ```
     kubectl create ns config-management-system --context ${CTX_1} && kubectl create secret generic git-creds --namespace=config-management-system --context ${CTX_1} --from-file=ssh="$HOME/.ssh/id_rsa"
+
     kubectl create ns config-management-system --context ${CTX_2} && kubectl create secret generic git-creds --namespace=config-management-system --context ${CTX_2} --from-file=ssh="$HOME/.ssh/id_rsa"
     ```
 
