@@ -19,7 +19,7 @@ metadata:
   namespace: accounts
 spec:
   git:
-   repo: ssh://USER_EMAIL@source.developers.google.com:2022/p/PROJECT_ID/r/accounts
+   repo: ssh://USER_EMAIL@source.developers.google.com:2022/p/CICD_PROJECT_ID/r/accounts
    branch: master
    dir: /
    auth: ssh

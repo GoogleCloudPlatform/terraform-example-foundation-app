@@ -1,12 +1,12 @@
 # Deploying Bank of Anthos
-These instructions need to be run on the bastion host. To access the bastion host, open the Google Cloud console, and navigate to Compute Engine in the GKE project. In my instance, `prj-bu1-d-boa-gke` Then, select the `gce-bastion-us-west1-b-01` and click on `ssh`. You need to be a whitelisted member to access this node.
+These instructions need to be run on the bastion host. To access the bastion host, open the Google Cloud console, and navigate to Compute Engine in the GKE project `prj-bu1-d-boa-gke`. Then, select the `gce-bastion-us-west1-b-01` and click on `ssh`. You need to be a whitelisted member to access this node.
 
 You can also connect to this instance by tunnelling SSH traffic through IAP.
 
     # Replace YOUR_PROJECT_ID with your GKE project ID.
-    export PROJECT_ID=YOUR_PROJECT_ID
+    export GKE_PROJECT_ID=YOUR_PROJECT_ID
     gcloud compute ssh gce-bastion-us-west1-b-01 \
-        --project ${PROJECT_ID} \
+        --project ${GKE_PROJECT_ID} \
         --zone us-west1-b
 
 ## Install required tools
@@ -27,22 +27,26 @@ You can also connect to this instance by tunnelling SSH traffic through IAP.
 ## Define required environment variables
 When indicated, make sure to replace the values below with the appropriate values based on the outcome of terraform.
 
-    export PROJECT_ID=$(gcloud config get-value project)
-    export PROJECT_NUM=$(gcloud projects describe ${PROJECT_ID} --format='value(projectNumber)')
+    export GKE_PROJECT_ID=$(gcloud config get-value project)
+    export PROJECT_NUM=$(gcloud projects describe ${GKE_PROJECT_ID} --format='value(projectNumber)')
     export CLUSTER_1=gke-1-boa-d-us-east1
     export CLUSTER_1_REGION=us-east1
     export CLUSTER_2=gke-2-boa-d-us-west1
     export CLUSTER_2_REGION=us-west1
     export CLUSTER_INGRESS=mci-boa-d-us-east1
     export CLUSTER_INGRESS_REGION=us-east1
-    export WORKLOAD_POOL=${PROJECT_ID}.svc.id.goog
+    export WORKLOAD_POOL=${GKE_PROJECT_ID}.svc.id.goog
     export MESH_ID="proj-${PROJECT_NUM}"
     export ASM_VERSION=1.8
     export ISTIO_VERSION=1.8.3-asm.2
     export ASM_LABEL=asm-183-2
-    export CTX_1=gke_${PROJECT_ID}_${CLUSTER_1_REGION}_${CLUSTER_1}
-    export CTX_2=gke_${PROJECT_ID}_${CLUSTER_2_REGION}_${CLUSTER_2}
-    export CTX_INGRESS=gke_${PROJECT_ID}_${CLUSTER_INGRESS_REGION}_${CLUSTER_INGRESS}
+    export CTX_1=gke_${GKE_PROJECT_ID}_${CLUSTER_1_REGION}_${CLUSTER_1}
+    export CTX_2=gke_${GKE_PROJECT_ID}_${CLUSTER_2_REGION}_${CLUSTER_2}
+    export CTX_INGRESS=gke_${GKE_PROJECT_ID}_${CLUSTER_INGRESS_REGION}_${CLUSTER_INGRESS}
+    export CICD_PROJECT_ID=YOUR_CICD_PROJECT_ID
+    export SQL_PROJECT_ID=YOUR_SQL_PROJECT_ID
+    export SQL_INSTANCE_NAME_EAST=YOUR_SQL_INSTANCE_NAME_EAST
+    export SQL_INSTANCE_NAME_WEST=YOUR_SQL_INSTANCE_NAME_WEST
 
 ## Generate Kubeconfig Entries
 In order to install ASM, we need to authenticate to clusters.
@@ -70,28 +74,26 @@ In order to install ASM, we need to authenticate to clusters.
     ```
 
 ### Install ASM on both clusters
-The following commands run the script for a new installation of ASM on Cluster1 and Cluster2. By default, ASM uses Mesh CA. The `--enable_cluster_roles` flag allows the script to attempt to bind the service account running the script to the cluster-admin role on the cluster. `--enable_cluster_labels` flag allow the script to set the required cluster labels.
+The following commands run the script for a new installation of ASM on Cluster1 and Cluster2. By default, ASM uses Mesh CA. The `--enable_cluster_roles` flag allows the script to attempt to bind the service account running the script to the cluster-admin role on the cluster.
 
 1. Install ASM on Cluster 1
     ```
     ./install_asm \
-    --project_id ${PROJECT_ID} \
+    --project_id ${GKE_PROJECT_ID} \
     --cluster_name ${CLUSTER_1} \
     --cluster_location ${CLUSTER_1_REGION} \
     --mode install \
     --output_dir ${HOME}/asm-${ASM_VERSION} \
-    --enable_cluster_labels \
     --enable_cluster_roles
     ```
 
 1. Install ASM on cluster 2
     ```
     ./install_asm \
-    --project_id ${PROJECT_ID} \
+    --project_id ${GKE_PROJECT_ID} \
     --cluster_name ${CLUSTER_2} \
     --cluster_location ${CLUSTER_2_REGION} \
     --mode install \
-    --enable_cluster_labels \
     --enable_cluster_roles
     ```
 
@@ -139,19 +141,19 @@ We need to configure endpoint discovery for cross-cluster load balancing and com
     ```
     # Register the MCI cluster
     gcloud beta container hub memberships register ${CLUSTER_INGRESS} \
-    --project=${PROJECT_ID} \
+    --project=${GKE_PROJECT_ID} \
     --gke-uri=${INGRESS_CONFIG_URI} \
     --enable-workload-identity
 
     # Register cluster1
     gcloud container hub memberships register ${CLUSTER_1} \
-    --project=${PROJECT_ID} \
+    --project=${GKE_PROJECT_ID} \
     --gke-uri=${CLUSTER_1_URI} \
     --enable-workload-identity
 
     # Register cluster2
     gcloud container hub memberships register ${CLUSTER_2} \
-    --project=${PROJECT_ID} \
+    --project=${GKE_PROJECT_ID} \
     --gke-uri=${CLUSTER_2_URI} \
     --enable-workload-identity
     ```
@@ -162,7 +164,7 @@ With MCI, we need to select a cluster to be the configuration cluster. In this c
 1. Enable MCI feature on config cluster
     ```
     gcloud alpha container hub ingress enable \
-    --config-membership=projects/${PROJECT_ID}/locations/global/memberships/${CLUSTER_INGRESS}
+    --config-membership=projects/${GKE_PROJECT_ID}/locations/global/memberships/${CLUSTER_INGRESS}
     ```
 
 1. Given that MCI will be used to loadbalance between the istio-gateways in east and west clusters, we need to create istio-system namespace in Ingress cluster to establish namespace sameness.
@@ -178,7 +180,7 @@ With MCI, we need to select a cluster to be the configuration cluster. In this c
     metadata:
       name: istio-ingressgateway-multicluster-ingress
       annotations:
-        networking.gke.io/static-ip: https://www.googleapis.com/compute/v1/projects/${PROJECT_ID}/global/addresses/mci-ip
+        networking.gke.io/static-ip: https://www.googleapis.com/compute/v1/projects/${GKE_PROJECT_ID}/global/addresses/mci-ip
         #networking.gke.io/pre-shared-certs: "boa-ssl-cert"
     spec:
       template:
@@ -276,7 +278,7 @@ Create a secret with your private key in both clusters.
 ### Populate the CSR repos
 For configuring and deploying the applicaiton, we are using multi-repo mode in ACM. This mode allows syncing from multiple repositories. In this excample, we have one root repository that hosts the cluster-wide and namespace-scoped configurations, and three namespace repositories to host the application manifests.
 
-Find the Project ID for your CI/CD project. It will look something like this: "prj-bu1-s-app-cicd-[RANDOM]"
+Find the Project ID for your CI/CD project (you can rerun `terraform output app_cicd_project_id` in the `gcp-projects/business_unit_1/shared` folder) It will look something like this: "prj-bu1-c-app-cicd-[RANDOM]"
 
 1. Define an environment variable to set the project where the pipeline will run. Make sure to replace `YOUR_CICD_PROJECT_ID` with the appropriate project ID.
     ```
@@ -308,21 +310,22 @@ This repository is the root repository that host cluster-scoped and namespace-sc
 replace the project id in the following files:
 
 - "${HOME}/bank-of-anthos-repos/root-config-repo/namespaces/boa/accounts/accounts-sa.yaml"
+- "${HOME}/bank-of-anthos-repos/root-config-repo/namespaces/boa/frontend/frontend-sa.yaml"
 - "${HOME}/bank-of-anthos-repos/root-config-repo/namespaces/boa/transactions/transactions-sa.yaml"
 
 You need to change this part to your GKE project:
 
-- `PROJECT_ID`
+- `GKE_PROJECT_ID`
 
 1. Update the repository url for each namespace to point to the repository you cloned.
 
-a. Replace PROJTECT_ID with your project ID for the CICD pipeline
+a. Replace CICD_PROJECT_ID with your project ID for the CICD pipeline
 a. Replace the USER_EMAIL with your GCP cloud identity email address.
 The changes need to be applied on the following files:
 
 - ${HOME}/bank-of-anthos-repos/root-config-repo/namespaces/boa/accounts/root-sync.yaml
-- ${HOME}/bank-of-anthos-repos/root-config-repo/namespaces/boa/transactions/root-sync.yaml
 - ${HOME}/bank-of-anthos-repos/root-config-repo/namespaces/boa/frontend/root-sync.yaml
+- ${HOME}/bank-of-anthos-repos/root-config-repo/namespaces/boa/transactions/root-sync.yaml
 
 1. push the content to the root-config-repo
     ```
@@ -444,14 +447,14 @@ Bank of Anthos uses two databases, one for the services in the accounts namespac
 We will assume that the accounts database in the us-west1 region and the transactions database in the us-east1 region. You would need to get the instances' names, and the project ID.
 
     export SQL_PROJECT_ID=YOUR_SQL_PROJECT_ID
-    export SQL_INSTANCE_NAME_WEST=YOUR_SQL_INSTANCE_NAME_WEST
     export SQL_INSTANCE_NAME_EAST=YOUR_SQL_INSTANCE_NAME_EAST
+    export SQL_INSTANCE_NAME_WEST=YOUR_SQL_INSTANCE_NAME_WEST
 
 Example:
 
-- export SQL_PROJECT_ID=prj-bu1-d-boa-sql-1aec
-- export SQL_INSTANCE_NAME_WEST=boa-sql-2-d-us-west1-78a54a8f
-- export SQL_INSTANCE_NAME_EAST=boa-sql-1-d-us-east1-65de84c0
+    export SQL_PROJECT_ID=prj-bu1-d-boa-sql-1aec
+    export SQL_INSTANCE_NAME_EAST=boa-sql-1-d-us-east1-65de84c0
+    export SQL_INSTANCE_NAME_WEST=boa-sql-2-d-us-west1-78a54a8f
 
 1. create the CloudSQL secrets
     ```
@@ -470,13 +473,13 @@ Example:
     ```
     gcloud iam service-accounts add-iam-policy-binding \
     --role roles/iam.workloadIdentityUser \
-    --member "serviceAccount:$PROJECT_ID.svc.id.goog[accounts/accounts]" \
-    boa-gsa@$PROJECT_ID.iam.gserviceaccount.com
+    --member "serviceAccount:$GKE_PROJECT_ID.svc.id.goog[accounts/accounts]" \
+    boa-gsa@$GKE_PROJECT_ID.iam.gserviceaccount.com
 
     gcloud iam service-accounts add-iam-policy-binding \
     --role roles/iam.workloadIdentityUser \
-    --member "serviceAccount:$PROJECT_ID.svc.id.goog[transactions/transactions]" \
-    boa-gsa@$PROJECT_ID.iam.gserviceaccount.com
+    --member "serviceAccount:$GKE_PROJECT_ID.svc.id.goog[transactions/transactions]" \
+    boa-gsa@$GKE_PROJECT_ID.iam.gserviceaccount.com
     ```
 
 1. Run script to populate database ledger
