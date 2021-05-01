@@ -58,3 +58,8 @@ variable "bastion_members" {
   type        = list(string)
   description = "The names of the members of the bastion server"
 }
+
+variable "repo_project_id" {
+  type        = string
+  description = "The project where app repos exist"
+}

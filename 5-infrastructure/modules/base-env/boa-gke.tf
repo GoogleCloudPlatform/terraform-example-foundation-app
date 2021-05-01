@@ -58,12 +58,12 @@ locals {
     }
   }
   bin_auth_attestors = [for attestor in var.bin_auth_attestor_names : "projects/${var.bin_auth_attestor_project_id}/attestors/${attestor}"]
-  allowlist_patterns = ["quay.io/random-containers/*", "k8s.gcr.io/more-random/*", "gcr.io/${var.boa_gke_project_id}/*"] # Example
+  allowlist_patterns = ["quay.io/random-containers/*", "k8s.gcr.io/more-random/*", "gcr.io/${var.boa_gke_project_id}/*", "gcr.io/config-management-release/*"] # Example
 }
 
 module "sink_gke" {
   source                 = "terraform-google-modules/log-export/google"
-  version                = "~> 5.2"
+  version                = "~> 6.0"
   destination_uri        = module.log_destination.destination_uri
   filter                 = "resource.type:(k8s_cluster OR k8s_container OR gce_target_https_proxy OR gce_url_map OR http_load_balancer OR gce_target_https_proxy OR gce_backend_service OR gce_instance OR gce_forwarding_rule OR gce_health_check OR service_account OR global OR audited_resource OR project)"
   log_sink_name          = "sink-boa-${local.envs[var.env].short}-gke-to-ops"
@@ -83,6 +83,7 @@ module "bastion" {
   bastion_subnet               = var.bastion_subnet_name
   bastion_region               = var.location_secondary
   network_project_id           = var.gcp_shared_vpc_project_id
+  repo_project_id              = var.bin_auth_attestor_project_id
 }
 
 data "google_project" "gke_project" {
@@ -116,7 +117,7 @@ module "clusters" {
     "mesh_id" = "proj-${data.google_project.gke_project.number}"
   }
   node_pools_tags = {
-    "np-${each.value.region}" : ["boa-${each.key}-cluster", "allow-google-apis"]
+    "np-${each.value.region}" : ["boa-${each.key}-cluster", "allow-google-apis", "egress-internet", "boa-cluster", "allow-lb"]
   }
   node_pools = [
     {
@@ -140,6 +141,7 @@ module "clusters" {
     ],
     "default-node-pool" : []
   }
+  compute_engine_service_account = "boa-gke-nodes-${local.envs[var.env].short}-gsa@${var.boa_gke_project_id}.iam.gserviceaccount.com"
 }
 
 resource "google_binary_authorization_policy" "policy" {

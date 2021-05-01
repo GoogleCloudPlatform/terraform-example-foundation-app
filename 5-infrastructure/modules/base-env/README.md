@@ -68,7 +68,6 @@ The module provisions the following resources
 | external\_ip\_address | The external IP for HTTP load balancing. |
 | gke\_outputs | Outputs for Cloud SQL instances. |
 | kms\_outputs | Outputs for KMS Keyrings and Keys. |
-| kms\_sa | KMS Service Account. |
 | sql\_outputs | Outputs for Cloud SQL instances. |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

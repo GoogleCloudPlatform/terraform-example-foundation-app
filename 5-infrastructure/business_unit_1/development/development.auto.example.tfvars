@@ -14,19 +14,15 @@
  * limitations under the License.
  */
 
-boa_gke_project_id        = "prj-bu1-z-boa-gke-xxxx"    # 'z' is replaced by {d|n|p} according to environment {development|non-production|production}
-boa_ops_project_id        = "prj-bu1-z-boa-ops-xxxx"    # 'z' is replaced by {d|n|p} according to environment {development|non-production|production}
-boa_sec_project_id        = "prj-bu1-z-boa-sec-xxxx"    # 'z' is replaced by {d|n|p} according to environment {development|non-production|production}
-boa_sql_project_id        = "prj-bu1-z-boa-sql-xxxx"    # 'z' is replaced by {d|n|p} according to environment {development|non-production|production}
-gcp_shared_vpc_project_id = "prj-z-shared-base-xxxx"    # 'z' is replaced by {d|n|p} according to environment {development|non-production|production}
-shared_vpc_name           = "vpc-z-shared-base-spoke"   # 'z' is replaced by {d|n|p} according to environment {development|non-production|production}
-terraform_service_account = "boa-terraform-z-sa@prj-bu1-z-boa-sec-xxxx.iam.gserviceaccount.com"
+# xxxx in the following variables is replaced by random project suffix
+boa_gke_project_id        = "prj-bu1-d-boa-gke-xxxx"
+boa_ops_project_id        = "prj-bu1-d-boa-ops-xxxx"
+boa_sec_project_id        = "prj-bu1-d-boa-sec-xxxx"
+boa_sql_project_id        = "prj-bu1-d-boa-sql-xxxx"
+gcp_shared_vpc_project_id = "prj-d-shared-base-xxxx"
+shared_vpc_name           = "vpc-d-shared-base-spoke"
+terraform_service_account = "boa-terraform-d-sa@prj-bu1-d-boa-sec-xxxx.iam.gserviceaccount.com"
 
-enforce_bin_auth_policy      = true
+enforce_bin_auth_policy      = false
 bin_auth_attestor_names      = ["build-attestor", "quality-attestor", "security-attestor"]
-bin_auth_attestor_project_id = "prj-bu1-s-app-cicd-xxxx"
-
-# Optional
-# gke_cluster_1_cidr_block     = "000.000.000.000/00"
-# gke_cluster_2_cidr_block     = "000.000.000.000/00"
-# gke_mci_cluster_cidr_block   = "000.000.000.000/00"
+bin_auth_attestor_project_id = "prj-bu1-c-app-cicd-xxxx"

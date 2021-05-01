@@ -65,7 +65,6 @@ variable "replica_zones" {
   type = object({
     zone1 = string
     zone2 = string
-    zone3 = string
   })
   description = "The GCP Zones"
 }

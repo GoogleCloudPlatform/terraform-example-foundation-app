@@ -14,6 +14,7 @@ This module is a wrapper for [CFT Bastion Module](https://github.com/terraform-g
 | bastion\_zone | The zone for the bastion VM | `string` | n/a | yes |
 | network\_project\_id | The project id of the GCP subnetwork for bastion services | `string` | n/a | yes |
 | project\_id | The Google Cloud project ID | `string` | n/a | yes |
+| repo\_project\_id | The project where app repos exist | `string` | n/a | yes |
 | vpc\_name | The name of the bastion VPC | `string` | n/a | yes |
 
 ## Outputs

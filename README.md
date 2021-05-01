@@ -13,7 +13,7 @@ After steps `0-bootstrap`, `1-org` and `2-environments` from [terraform-example-
 <table>
 <tbody>
 <tr>
-<td><a
+<td nowrap="nowrap"><a
 href="https://github.com/terraform-google-modules/terraform-example-foundation/tree/master/0-bootstrap">0-bootstrap</a></td>
 <td>Bootstraps a Google Cloud organization, creating all the required resources
 and permissions to start using the Cloud Foundation Toolkit (CFT). This
@@ -21,59 +21,56 @@ step also configures a CI/CD pipeline for foundations code in subsequent
 stages.</td>
 </tr>
 <tr>
-<td><a
+<td nowrap="nowrap"><a
 href="https://github.com/terraform-google-modules/terraform-example-foundation/tree/master/1-org">1-org</a></td>
 <td>Sets up top level shared folders, monitoring and networking projects, and
 organization-level logging, and sets baseline security settings through
 organizational policy.</td>
 </tr>
 <tr>
-<td><a
+<td nowrap="nowrap"><a
 href="https://github.com/terraform-google-modules/terraform-example-foundation/tree/master/2-environments">2-environments</a></td>
 <td>Sets up development, non-production, and production environments within the
 Google Cloud organization that you've created.</td>
 </tr>
 <tr>
-<td><a
-href="https://github.com/GoogleCloudPlatform/terraform-example-foundation-app/tree/main/app-foundation/3-networks-extension">3-networks-extension/</a></td>
+<td nowrap="nowrap"><a
+href="https://github.com/GoogleCloudPlatform/terraform-example-foundation-app/tree/main/foundation-extension/3-networks-extension">3-networks-extension</a></td>
 <td>Sets up base shared VPCs with BOA Subnets and Firewall Rules, need only run the bash script to complete this step.</td>
 </tr>
 <tr>
-<td><a
+<td nowrap="nowrap"><a
 href="https://github.com/terraform-google-modules/terraform-example-foundation/tree/master/3-networks">3-networks</a></td>
-<td>Sets up base and restricted shared VPCs with default DNS, NAT (optional),
-Private Service networking, VPC service controls, on-premises Dedicated
-Interconnect, and baseline firewall rules for each environment. Also sets
-up the global DNS hub.</td>
+<td>Sets up base and restricted shared VPCs with default DNS, NAT (optional), Private Service networking, VPC service controls, on-premises Dedicated Interconnect, and baseline firewall rules for each environment. Also sets up the global DNS hub.</td>
 </tr>
 <tr>
-<td><a
-href="https://github.com/GoogleCloudPlatform/terraform-example-foundation-app/tree/main/app-foundation/4-projects">4-projects</a></td>
+<td nowrap="nowrap"><a
+href="https://github.com/GoogleCloudPlatform/terraform-example-foundation-app/tree/main/foundation-extension/4-projects">4-projects</a></td>
 <td>Set up a folder structure, projects, and application infrastructure pipeline for applications,
  which are connected as service projects to the shared VPC created in the previous stage.</td>
 </tr>
 <tr>
-<td><a
+<td nowrap="nowrap"><a
 href="https://github.com/GoogleCloudPlatform/terraform-example-foundation-app/tree/main/5-infrastructure">5-infrastructure</a></td>
 <td>Set up resources needed to deploy bank of anthos, GKE Clusters, CloudSQL Instances, Logging Buckets, Bastion Host, KMS, Artifact Repository, Binary Auth etc.</td>
 </tr>
 <tr>
-<td><a
+<td nowrap="nowrap"><a
 href="https://github.com/GoogleCloudPlatform/terraform-example-foundation-app/tree/main/6-anthos-install">6-anthos</a></td>
 <td>Set up ACM, ASM and other pre-requistes for Bank of Anthos Application.</td>
 </tr>
 <tr>
-<td><a
-href="https://github.com/GoogleCloudPlatform/terraform-example-foundation-app/tree/main/build-app">BoA Build</a></td>
+<td nowrap="nowrap"><a
+href="https://github.com/GoogleCloudPlatform/terraform-example-foundation-app/tree/main/7-app-build-deploy">7-app-build-deploy</a></td>
 <td>Set up Bank of Anthos Application.</td>
 </tr>
 </tbody>
 </table>
 
-## [3. networks-extension](./app-foundation/3-networks-extension/)
+## [3. networks-extension](./foundation-extension/3-networks-extension/)
 
 This step - a network *extension* - adds on top of the 3-networks layer that is part of [terraform-example-foundation/3-networks](https://github.com/terraform-google-modules/terraform-example-foundation/tree/master/3-networks).
-This step focuses on creating a shared VPC per environment (`development`, `non-production` & `production`) that is configured with subnets, secondary ranges, additional firewall rules, and a [network_prepare.sh](https://github.com/GoogleCloudPlatform/terraform-example-foundation-app/blob/main/app-foundation/3-networks-extension/network_prepare.sh) script included in the configuration that can be used to automatically populate or replace configurations in [terraform-example-foundation/3-networks](https://github.com/terraform-google-modules/terraform-example-foundation/tree/master/3-networks) with the configurations in the Bank of Anthos example.
+This step focuses on creating a shared VPC per environment (`development`, `non-production` & `production`) that is configured with subnets, secondary ranges, additional firewall rules, and a [network_prepare.sh](https://github.com/GoogleCloudPlatform/terraform-example-foundation-app/blob/main/foundation-extension/3-networks-extension/network_prepare.sh) script included in the configuration that can be used to automatically populate or replace configurations in [terraform-example-foundation/3-networks](https://github.com/terraform-google-modules/terraform-example-foundation/tree/master/3-networks) with the configurations in the Bank of Anthos example.
 Currently, this configuration includes:
 
 - **Example subnets** for the `development`, `non-production` & `production` environments
@@ -82,7 +79,7 @@ Currently, this configuration includes:
 
 **A Bash Script** to automatically prepare the 3-networks layer by auto-merging 3-networks-extension with the 3-networks from [terraform-example-foundation/3-networks](https://github.com/terraform-google-modules/terraform-example-foundation/tree/master/3-networks)
 
-## [4. projects](./app-foundation/4-projects)
+## [4. projects](./foundation-extension/4-projects)
 
 This step focuses on creating service projects, including an application CI/CD pipeline project and an infrastructure pipeline project that are necessary for the Bank of Anthos configuration to work. Currently, this includes:
 
@@ -98,8 +95,8 @@ example-organization/
     ├── prj-cloudbuild
     └── prj-seed
 └── fldr-common
-    ├── prj-bu1-s-app-cicd
-    ├── prj-bu1-s-infra-pipeline
+    ├── prj-bu1-c-app-cicd
+    ├── prj-bu1-c-infra-pipeline
     ├── prj-c-billing-logs
     ├── prj-c-dns-hub
     ├── prj-c-interconnect
@@ -140,7 +137,7 @@ example-organization/
 
 ## [5. infrastructure](./5-infrastructure)
 
-The purpose of this step is to deploy the infrastructure for the Bank of Anthos example application using the infra pipeline setup in 4-projects. There is also a [Source Repository](https://cloud.google.com/source-repositories) to push the code to be deployed. All infrastructure components will be created using the base network created during step [3-networks-extension](./app-foundation/3-networks/). Curretnly, this includes:
+The purpose of this step is to deploy the infrastructure for the Bank of Anthos example application using the infra pipeline setup in 4-projects. There is also a [Source Repository](https://cloud.google.com/source-repositories) to push the code to be deployed. All infrastructure components will be created using the base network created during step [3-networks-extension](./foundation-extension/3-networks/). Curretnly, this includes:
 
 - **3 GKE Clusters**
   - Cluster1 in the primary region (us-east1)
@@ -166,7 +163,7 @@ The purpose of this step is to install the Anthos components required for the Ba
 - All required components to install **Anthos Config Management**
 - All required components to install **Anthos Service Mesh**
 
-## [7. build_app](./build_app)
+## [7. app-build-deploy](./7-app-build-deploy)
 
 The purpose of this step is to utilize an opinionated repository to demonstrate Cloud Build based builds of Bank of Anthos with secure CI/CD principles applied. The example herein simulates a company building and deploying the Bank of Anthos example application to a multi-tier kubernetes cluster using asynchronous GitOps. Currently, this includes:
 
