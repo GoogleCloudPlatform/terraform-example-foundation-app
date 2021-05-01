@@ -17,18 +17,51 @@ This demonstration uses Bank of Anthos to simulate a company building and deploy
    - transactions
 
 ## Setup to run via Cloud Build
-1. Change directory to outside `terraform-example-foundation-app` using `cd ..`, to confirm you run `ls` and you should see `terraform-example-foundation-app` listed
-1. Clone Bank of Anthos repo `git clone https://github.com/GoogleCloudPlatform/bank-of-anthos.git`
-1. Delete the `.git` folder from the Github Bank of Anthos Repo `rm -rf bank-of-anthos/.git`
-1. Clone repo `gcloud source repos clone bank-of-anthos-source --project=prj-bu1-c-app-cicd-<random>`. (this is from the terraform output from the previous section, run `terraform output cloudbuild_project_id` in the `4-projects/business_unit_1/shared` folder)
-1. Navigate into the repo `cd bank-of-anthos-source`.
-1. Create main branch `git checkout -b main`.
-1. Copy contents of Bank of Anthos Github Repo to new repo `cp -RT ../bank-of-anthos .` (modify accordingly based on your current directory).
-1. Copy file `cloudbuild-build-boa.yaml` and `policies` folder from [7-app-build-deploy](.) to new repo `cp -RT ../terraform-example-foundation-app/7-app-build-deploy .` (modify accordingly based on your current directory).
-1. Run `sed -i.bak "s|gcr.io/bank-of-anthos|<region>-docker.pkg.dev/prj-bu1-c-app-cicd-<random>/prj-bu1-c-app-cicd-<random>-boa-image-repo|g" skaffold.yaml && sed -i.bak "s|gitCommit: {}|sha256: {}|g" skaffold.yaml` at the root folder level while replacing the region from `5-infrastructure/business-unit-1/shared` and project from `4-projects/business_unit_1/shared` stage
-1. Commit changes with `git add .` and `git commit -m 'Your message'`. and push commit `git push origin main`.
-1. Cloudbuild will automatically run on push, confirm all stages of pipeline complete with a green check.
-1. Check files mentioned in proceeding section have been changed in their respective repos.
+1. Change directory to outside `terraform-example-foundation-app` using `cd ..`, to confirm you run `ls` and you should see `terraform-example-foundation-app` listed.
+1. Clone Bank of Anthos repo.
+   ```
+   git clone https://github.com/GoogleCloudPlatform/bank-of-anthos.git
+   ```
+1. Delete the `.git` folder from the Github Bank of Anthos Repo.
+   ```
+   rm -rf bank-of-anthos/.git
+   ```
+1. Clone bank-of-anthos-source repo. Replace the Cloudbuild project id by the correct one (you can rerun `terraform output cloudbuild_project_id` in the `gcp-projects/business_unit_1/shared` folder)
+   ```
+   gcloud source repos clone bank-of-anthos-source --project=prj-bu1-c-app-cicd-<random>
+   ```
+1. Navigate into the repo.
+   ```
+   cd bank-of-anthos-source
+   ```
+1. Create main branch.
+   ```
+   git checkout -b main
+   ```
+1. Copy contents of Bank of Anthos Github Repo to new repo (modify accordingly based on your current directory).
+   ```
+   cp -RT ../bank-of-anthos .
+   ```
+1. Copy file `cloudbuild-build-boa.yaml` and `policies` folder from [7-app-build-deploy](.) to new repo (modify accordingly based on your current directory).
+   ```
+   cp -RT ../terraform-example-foundation-app/7-app-build-deploy .
+   ```
+1. Run the following command at the root folder level while replacing the region from `boa-infra/business_unit_1/shared` and project from `gcp-projects/business_unit_1/shared` stage.
+   ```
+   export REGION=<your_region>
+   export PROJECT_ID=prj-bu1-c-app-cicd-<random>
+   sed -i.bak \
+      "s|gcr.io/bank-of-anthos|${REGION}-docker.pkg.dev/${PROJECT_ID}/${PROJECT_ID}-boa-image-repo|g" skaffold.yaml && \
+      sed -i.bak "s|gitCommit: {}|sha256: {}|g" skaffold.yaml
+   ```
+1. Commit and push the changes.
+   ```
+   git add .
+   git commit -m 'Your message'
+   git push origin main
+   ```
+1. Cloudbuild will automatically run on push, confirm all stages of pipeline complete with a green check in https://console.cloud.google.com/cloud-build/builds?project=prj-bu1-c-app-cicd-xxxx
+1. Check files mentioned in proceeding section have been changed in their respective repos (https://source.cloud.google.com/prj-bu1-c-app-cicd-xxxx).
 
 ## Files/Images edited by pipeline each run
 ```
