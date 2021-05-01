@@ -29,7 +29,7 @@ The purpose of this step is to set up a folder structure, projects, and infrastr
 1. Update backend.tf with your bucket from example-foundation. You can run
 ```cd .. && for i in `find -name 'backend.tf'`; do sed -i 's/UPDATE_ME/<YOUR-BUCKET-NAME>/' $i; done && cd shared```.
 1. Run `terraform init`
-1. Run `terraform plan`, this should report 63 changes to be added if using the default config.
+1. Run `terraform plan`
 1. Run `terraform apply` ensure you have the correct permissions before doing this.
 
 ### Run cloudbuild dev/npd/prd envs
@@ -51,7 +51,7 @@ The purpose of this step is to set up a folder structure, projects, and infrastr
 If your user does not have access to run the terraform modules locally and you are in the organization admins group, you can append `--impersonate-service-account=org-terraform@prj-b-cicd-xxxx.iam.gserviceaccount.com` to run terraform modules as the service  account.
 
 ### TF Validate (Optional)
-To use the `validate` option of the `tf-wrapper.sh` script, the latest version of `terraform-validator` must be [installed](https://github.com/forseti-security/policy-library/blob/master/docs/user_guide.md#how-to-use-terraform-validator) in your system and in you `PATH`.
+To use the `validate` option of the `tf-wrapper.sh` script, please follow the [instructions](https://github.com/forseti-security/policy-library/blob/master/docs/user_guide.md#install-terraform-validator) in the **Install Terraform Validator** section and install version `2021-03-22` in your system. You will also need to rename the binary from `terraform-validator-<your-platform>` to `terraform-validator` and the `terraform-validator` binary must be in your `PATH`.
 1. Run `./tf-wrapper.sh init production`.
 1. Run `./tf-wrapper.sh plan production` and review output.
 1. Run `./tf-wrapper.sh validate production $(pwd)/../policy-library <YOUR_INFRA_PIPELINE_PROJECT>` and check for violations.

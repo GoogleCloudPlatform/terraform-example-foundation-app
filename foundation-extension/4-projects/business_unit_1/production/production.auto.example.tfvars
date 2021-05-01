@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
-org_id                           = "xxxxxx-xxxxxx-xxxxxx"
-billing_account                  = "xxxxxxxxxxxx"
-terraform_service_account        = "org-terraform@prj-seed-xxxx.iam.gserviceaccount.com"
-app_infra_pipeline_cloudbuild_sa = "xxxxxxxxxxxx@cloudbuild.gserviceaccount.com"
-app_cicd_project_id              = "prj-bu1-c-app-cicd-xxxx"
-shared_vpc_host_project_id       = "prj-p-shared-base-xxxx"
-shared_vpc_network_name          = "vpc-p-shared-base-spoke"
+org_id                           = "000000000000"
+billing_account                  = "000000-000000-000000"
+terraform_service_account        = "org-terraform@prj-b-seed-2334.iam.gserviceaccount.com"
+app_infra_pipeline_cloudbuild_sa = "<bu1_infra_pipeline_project_number>@cloudbuild.gserviceaccount.com"
 enable_hub_and_spoke             = true
+app_cicd_project_id              = "prj-bu1-c-app-cicd-1234"
+shared_vpc_host_project_id       = "prj-d-shared-base-1234"
+shared_vpc_network_name          = "vpc-d-shared-base-spoke"
 
-# Optional
-# parent_folder = ""
+// Optional - for an organization with existing projects or for development/validation.
+// Must be the same value used in previous steps.
+//parent_folder = "01234567890"
