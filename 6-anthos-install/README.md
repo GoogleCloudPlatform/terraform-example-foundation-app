@@ -411,7 +411,10 @@ This repository will host the deployment and service manifests for `transactionh
 
 #### Configure syncing from the root repository
 1. Update the repository url to point to your repository
-Replace PROJTECT_ID with your project ID for the CICD pipeline in the following file:
+
+a. Replace CICD_PROJECT_ID with your project ID for the CICD pipeline
+a. Replace the USER_EMAIL with your GCP cloud identity email address.
+The changes need to be applied on the following file:
 
 - ${HOME}/terraform-example-foundation-app/6-anthos-install/acm-configs/root-sync.yaml
 
