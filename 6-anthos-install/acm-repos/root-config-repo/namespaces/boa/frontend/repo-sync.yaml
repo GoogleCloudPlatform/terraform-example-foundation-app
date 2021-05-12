@@ -19,7 +19,7 @@ metadata:
   namespace: frontend
 spec:
   git:
-   repo: ssh://dkassab@google.com@source.developers.google.com:2022/p/prj-bu1-d-boa-gke-ecb0/r/frontend
+   repo: ssh://USER_EMAIL@source.developers.google.com:2022/p/CICD_PROJECT_ID/r/frontend
    branch: master
    dir: /
    auth: ssh

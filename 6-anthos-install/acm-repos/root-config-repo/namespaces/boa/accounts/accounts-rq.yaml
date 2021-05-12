@@ -13,12 +13,12 @@
 # limitations under the License.
 
 apiVersion: v1
-# kind: ResourceQuota
-# metadata:
-#   name: accounts
-# spec:
-#   hard:
-#     requests.cpu: "2"
-#     requests.memory: 4Gi
-#     limits.cpu: "3"
-#     limits.memory: 8Gi
+kind: ResourceQuota
+metadata:
+  name: accounts
+spec:
+  hard:
+    requests.cpu: "6"
+    requests.memory: 8Gi
+    limits.cpu: "8"
+    limits.memory: 16Gi

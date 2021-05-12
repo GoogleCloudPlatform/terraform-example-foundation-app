@@ -26,7 +26,7 @@ This demonstration uses Bank of Anthos to simulate a company building and deploy
    ```
    rm -rf bank-of-anthos/.git
    ```
-1. Clone bank-of-anthos-source repo. Replace the Cloudbuild project id by the correct one (you can rerun `terraform output cloudbuild_project_id` in the `gcp-projects/business_unit_1/shared` folder)
+1. Clone bank-of-anthos-source repo. Replace the Cloudbuild project id by the correct one (you can rerun `terraform output app_cicd_project_id` in the `gcp-projects/business_unit_1/shared` folder)
    ```
    gcloud source repos clone bank-of-anthos-source --project=prj-bu1-c-app-cicd-<random>
    ```
