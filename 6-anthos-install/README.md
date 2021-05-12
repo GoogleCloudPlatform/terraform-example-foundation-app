@@ -228,8 +228,8 @@ Note: Make sure the environment variables in the mcs.yaml file are updated ${CLU
     spec:
       healthCheck:
         type: HTTP
-        port: 15020
-        requestPath: /healthz/ready
+        port: 8080
+        requestPath: /ready
       securityPolicy:
         name: cloud-armor-xss-policy
     EOF
@@ -247,8 +247,8 @@ Generate a public/private key pairs, and then add the public key to the repo.
 You will be presented with a message to specify the file location, just accept the default location `~/.ssh/id_rsa`.
 Make sure to replace GIT_REPO_NAME with your username.
 
-    ssh-keygent -t rsa -b 4096
-    -C "GIT_REPO_USERNAME"
+    ssh-keygen -t rsa -b 4096 \
+    -C "GIT_REPO_USERNAME" \
     -N ''
 
 Don't forget to upload the public key "~/.ssh/id_rsa.pub" to your repository. For cloud source repository, see [this link](https://cloud.google.com/source-repositories/docs/authentication)
@@ -273,7 +273,7 @@ Create a secret with your private key in both clusters.
 
     kubectl apply --context=${CTX_1} -f ${HOME}/terraform-example-foundation-app/6-anthos-install/acm-configs/config-management-east.yaml
 
-    kubectl apply --context=${CTX_2} -f ${HOME}/terraform-example-foundation-app/6-anthos-install/acm-config/config-management-west.yaml
+    kubectl apply --context=${CTX_2} -f ${HOME}/terraform-example-foundation-app/6-anthos-install/acm-configs/config-management-west.yaml
 
 ### Populate the CSR repos
 For configuring and deploying the applicaiton, we are using multi-repo mode in ACM. This mode allows syncing from multiple repositories. In this excample, we have one root repository that hosts the cluster-wide and namespace-scoped configurations, and three namespace repositories to host the application manifests.
@@ -323,9 +323,9 @@ a. Replace CICD_PROJECT_ID with your project ID for the CICD pipeline
 a. Replace the USER_EMAIL with your GCP cloud identity email address.
 The changes need to be applied on the following files:
 
-- ${HOME}/bank-of-anthos-repos/root-config-repo/namespaces/boa/accounts/root-sync.yaml
-- ${HOME}/bank-of-anthos-repos/root-config-repo/namespaces/boa/frontend/root-sync.yaml
-- ${HOME}/bank-of-anthos-repos/root-config-repo/namespaces/boa/transactions/root-sync.yaml
+- ${HOME}/bank-of-anthos-repos/root-config-repo/namespaces/boa/accounts/repo-sync.yaml
+- ${HOME}/bank-of-anthos-repos/root-config-repo/namespaces/boa/frontend/repo-sync.yaml
+- ${HOME}/bank-of-anthos-repos/root-config-repo/namespaces/boa/transactions/repo-sync.yaml
 
 1. push the content to the root-config-repo
     ```
