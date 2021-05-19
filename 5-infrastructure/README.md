@@ -70,7 +70,7 @@ All infrastructure components will be created using the base network created dur
    ```
 1. Disable constraint `gke_restrict_pod_traffic.yaml`. The network policies will be enable in step 6 and are not configured yet.
    ```
-   mv policies/constraints/gke_restrict_pod_traffic.yaml policies/constraints/gke_restrict_pod_traffic.yaml_disabled 
+   mv policies/constraints/gke_restrict_pod_traffic.yaml policies/constraints/gke_restrict_pod_traffic.yaml_disabled
    ```
 1. Commit changes.
    ```
