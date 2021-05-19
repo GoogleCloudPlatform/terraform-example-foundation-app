@@ -35,6 +35,56 @@ All infrastructure components will be created using the base network created dur
 
 ### Setup to run via Cloud Build
 1. Change directory to outside `terraform-example-foundation-app` using `cd ..`, to confirm you run `ls` and you should see `terraform-example-foundation-app` listed
+1. Clone the policies repo. (This repo has the same name of the repo created in step 1-org but it is from a different project. We will clone with a different folder name to prevent a name collision).
+   ```
+   gcloud source repos clone gcp-policies gcp-policies-infra-pipeline --project=prj-bu1-c-infra-pipeline-<random>
+   ```
+1. Navigate into the repo.
+   ```
+   cd gcp-policies-infra-pipeline
+   ```
+1. Copy contents of policy-library to new repo.
+   ```
+   cp -RT ../terraform-example-foundation/policy-library/ .
+   ```
+1. Add the new allowed APIs to the end of the services list in the constraint `policies/constraints/serviceusage_allow_basic_apis.yaml`:
+   ```
+    - "binaryauthorization.googleapis.com"
+    - "containeranalysis.googleapis.com"
+   ```
+1. Add the subnetwork CIDR ranges of the bastion host subnet and GKE Pods of each environment to the end of the authorized_networks list in the constraint `policies/constraints/gke_master_authorized_networks_enabled.yaml`:
+   ```
+    - 10.0.66.0/29
+    - 100.64.72.0/22
+    - 100.65.64.0/22
+    - 10.0.130.0/29
+    - 100.64.136.0/22
+    - 100.65.128.0/22
+    - 10.0.194.0/29
+    - 100.64.200.0/22
+    - 100.65.192.0/22
+   ```
+1. Remove constraint `gke_dashboard_disable.yaml` because [GKE dashboard](https://cloud.google.com/kubernetes-engine/docs/concepts/dashboards) is no longer installed by default and cannot be enable since version 1.15. It would rise a false positive.
+   ```
+   rm policies/constraints/gke_dashboard_disable.yaml
+   ```
+1. Disable constraint `gke_restrict_pod_traffic.yaml`. The network policies will be enable in step 6 and are not configured yet.
+   ```
+   mv policies/constraints/gke_restrict_pod_traffic.yaml policies/constraints/gke_restrict_pod_traffic.yaml_disabled 
+   ```
+1. Commit changes.
+   ```
+   git add .
+   git commit -m 'Your message'
+   ```
+1. Push your master branch to the new repo.
+   ```
+   git push --set-upstream origin master
+   ```
+1. Navigate out of the repo.
+   ```
+   cd ..
+   ```
 1. Clone repo `gcloud source repos clone boa-infra --project=prj-bu1-c-infra-pipeline-<random>`. (this is from the terraform output from the previous section, run `terraform output cloudbuild_project_id` in the `4-projects/business_unit_1/shared` folder)
 1. Change into freshly cloned repo `cd boa-infra` and change to non master branch `git checkout -b plan`.
 1. Copy contents of foundation to new repo `cp -RT ../terraform-example-foundation-app/5-infrastructure/ .` (modify accordingly based on your current directory).
