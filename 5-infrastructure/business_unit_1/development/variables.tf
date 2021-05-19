@@ -95,3 +95,15 @@ variable "bin_auth_attestor_project_id" {
   type        = string
   description = "Project id where binary attestors are created (app_cicd project from shared)"
 }
+
+variable "sql_admin_username" {
+  type        = string
+  description = "Admin Username for SQL Instances."
+  default     = "admin"
+}
+
+variable "sql_admin_password" {
+  type        = string
+  description = "Admin Password for SQL Instances."
+  default     = "admin"
+}
