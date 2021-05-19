@@ -97,6 +97,7 @@ resource "null_resource" "cloudbuild_image_builder" {
       --project ${var.app_cicd_project_id} \
       --config=${path.module}/cloud-build-builder/${var.build_image_yaml} \
       --substitutions=_DEFAULT_REGION=${var.primary_location},_GAR_REPOSITORY=${local.gar_name}
+      --impersonate-service-account=${var.app_cicd_build_sa}
   EOT
   }
 }
