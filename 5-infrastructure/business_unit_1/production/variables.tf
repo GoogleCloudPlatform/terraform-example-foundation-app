@@ -95,3 +95,9 @@ variable "bin_auth_attestor_project_id" {
   type        = string
   description = "Project id where binary attestors are created (app_cicd project from shared)"
 }
+
+variable "bastion_members" {
+  type        = list(string)
+  description = "The names of the members of the bastion server."
+  default     = []
+}
