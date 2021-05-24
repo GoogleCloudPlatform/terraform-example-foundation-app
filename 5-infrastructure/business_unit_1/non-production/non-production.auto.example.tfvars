@@ -32,3 +32,10 @@ bin_auth_attestor_project_id = "prj-bu1-c-app-cicd-xxxx"
 # You need access to the bastion host to execute
 # step 6-anthos-install.
 bastion_members = ["user:example@example.com"]
+
+# Use the same configuration used by the Bank of Anthos applications to connect to the database.
+# See:
+# - terraform-example-foundation-app/6-anthos-install/acm-repos/root-config-repo/namespaces/boa/accounts/accounts-db-config.yaml
+# - terraform-example-foundation-app/6-anthos-install/acm-repos/root-config-repo/namespaces/boa/transactions/ledger-db-config.yaml
+sql_admin_username = "admin"
+sql_admin_password = "admin"

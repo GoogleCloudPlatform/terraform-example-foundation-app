@@ -29,6 +29,7 @@ module "app_infra_cloudbuild_project" {
     "cloudbuild.googleapis.com",
     "sourcerepo.googleapis.com",
     "cloudkms.googleapis.com",
+    "cloudresourcemanager.googleapis.com",
     "artifactregistry.googleapis.com"
   ]
 

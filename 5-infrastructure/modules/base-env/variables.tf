@@ -174,13 +174,13 @@ variable "sql_database_replication_region" {
 variable "sql_admin_username" {
   type        = string
   description = "Admin Username for SQL Instances."
-  default     = "testuser"
+  default     = "admin"
 }
 
 variable "sql_admin_password" {
   type        = string
   description = "Admin Password for SQL Instances."
-  default     = "foobar"
+  default     = "admin"
 }
 
 variable "enforce_bin_auth_policy" {

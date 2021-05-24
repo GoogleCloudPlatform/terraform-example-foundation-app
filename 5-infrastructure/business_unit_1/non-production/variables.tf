@@ -101,3 +101,15 @@ variable "bastion_members" {
   description = "The names of the members of the bastion server."
   default     = []
 }
+
+variable "sql_admin_username" {
+  type        = string
+  description = "Admin Username for SQL Instances."
+  default     = "admin"
+}
+
+variable "sql_admin_password" {
+  type        = string
+  description = "Admin Password for SQL Instances."
+  default     = "admin"
+}
