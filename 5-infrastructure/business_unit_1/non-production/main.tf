@@ -34,4 +34,6 @@ module "env" {
   enforce_bin_auth_policy      = var.enforce_bin_auth_policy
   bin_auth_attestor_names      = var.bin_auth_attestor_names
   bin_auth_attestor_project_id = var.bin_auth_attestor_project_id
+  sql_admin_username           = var.sql_admin_username
+  sql_admin_password           = var.sql_admin_password
 }
