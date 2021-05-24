@@ -17,7 +17,7 @@
 locals {
   read_replica_ip_configuration = {
     ipv4_enabled        = false
-    require_ssl         = false
+    require_ssl         = true
     private_network     = var.vpc_self_link
     authorized_networks = var.authorized_networks
   }

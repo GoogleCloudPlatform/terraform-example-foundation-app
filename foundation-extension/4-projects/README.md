@@ -11,8 +11,45 @@ The purpose of this step is to set up a folder structure, projects, and infrastr
 
 ## Usage
 
+### Update terraform-validator constraints
+
+Update the terraform-validator policies repo to allow the new APIs used GKE and Anthos.
+
+1. Change directory to outside of `terraform-example-foundation-app` and go to the gcp-policies repo cloned in step 1-org.
+   ```
+   cd ..
+   ls # should see terraform-example-foundation-app and gcp-policies
+   cd gcp-policies
+   ```
+1. Add the new allowed APIs to the end of the services list in the constraint `policies/constraints/serviceusage_allow_basic_apis.yaml`:
+   ```
+    - "anthos.googleapis.com"
+    - "binaryauthorization.googleapis.com"
+    - "containerscanning.googleapis.com"
+    - "gkeconnect.googleapis.com"
+    - "gkehub.googleapis.com"
+    - "iap.googleapis.com"
+    - "meshca.googleapis.com"
+    - "meshconfig.googleapis.com"
+    - "meshtelemetry.googleapis.com"
+    - "multiclusteringress.googleapis.com"
+    - "privateca.googleapis.com"
+    - "sqladmin.googleapis.com"
+    - "stackdriver.googleapis.com"
+    - "storage.googleapis.com"
+   ```
+1. Commit changes.
+   ```
+   git add .
+   git commit -m 'Add new APIS to allowed list'
+   ```
+1. Push your changes.
+   ```
+   git push master
+   ```
+
 ### Setup to run via Cloud Build
-1. Change directory to outside `terraform-example-foundation-app` using `cd ..`, to confirm you run `ls` and you should see `terraform-example-foundation-app` listed
+1. Change directory to outside `gcp-policies` using `cd ..`, to confirm you run `ls` and you should see `terraform-example-foundation-app` listed
 1. Clone repo `gcloud source repos clone gcp-projects --project=YOUR_CLOUD_BUILD_PROJECT_ID`.
 1. Change into freshly cloned repo `cd gcp-projects` and change to non master branch `git checkout -b plan` (the branch `plan` is not a special one. Any branch which name is different from `development`, `non-production` or `production` will trigger a terraform plan).
 1. Copy example foundation to new repo `cp -RT ../terraform-example-foundation-app/foundation-extension/4-projects/ .` (modify accordingly based on your current directory).
