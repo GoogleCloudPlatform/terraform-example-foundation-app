@@ -19,4 +19,4 @@ metadata:
   labels:
     app: boa
     networking/namespace: frontend
-    istio.io/rev: asm-185-2
+    istio.io/rev: asm-186-3

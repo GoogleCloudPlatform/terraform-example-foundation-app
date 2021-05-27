@@ -17,6 +17,7 @@ You can also connect to this instance by tunnelling SSH traffic through IAP.
     yum install google-cloud-sdk-kpt -y
     yum install jq -y
     yum install kubectl -y
+    yum install nc -y
     exit
 
 ## Pull the repo
@@ -38,8 +39,8 @@ When indicated, make sure to replace the values below with the appropriate value
     export WORKLOAD_POOL=${GKE_PROJECT_ID}.svc.id.goog
     export MESH_ID="proj-${PROJECT_NUM}"
     export ASM_VERSION=1.8
-    export ISTIO_VERSION=1.8.3-asm.2
-    export ASM_LABEL=asm-183-2
+    export ISTIO_VERSION=1.8.6-asm.3
+    export ASM_LABEL=asm-186-3
     export CTX_1=gke_${GKE_PROJECT_ID}_${CLUSTER_1_REGION}_${CLUSTER_1}
     export CTX_2=gke_${GKE_PROJECT_ID}_${CLUSTER_2_REGION}_${CLUSTER_2}
     export CTX_INGRESS=gke_${GKE_PROJECT_ID}_${CLUSTER_INGRESS_REGION}_${CLUSTER_INGRESS}
@@ -58,7 +59,7 @@ In order to install ASM, we need to authenticate to clusters.
 ## Install ASM
 ### Downloading the script
 
-1. Download the version of the script that installs ASM 1.8.3.
+1. Download the version of the script that installs ASM 1.8.6.
     ```
     curl https://storage.googleapis.com/csm-artifacts/asm/install_asm_"${ASM_VERSION}" > install_asm
     ```
@@ -102,13 +103,13 @@ We need to configure endpoint discovery for cross-cluster load balancing and com
 1. Add ASM to your path:
     ```
     ./install_asm --version # get the version and then replace it in the below example
-    # For version 1.8.5-asm.2 use the following command
-    export PATH=$PATH:$HOME/asm-1.8/istio-1.8.5-asm.2/bin/
+    # For version 1.8.6-asm.3 use the following command
+    export PATH=$PATH:$HOME/asm-1.8/istio-1.8.6-asm.3/bin/
     ```
 
 1. Creates a secret that grants access to the Kube API Server for cluster 1
     ```
-    ./istioctl x create-remote-secret \
+    istioctl x create-remote-secret \
     --name=${CLUSTER_1} > secret-kubeconfig-${CLUSTER_1}.yaml
     ```
 
@@ -119,7 +120,7 @@ We need to configure endpoint discovery for cross-cluster load balancing and com
 
 1. In a similar manner, create a secret that grants access to the Kube API Server for cluster 2
     ```
-    ./istioctl x create-remote-secret \
+    istioctl x create-remote-secret \
     --name=${CLUSTER_2} > secret-kubeconfig-${CLUSTER_2}.yaml
     ```
 
