@@ -17,6 +17,8 @@
 | location\_primary | The primary region for deployment | `string` | `"us-east1"` | no |
 | location\_secondary | The secondary region for deployment | `string` | `"us-west1"` | no |
 | shared\_vpc\_name | The shared VPC network name | `string` | n/a | yes |
+| sql\_admin\_password | Admin Password for SQL Instances. | `string` | `"admin"` | no |
+| sql\_admin\_username | Admin Username for SQL Instances. | `string` | `"admin"` | no |
 | terraform\_service\_account | Service account email of the account to impersonate to run Terraform. | `string` | n/a | yes |
 
 ## Outputs
