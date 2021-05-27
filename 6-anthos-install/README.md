@@ -488,6 +488,10 @@ Example:
 1. Run script to populate database ledger
     ```
     kubectl apply -n transactions --context ${CTX_1} -f ${HOME}/terraform-example-foundation-app/6-anthos-install/db-scripts/populate-ledger-db.yaml
+    ```
 
-    kubectl apply -n transactions --context ${CTX_2} -f ${HOME}/terraform-example-foundation-app/6-anthos-install/db-scripts/populate-ledger-db.yaml
+1. Run script to populate database accounts
+
+    ```
+    kubectl apply -n accounts --context ${CTX_2} -f ${HOME}/terraform-example-foundation-app/6-anthos-install/db-scripts/populate-accounts-db.yaml
     ```
