@@ -39,6 +39,11 @@ variable "boa_gke_mci_master_cidr" {
   type        = string
 }
 
+variable "boa_private_service_cidr" {
+  description = "Private service CIDR"
+  type        = string
+}
+
 variable "fw_project_id" {
   description = "Project ID"
   type        = string
@@ -55,6 +60,6 @@ variable "network_link" {
 }
 
 variable "environment_code" {
-  description = "VPC Network Self Link"
+  description = "A short form of the folder level resources (environment) within the Google Cloud organization (ex. d)."
   type        = string
 }
