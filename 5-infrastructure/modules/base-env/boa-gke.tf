@@ -25,7 +25,7 @@ locals {
       default_max_pods_per_node = var.max_pods_per_node
       region                    = var.location_primary
       node_pool_min_count       = 2
-      node_pool_max_count       = 4
+      node_pool_max_count       = 3
       machine_type              = "e2-standard-4"
       master_authorized_networks = [
         {
@@ -44,7 +44,7 @@ locals {
       region                    = var.location_secondary
       machine_type              = "e2-standard-4"
       node_pool_min_count       = 2
-      node_pool_max_count       = 4
+      node_pool_max_count       = 3
       master_authorized_networks = [
         {
           cidr_block   = element([for subnet_ip_range in flatten([for subnet in data.google_compute_subnetwork.subnet : subnet.secondary_ip_range if length(subnet.secondary_ip_range) > 0 && subnet.name == var.gke_cluster_1_subnet_name]) : subnet_ip_range.ip_cidr_range if subnet_ip_range.range_name == var.gke_cluster_1_range_name_pods], 0)
