@@ -18,3 +18,18 @@ data "google_active_folder" "common" {
   display_name = "${var.folder_prefix}-common"
   parent       = var.parent_folder != "" ? "folders/${var.parent_folder}" : "organizations/${var.org_id}"
 }
+
+data "google_active_folder" "development" {
+  display_name = "${var.folder_prefix}-development"
+  parent       = var.parent_folder != "" ? "folders/${var.parent_folder}" : "organizations/${var.org_id}"
+}
+
+data "google_active_folder" "non_production" {
+  display_name = "${var.folder_prefix}-non-production"
+  parent       = var.parent_folder != "" ? "folders/${var.parent_folder}" : "organizations/${var.org_id}"
+}
+
+data "google_active_folder" "production" {
+  display_name = "${var.folder_prefix}-production"
+  parent       = var.parent_folder != "" ? "folders/${var.parent_folder}" : "organizations/${var.org_id}"
+}
