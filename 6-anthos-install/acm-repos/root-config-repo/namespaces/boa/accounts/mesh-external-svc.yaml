@@ -17,7 +17,7 @@ apiVersion: networking.istio.io/v1alpha3
 kind: ServiceEntry
 metadata:
   name: sql
-  namespace: transactions
+  namespace: accounts
 spec:
   hosts:
   - sql-component.googleapis.com
@@ -36,9 +36,9 @@ apiVersion: networking.istio.io/v1alpha3
 kind: ServiceEntry
 metadata:
   name: cloud-sql-instance
-  namespace: transactions
+  namespace: accounts
 spec:
-  # use `gcloud sql instances list  --project ${SQL_PROJECT_ID}` and include replicas as well
+  # use `gcloud sql instances list --project ${SQL_PROJECT_ID}` and include replicas as well
   hosts:
   - boa-sql-2-d-us-west1-73f70f52-replica-example0
   - boa-sql-1-d-us-east1-3976a685-replica-example1
@@ -47,7 +47,7 @@ spec:
   - boa-sql-1-d-us-east1-3976a685
   - boa-sql-2-d-us-west1-73f70f52
   addresses:
-  # use `gcloud sql instances list  --project ${SQL_PROJECT_ID}` to find out the IP address of your Google Cloud Instance
+  # use `gcloud sql instances list --project ${SQL_PROJECT_ID}` to find out the IP address of your Google Cloud Instance
   - 10.16.66.13/32 # a single IP in CIDR notation
   - 10.16.66.16/32
   - 10.16.66.17/32

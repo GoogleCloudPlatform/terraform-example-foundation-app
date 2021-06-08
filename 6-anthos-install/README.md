@@ -328,6 +328,11 @@ The changes need to be applied on the following files:
 - ${HOME}/bank-of-anthos-repos/root-config-repo/namespaces/boa/frontend/repo-sync.yaml
 - ${HOME}/bank-of-anthos-repos/root-config-repo/namespaces/boa/transactions/repo-sync.yaml
 
+1. Update the configuration of the external service mesh for database access. Follow the instructions in the files:
+
+- ${HOME}/bank-of-anthos-repos/root-config-repo/namespaces/boa/accounts/mesh-external-svc.yaml
+- ${HOME}/bank-of-anthos-repos/root-config-repo/namespaces/boa/frontend/mesh-external-svc.yaml
+
 1. push the content to the root-config-repo
     ```
     git add .
