@@ -17,13 +17,16 @@
 locals {
   gke_settings = {
     gke1 = {
-      name                   = "gke-1-boa-${local.envs[var.env].short}-${var.location_primary}"
-      subnetwork             = var.gke_cluster_1_subnet_name
-      ip_range_pods          = var.gke_cluster_1_range_name_pods
-      ip_range_services      = var.gke_cluster_1_range_name_services
-      master_ipv4_cidr_block = var.gke_cluster_1_cidr_block
-      region                 = var.location_primary
-      machine_type           = "e2-standard-4"
+      name                      = "gke-1-boa-${local.envs[var.env].short}-${var.location_primary}"
+      subnetwork                = var.gke_cluster_1_subnet_name
+      ip_range_pods             = var.gke_cluster_1_range_name_pods
+      ip_range_services         = var.gke_cluster_1_range_name_services
+      master_ipv4_cidr_block    = var.gke_cluster_1_cidr_block
+      default_max_pods_per_node = var.max_pods_per_node
+      region                    = var.location_primary
+      node_pool_min_count       = 2
+      node_pool_max_count       = 3
+      machine_type              = "e2-standard-4"
       master_authorized_networks = [
         {
           cidr_block   = element([for subnet_ip_range in flatten([for subnet in data.google_compute_subnetwork.subnet : subnet.secondary_ip_range if length(subnet.secondary_ip_range) > 0 && subnet.name == var.gke_cluster_2_subnet_name]) : subnet_ip_range.ip_cidr_range if subnet_ip_range.range_name == var.gke_cluster_2_range_name_pods], 0)
@@ -32,13 +35,16 @@ locals {
       ]
     },
     gke2 = {
-      name                   = "gke-2-boa-${local.envs[var.env].short}-${var.location_secondary}"
-      subnetwork             = var.gke_cluster_2_subnet_name
-      ip_range_pods          = var.gke_cluster_2_range_name_pods
-      ip_range_services      = var.gke_cluster_2_range_name_services
-      master_ipv4_cidr_block = var.gke_cluster_2_cidr_block
-      region                 = var.location_secondary
-      machine_type           = "e2-standard-4"
+      name                      = "gke-2-boa-${local.envs[var.env].short}-${var.location_secondary}"
+      subnetwork                = var.gke_cluster_2_subnet_name
+      ip_range_pods             = var.gke_cluster_2_range_name_pods
+      ip_range_services         = var.gke_cluster_2_range_name_services
+      master_ipv4_cidr_block    = var.gke_cluster_2_cidr_block
+      default_max_pods_per_node = var.max_pods_per_node
+      region                    = var.location_secondary
+      machine_type              = "e2-standard-4"
+      node_pool_min_count       = 2
+      node_pool_max_count       = 3
       master_authorized_networks = [
         {
           cidr_block   = element([for subnet_ip_range in flatten([for subnet in data.google_compute_subnetwork.subnet : subnet.secondary_ip_range if length(subnet.secondary_ip_range) > 0 && subnet.name == var.gke_cluster_1_subnet_name]) : subnet_ip_range.ip_cidr_range if subnet_ip_range.range_name == var.gke_cluster_1_range_name_pods], 0)
@@ -52,8 +58,11 @@ locals {
       ip_range_pods              = var.gke_mci_cluster_range_name_pods
       ip_range_services          = var.gke_mci_cluster_range_name_services
       master_ipv4_cidr_block     = var.gke_mci_cluster_cidr_block
+      default_max_pods_per_node  = var.max_pods_per_node
       region                     = var.location_primary
       machine_type               = "e2-standard-2"
+      node_pool_min_count        = 1
+      node_pool_max_count        = 3
       master_authorized_networks = []
     }
   }
@@ -99,12 +108,13 @@ module "clusters" {
   network_project_id = var.gcp_shared_vpc_project_id
   network            = var.shared_vpc_name
 
-  name                   = each.value.name
-  subnetwork             = each.value.subnetwork
-  ip_range_pods          = each.value.ip_range_pods
-  ip_range_services      = each.value.ip_range_services
-  master_ipv4_cidr_block = each.value.master_ipv4_cidr_block
-  region                 = each.value.region
+  name                      = each.value.name
+  subnetwork                = each.value.subnetwork
+  ip_range_pods             = each.value.ip_range_pods
+  ip_range_services         = each.value.ip_range_services
+  master_ipv4_cidr_block    = each.value.master_ipv4_cidr_block
+  default_max_pods_per_node = each.value.default_max_pods_per_node
+  region                    = each.value.region
   master_authorized_networks = concat(each.value.master_authorized_networks,
     [
       {
@@ -127,8 +137,8 @@ module "clusters" {
       enable_secure_boot = true,
       image_type         = "COS_CONTAINERD",
       machine_type       = each.value.machine_type,
-      max_count          = 3,
-      min_count          = 1,
+      max_count          = each.value.node_pool_max_count,
+      min_count          = each.value.node_pool_min_count,
       node_metadata      = "GKE_METADATA_SERVER"
     }
   ]

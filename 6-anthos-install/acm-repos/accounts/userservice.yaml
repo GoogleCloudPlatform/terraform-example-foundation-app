@@ -26,6 +26,8 @@ spec:
       labels:
         app: boa
         service: userservice
+      annotations:
+        traffic.sidecar.istio.io/includeOutboundIPRanges: "10.16.64.0/21"
     spec:
       serviceAccountName: accounts
       terminationGracePeriodSeconds: 5
