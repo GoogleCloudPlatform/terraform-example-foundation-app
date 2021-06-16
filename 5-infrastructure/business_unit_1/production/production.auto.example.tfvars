@@ -28,6 +28,12 @@ enforce_bin_auth_policy      = true
 bin_auth_attestor_names      = ["build-attestor", "quality-attestor", "security-attestor"]
 bin_auth_attestor_project_id = "prj-bu1-c-app-cicd-xxxx"
 
+# Replace 'example@example.com' with your GCP Cloud Identity
+# to be added as an allowlisted member on the bastion host.
+# You need access to the bastion host to execute
+# step 6-anthos-install.
+bastion_members = ["user:example@example.com"]
+
 # Use the same configuration used by the Bank of Anthos applications to connect to the database.
 # See:
 # - terraform-example-foundation-app/6-anthos-install/acm-repos/root-config-repo/namespaces/boa/accounts/accounts-db-config.yaml

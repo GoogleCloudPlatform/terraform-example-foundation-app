@@ -96,6 +96,12 @@ variable "bin_auth_attestor_project_id" {
   description = "Project id where binary attestors are created (app_cicd project from shared)"
 }
 
+variable "bastion_members" {
+  type        = list(string)
+  description = "The emails of the members with access to the bastion server."
+  default     = []
+}
+
 variable "sql_admin_username" {
   type        = string
   description = "Admin Username for SQL Instances."

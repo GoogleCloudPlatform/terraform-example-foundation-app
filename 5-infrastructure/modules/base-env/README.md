@@ -24,7 +24,7 @@ The module provisions the following resources
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| bastion\_members | The names of the members of the bastion server. | `list(string)` | `[]` | no |
+| bastion\_members | The emails of the members with access to the bastion server. | `list(string)` | `[]` | no |
 | bastion\_subnet\_name | The name of the subnet for the shared VPC. | `string` | `"bastion-host-subnet"` | no |
 | bastion\_zone | The zone for the bastion VM in primary region. | `string` | `"us-west1-b"` | no |
 | bin\_auth\_attestor\_names | Binary Authorization Attestor Names set up in shared app\_cicd project. | `list(string)` | `[]` | no |

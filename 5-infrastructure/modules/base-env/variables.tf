@@ -72,7 +72,7 @@ variable "bastion_subnet_name" {
 
 variable "bastion_members" {
   type        = list(string)
-  description = "The names of the members of the bastion server."
+  description = "The emails of the members with access to the bastion server."
   default     = []
 }
 
