@@ -53,7 +53,7 @@ module "base_shared_vpc" {
     },
     {
       subnet_name           = "gke-cluster1-subnet"
-      subnet_ip             = "10.0.193.0/29"
+      subnet_ip             = "10.0.193.0/27"
       subnet_region         = var.default_region1
       subnet_private_access = "true"
       subnet_flow_logs      = var.subnetworks_enable_logging
@@ -69,7 +69,7 @@ module "base_shared_vpc" {
     },
     {
       subnet_name           = "gke-cluster2-subnet"
-      subnet_ip             = "10.1.192.0/29"
+      subnet_ip             = "10.1.192.0/27"
       subnet_region         = var.default_region2
       subnet_private_access = "true"
       subnet_flow_logs      = var.subnetworks_enable_logging
