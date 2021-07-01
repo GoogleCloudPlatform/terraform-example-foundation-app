@@ -290,6 +290,31 @@ Create a secret with your private key in both clusters.
     kubectl apply --context=${CTX_1} -f ${HOME}/terraform-example-foundation-app/6-anthos-install/acm-configs/config-management-east.yaml
 
     kubectl apply --context=${CTX_2} -f ${HOME}/terraform-example-foundation-app/6-anthos-install/acm-configs/config-management-west.yaml
+    
+### Install Nomos
+Nomos will be installed to know if the Config Management System changes were successfully applied.
+1. Download the nomos in same version of the Config Management System.
+    ```
+    gsutil cp gs://config-management-release/released/1.7.0/linux_amd64/nomos nomos
+    ```
+
+1. Make it executable:
+    ```
+    chmod +x nomos
+    ```
+
+1. Move the command to a location the system searches for binaries.
+    ```
+    sudo mv nomos /usr/local/bin/
+
+1. Validate the configuration.
+    ```
+    nomos --path=${HOME}/bank-of-anthos-repos/root-config-repo vet
+    ``````
+1. Check if the update was successful.
+    ```
+    nomos status
+    ``````    
 
 ### Populate the CSR repos
 For configuring and deploying the applicaiton, we are using multi-repo mode in ACM. This mode allows syncing from multiple repositories. In this excample, we have one root repository that hosts the cluster-wide and namespace-scoped configurations, and three namespace repositories to host the application manifests.
