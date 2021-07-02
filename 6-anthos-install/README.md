@@ -512,3 +512,40 @@ Example:
 
     kubectl apply -n transactions --context ${CTX_2} -f ${HOME}/terraform-example-foundation-app/6-anthos-install/db-scripts/populate-ledger-db.yaml
     ```
+    
+    
+> **NOTE: These steps should be executed before if is decided to destroy the infrastructure:**
+```
+export GKE_PROJECT_ID=<YOUR-GKE-PROJECT-ID>
+```
+```
+gcloud container hub memberships unregister gke-1-boa-d-us-east1 \
+   --project=$GKE_PROJECT_ID \
+   --gke-cluster=us-east1/gke-1-boa-d-us-east1
+```
+```
+gcloud container hub memberships unregister gke-2-boa-d-us-west1 \
+   --project=$GKE_PROJECT_ID \
+   --gke-cluster=us-west1/gke-2-boa-d-us-west1
+```
+```
+gcloud container hub memberships unregister mci-boa-d-us-east1 \
+   --project=$GKE_PROJECT_ID \
+   --gke-cluster=us-east1/mci-boa-d-us-east1
+```
+```
+gcloud services disable anthos.googleapis.com --force --project=$GKE_PROJECT_ID
+```
+```
+gcloud alpha container hub ingress disable --force --project=$GKE_PROJECT_ID
+```
+```
+curl -H "Authorization: Bearer $(gcloud auth print-access-token)" \
+    -X "DELETE" \
+    https://gkehub.googleapis.com/v1alpha1/projects/$GKE_PROJECT_ID/locations/global/features/authorizer
+```
+```
+curl -H "Authorization: Bearer $(gcloud auth print-access-token)" \
+    -X "DELETE" \
+    https://gkehub.googleapis.com/v1alpha1/projects/$GKE_PROJECT_ID/locations/global/features/metering
+```
