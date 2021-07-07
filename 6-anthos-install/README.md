@@ -187,6 +187,8 @@ With MCI, we need to select a cluster to be the configuration cluster. In this c
     ```
     kubectl --context ${CTX_INGRESS} create namespace istio-system
     ```
+    
+    > **NOTE: Don't create another namespace with a different name if already exists "istio-system" created.**
 
 1. create a multi-cluster ingress
     ```
