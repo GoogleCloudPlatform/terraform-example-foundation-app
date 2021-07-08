@@ -512,7 +512,7 @@ Example:
 
     kubectl apply -n transactions --context ${CTX_2} -f ${HOME}/terraform-example-foundation-app/6-anthos-install/db-scripts/populate-ledger-db.yaml
     ```
-    
+
 # Troubleshooting
 
 1. If get the error that you are unable to access git repository:
@@ -527,7 +527,7 @@ To authorize it, is necessary to have an accredited service account in addition 
     gcloud auth list
     ```
 1. To get the token:
-   
+
     ```
     gcloud auth print-access-token
     ```
