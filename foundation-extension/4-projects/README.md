@@ -45,7 +45,7 @@ Update the terraform-validator policies repo to allow the new APIs used GKE and 
    ```
 1. Push your changes.
    ```
-   git push master
+   git push origin master
    ```
 
 ### Setup to run via Cloud Build
