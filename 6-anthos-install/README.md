@@ -292,11 +292,9 @@ Create a secret with your private key in both clusters.
     kubectl apply --context=${CTX_2} -f ${HOME}/terraform-example-foundation-app/6-anthos-install/acm-configs/config-management-west.yaml
 
 ### Install Nomos
-Nomos will be installed to know if the Config Management System changes were successfully applied.
-1. Download the nomos in same version of the Config Management System.
-    ```
-    gsutil cp gs://config-management-release/released/1.7.0/linux_amd64/nomos nomos
-    ```
+Nomos will be installed to know if the Config Management System (ACM) changes were successfully applied.
+The official documentation to install nomos is on [this link](https://cloud.google.com/anthos-config-management/docs/how-to/nomos-command).
+1. Download it in exactly same version of the Config Management System (ACM installed above). Observe the downloads of **nomos** and choose for your respective operational system on [this link](https://cloud.google.com/anthos-config-management/docs/downloads#supported_version_instructions).
 
 1. Make it executable:
     ```
