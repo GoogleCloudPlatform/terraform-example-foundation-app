@@ -183,12 +183,10 @@ With MCI, we need to select a cluster to be the configuration cluster. In this c
     --config-membership=projects/${GKE_PROJECT_ID}/locations/global/memberships/${CLUSTER_INGRESS}
     ```
 
-1. Given that MCI will be used to loadbalance between the istio-gateways in east and west clusters, we need to create istio-system namespace in Ingress cluster to establish namespace sameness.
+1. Given that MCI will be used to loadbalance between the istio-gateways in east and west clusters, we need to create istio-system namespace (*if it does not exist already*) in Ingress cluster to establish namespace sameness.
     ```
     kubectl --context ${CTX_INGRESS} create namespace istio-system
     ```
-
-    > **NOTE: Don't create another namespace with a different name if already exists "istio-system" created.**
 
 1. create a multi-cluster ingress
     ```
