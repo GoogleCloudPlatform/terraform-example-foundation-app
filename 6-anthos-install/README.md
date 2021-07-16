@@ -41,8 +41,13 @@ You can also connect to this instance by tunnelling SSH traffic through IAP.
     git clone https://github.com/GoogleCloudPlatform/terraform-example-foundation-app.git
 
 ## Define required environment variables
-When indicated, make sure to replace the values below with the appropriate values based on the outcome of terraform.
+1. Make a script named variables.sh:
+    ```
+    touch variables.sh
+    ```
+1. Update the file created with the variables below and save it. When indicated, make sure to replace the values below with the appropriate values based on the outcome of terraform.
 
+    ```
     export GKE_PROJECT_ID=$(gcloud config get-value project)
     export PROJECT_NUM=$(gcloud projects describe ${GKE_PROJECT_ID} --format='value(projectNumber)')
     export CLUSTER_1=gke-1-boa-d-us-east1
@@ -63,6 +68,18 @@ When indicated, make sure to replace the values below with the appropriate value
     export SQL_PROJECT_ID=YOUR_SQL_PROJECT_ID
     export SQL_INSTANCE_NAME_EAST=YOUR_SQL_INSTANCE_NAME_EAST
     export SQL_INSTANCE_NAME_WEST=YOUR_SQL_INSTANCE_NAME_WEST
+    ```
+
+1. Make it executable:
+    ```
+    chmod 775 variables.sh
+    ```
+
+1. Run the script:
+    ```
+    source ./variables.sh
+    ```
+> **NOTE: If you leave the bastion host, all variables setted will be lost. All you need to do is run the script again.**
 
 ## Generate Kubeconfig Entries
 In order to install ASM, we need to authenticate to clusters.
