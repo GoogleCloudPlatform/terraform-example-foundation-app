@@ -43,7 +43,7 @@ You can also connect to this instance by tunnelling SSH traffic through IAP.
 ## Define required environment variables
 1. Make a script named variables.sh:
     ```
-    nano variables.sh
+    touch variables.sh
     ```
 1. Update the file created with the variables below and save it. When indicated, make sure to replace the values below with the appropriate values based on the outcome of terraform.
 
@@ -72,7 +72,7 @@ You can also connect to this instance by tunnelling SSH traffic through IAP.
 
 1. Make it executable:
     ```
-    chmod 777 variables.sh
+    chmod 775 variables.sh
     ```
 
 1. Run the script:
