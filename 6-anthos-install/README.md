@@ -294,7 +294,7 @@ Create a secret with your private key in both clusters.
 ### Install Nomos
 Nomos will be installed to know if the Config Management System (ACM) changes were successfully applied.
 The official documentation to install nomos is on [this link](https://cloud.google.com/anthos-config-management/docs/how-to/nomos-command).
-1. Download it in exactly same version of the Config Management System (ACM installed above). Observe the downloads of **nomos** and choose for your respective operational system on [this link](https://cloud.google.com/anthos-config-management/docs/downloads#supported_version_instructions).
+1. Download the exact same version of the Config Management System (ACM installed above). Choose the linux version on [this link](https://cloud.google.com/anthos-config-management/docs/downloads#supported_version_instructions).
 
 1. Make it executable:
     ```
