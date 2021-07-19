@@ -66,6 +66,12 @@ locals {
       allow_protocol     = "tcp"
       allow_ports        = ["443", "10250"]
     },
+    "fw-${var.environment_code}-shared-base-e-a-private-service-cidr" = {
+      destination_ranges = [var.boa_private_service_cidr]
+      target_tags        = ["boa-gke1-cluster", "boa-gke2-cluster"]
+      allow_protocol     = "tcp"
+      allow_ports        = ["3307"]
+    },
     "fw-${var.environment_code}-shared-base-e-bastion-allow-all" = {
       destination_ranges = ["0.0.0.0/0"]
       target_tags        = ["bastion"]

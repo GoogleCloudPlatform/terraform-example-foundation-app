@@ -27,14 +27,6 @@ spec:
       protocol: TCP
   - to:
     - ipBlock:
-        cidr: 172.31.0.2/32
-    - ipBlock:
-        cidr: 172.31.2.13/32
-    - ipBlock:
-        cidr: 172.31.2.4/32
-    - ipBlock:
-        cidr: 172.31.2.8/32
-    - ipBlock:
-        cidr: 10.16.64.0/24
+        cidr: 10.16.64.0/21
     ports:
     - port: 3307
