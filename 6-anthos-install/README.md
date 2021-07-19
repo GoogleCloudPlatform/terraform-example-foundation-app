@@ -513,7 +513,7 @@ Example:
     kubectl apply -n transactions --context ${CTX_2} -f ${HOME}/terraform-example-foundation-app/6-anthos-install/db-scripts/populate-ledger-db.yaml
     ```
 
-# Troubleshooting
+## Troubleshooting
 
 1. If you get the error that you are unable to access git repository:
     ```
