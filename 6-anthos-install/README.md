@@ -530,4 +530,4 @@ Example:
         gcloud auth print-access-token
         ```
 Use the credentials obtained to access git repositories.
->**NOTE: The token expires in around 30 minutes and it is necessary to generate a new one.**
+**NOTE: The token expires in around 30 minutes and it is necessary to generate a new one.**
