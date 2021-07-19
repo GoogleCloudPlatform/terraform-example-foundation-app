@@ -513,7 +513,7 @@ Example:
     kubectl apply -n transactions --context ${CTX_2} -f ${HOME}/terraform-example-foundation-app/6-anthos-install/db-scripts/populate-ledger-db.yaml
     ```
 
-> **NOTE: These steps should be executed before destroying the infrastructure:**
+**NOTE: These steps should be executed before destroying the infrastructure:**
 ```
 export GKE_PROJECT_ID=<YOUR-GKE-PROJECT-ID>
 ```
