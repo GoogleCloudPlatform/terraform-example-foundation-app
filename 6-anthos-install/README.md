@@ -512,3 +512,22 @@ Example:
 
     kubectl apply -n transactions --context ${CTX_2} -f ${HOME}/terraform-example-foundation-app/6-anthos-install/db-scripts/populate-ledger-db.yaml
     ```
+
+## Troubleshooting
+
+1. If you get the error that you are unable to access git repository:
+    ```
+    fatal: unable to access 'https://source.developers.google.com/p/prj-bu1-c-app-cicd-XXXX/r/root-config-repo/': The requested URL returned error: 400
+    ERROR: (gcloud.source.repos.clone) Command '[u'git', u'clone', u'https://source.developers.google.com/p/prj-bu1-c-app-cicd-XXXX/r/root-config-repo', u'/home/USER/bank-of-anthos-repos/root-config-repo']' returned non-zero exit status 128
+    ```
+    1. Get the service account logged on Bastion host:
+        ```
+        gcloud auth list
+        ```
+    1. Get the access token:
+
+        ```
+        gcloud auth print-access-token
+        ```
+Use the credentials obtained to access git repositories.
+**NOTE: The token expires in around 30 minutes and it is necessary to generate a new one.**
