@@ -6,7 +6,7 @@ This module is a wrapper for [CFT Bastion Module](https://github.com/terraform-g
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| bastion\_members | The names of the members of the bastion server | `list(string)` | n/a | yes |
+| bastion\_members | The emails of the members with access to the bastion server | `list(string)` | n/a | yes |
 | bastion\_name | The name of the bastion server | `string` | n/a | yes |
 | bastion\_region | The region of the GCP subnetwork for bastion services | `string` | n/a | yes |
 | bastion\_service\_account\_name | The service account to be created for the bastion. | `string` | n/a | yes |

@@ -18,5 +18,5 @@ metadata:
   name: accounts
   labels:
     networking/namespace: accounts
-    istio.io/rev: asm-185-2
+    istio.io/rev: asm-186-3
     app: boa

@@ -20,8 +20,8 @@ terraform_service_account        = "org-terraform@prj-b-seed-2334.iam.gserviceac
 app_infra_pipeline_cloudbuild_sa = "<bu1_infra_pipeline_project_number>@cloudbuild.gserviceaccount.com"
 enable_hub_and_spoke             = true
 app_cicd_project_id              = "prj-bu1-c-app-cicd-1234"
-shared_vpc_host_project_id       = "prj-d-shared-base-1234"
-shared_vpc_network_name          = "vpc-d-shared-base-spoke"
+shared_vpc_host_project_id       = "prj-p-shared-base-1234"
+shared_vpc_network_name          = "vpc-p-shared-base-spoke"
 
 // Optional - for an organization with existing projects or for development/validation.
 // Must be the same value used in previous steps.

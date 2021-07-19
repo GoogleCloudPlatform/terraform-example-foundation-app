@@ -72,7 +72,7 @@ variable "bastion_subnet_name" {
 
 variable "bastion_members" {
   type        = list(string)
-  description = "The names of the members of the bastion server."
+  description = "The emails of the members with access to the bastion server."
   default     = []
 }
 
@@ -143,6 +143,12 @@ variable "gke_mci_cluster_range_name_services" {
   type        = string
   description = "The name of the services IP range for multi-cluster ingress (MCI)."
   default     = "services-ip-range"
+}
+
+variable "max_pods_per_node" {
+  type        = number
+  description = "The maximum number of pods to schedule per node"
+  default     = 64
 }
 
 variable "boa_gke_project_id" {

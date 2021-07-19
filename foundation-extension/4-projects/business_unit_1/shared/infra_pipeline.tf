@@ -50,4 +50,11 @@ module "infra_pipelines" {
   default_region              = var.primary_location
   app_infra_repos             = ["boa-infra"]
   terraform_apply_branches    = ["development", "non\\-production", "production", "shared"]
+
+  folders_to_grant_browser_role = [
+    data.google_active_folder.common.name,
+    data.google_active_folder.development.name,
+    data.google_active_folder.non_production.name,
+    data.google_active_folder.production.name,
+  ]
 }

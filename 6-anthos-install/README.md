@@ -1,5 +1,20 @@
 # Deploying Bank of Anthos
-These instructions need to be run on the bastion host. To access the bastion host, open the Google Cloud console, and navigate to Compute Engine in the GKE project `prj-bu1-d-boa-gke`. Then, select the `gce-bastion-us-west1-b-01` and click on `ssh`. You need to be a whitelisted member to access this node which can be achieved either [manually](https://cloud.google.com/iap/docs/using-tcp-forwarding#grant-permission) or by adding your GCP User Identity in the list of `bastion_members` in `5-infrastructure/business_unit_1/<environment>/main.tf`
+
+### These instructions need to be run on the bastion host
+
+To access the bastion host:
+
+1. Open the [Google Cloud console](https://console.cloud.google.com).
+1. Navigate to **Compute Engine** in the GKE project `prj-bu1-d-boa-gke`.
+1. Select the `gce-bastion-us-west1-b-01` instance.
+1. Click on `ssh`.
+
+You need to be an allowlisted member to access this node.
+
+This can be achieved either:
+
+* By [Manually](https://cloud.google.com/iap/docs/using-tcp-forwarding#grant-permission) granting the required permissions to your GCP User Identity or
+* By adding your GCP User Identity in the list of `bastion_members` in `5-infrastructure/business_unit_1/development/development.auto.example.tfvars`.
 
 You can also connect to this instance by tunnelling SSH traffic through IAP.
 
@@ -17,6 +32,7 @@ You can also connect to this instance by tunnelling SSH traffic through IAP.
     yum install google-cloud-sdk-kpt -y
     yum install jq -y
     yum install kubectl -y
+    yum install nc -y
     exit
 
 ## Pull the repo
@@ -38,8 +54,8 @@ When indicated, make sure to replace the values below with the appropriate value
     export WORKLOAD_POOL=${GKE_PROJECT_ID}.svc.id.goog
     export MESH_ID="proj-${PROJECT_NUM}"
     export ASM_VERSION=1.8
-    export ISTIO_VERSION=1.8.3-asm.2
-    export ASM_LABEL=asm-183-2
+    export ISTIO_VERSION=1.8.6-asm.3
+    export ASM_LABEL=asm-186-3
     export CTX_1=gke_${GKE_PROJECT_ID}_${CLUSTER_1_REGION}_${CLUSTER_1}
     export CTX_2=gke_${GKE_PROJECT_ID}_${CLUSTER_2_REGION}_${CLUSTER_2}
     export CTX_INGRESS=gke_${GKE_PROJECT_ID}_${CLUSTER_INGRESS_REGION}_${CLUSTER_INGRESS}
@@ -58,7 +74,7 @@ In order to install ASM, we need to authenticate to clusters.
 ## Install ASM
 ### Downloading the script
 
-1. Download the version of the script that installs ASM 1.8.3.
+1. Download the version of the script that installs ASM 1.8.6.
     ```
     curl https://storage.googleapis.com/csm-artifacts/asm/install_asm_"${ASM_VERSION}" > install_asm
     ```
@@ -102,13 +118,13 @@ We need to configure endpoint discovery for cross-cluster load balancing and com
 1. Add ASM to your path:
     ```
     ./install_asm --version # get the version and then replace it in the below example
-    # For version 1.8.5-asm.2 use the following command
-    export PATH=$PATH:$HOME/asm-1.8/istio-1.8.5-asm.2/bin/
+    # For version 1.8.6-asm.3 use the following command
+    export PATH=$PATH:$HOME/asm-1.8/istio-1.8.6-asm.3/bin/
     ```
 
 1. Creates a secret that grants access to the Kube API Server for cluster 1
     ```
-    ./istioctl x create-remote-secret \
+    istioctl x create-remote-secret \
     --name=${CLUSTER_1} > secret-kubeconfig-${CLUSTER_1}.yaml
     ```
 
@@ -119,7 +135,7 @@ We need to configure endpoint discovery for cross-cluster load balancing and com
 
 1. In a similar manner, create a secret that grants access to the Kube API Server for cluster 2
     ```
-    ./istioctl x create-remote-secret \
+    istioctl x create-remote-secret \
     --name=${CLUSTER_2} > secret-kubeconfig-${CLUSTER_2}.yaml
     ```
 
@@ -276,7 +292,7 @@ Create a secret with your private key in both clusters.
     kubectl apply --context=${CTX_2} -f ${HOME}/terraform-example-foundation-app/6-anthos-install/acm-configs/config-management-west.yaml
 
 ### Populate the CSR repos
-For configuring and deploying the applicaiton, we are using multi-repo mode in ACM. This mode allows syncing from multiple repositories. In this excample, we have one root repository that hosts the cluster-wide and namespace-scoped configurations, and three namespace repositories to host the application manifests.
+For configuring and deploying the applicaiton, we are using multi-repo mode in ACM. This mode allows syncing from multiple repositories. In this example, we have one root repository that hosts the cluster-wide and namespace-scoped configurations, and three namespace repositories to host the application manifests.
 
 Find the Project ID for your CI/CD project (you can rerun `terraform output app_cicd_project_id` in the `gcp-projects/business_unit_1/shared` folder) It will look something like this: "prj-bu1-c-app-cicd-[RANDOM]"
 
@@ -326,6 +342,11 @@ The changes need to be applied on the following files:
 - ${HOME}/bank-of-anthos-repos/root-config-repo/namespaces/boa/accounts/repo-sync.yaml
 - ${HOME}/bank-of-anthos-repos/root-config-repo/namespaces/boa/frontend/repo-sync.yaml
 - ${HOME}/bank-of-anthos-repos/root-config-repo/namespaces/boa/transactions/repo-sync.yaml
+
+1. Update the configuration of the external service mesh for database access. Follow the instructions in the files:
+
+- ${HOME}/bank-of-anthos-repos/root-config-repo/namespaces/boa/accounts/mesh-external-svc.yaml
+- ${HOME}/bank-of-anthos-repos/root-config-repo/namespaces/boa/transactions/mesh-external-svc.yaml
 
 1. push the content to the root-config-repo
     ```
