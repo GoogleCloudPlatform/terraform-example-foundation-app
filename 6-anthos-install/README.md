@@ -291,28 +291,6 @@ Create a secret with your private key in both clusters.
 
     kubectl apply --context=${CTX_2} -f ${HOME}/terraform-example-foundation-app/6-anthos-install/acm-configs/config-management-west.yaml
 
-### Install Nomos
-Nomos will be installed to know if the Config Management System (ACM) changes were successfully applied.
-The official documentation to install nomos is on [this link](https://cloud.google.com/anthos-config-management/docs/how-to/nomos-command).
-1. Download the exact same version of the Config Management System (ACM installed above). Choose the linux version on [this link](https://cloud.google.com/anthos-config-management/docs/downloads#supported_version_instructions).
-
-1. Make it executable:
-    ```
-    chmod +x nomos
-    ```
-
-1. Move the command to a location the system searches for binaries.
-    ```
-    sudo mv nomos /usr/local/bin/
-
-1. Validate the configuration.
-    ```
-    nomos --path=${HOME}/bank-of-anthos-repos/root-config-repo vet
-    ``````
-1. Check if the update was successful.
-    ```
-    nomos status
-    ``````
 
 ### Populate the CSR repos
 For configuring and deploying the applicaiton, we are using multi-repo mode in ACM. This mode allows syncing from multiple repositories. In this excample, we have one root repository that hosts the cluster-wide and namespace-scoped configurations, and three namespace repositories to host the application manifests.
@@ -377,6 +355,28 @@ The changes need to be applied on the following files:
     git commit -m "adding config repo"
     git push origin master
     ```
+### Install Nomos
+Nomos will be installed to know if the Config Management System (ACM) changes were successfully applied.
+The official documentation to install nomos is on [this link](https://cloud.google.com/anthos-config-management/docs/how-to/nomos-command).
+1. Download the **exact** same version of the Config Management System (ACM installed above). Choose the linux version on [this link](https://cloud.google.com/anthos-config-management/docs/downloads#supported_version_instructions).
+
+1. Make it executable:
+    ```
+    chmod +x nomos
+    ```
+
+1. Move the command to a location the system searches for binaries.
+    ```
+    sudo mv nomos /usr/local/bin/
+
+1. Validate the configuration.
+    ```
+    nomos --path=${HOME}/bank-of-anthos-repos/root-config-repo vet
+    ```
+1. Check if the update was successful.
+    ```
+    nomos status
+    ```
 
 #### accounts namespace
 This repository will host the deployment and service manifests for `userservice` and `contacts` microservices.
@@ -402,6 +402,7 @@ This repository will host the deployment and service manifests for `userservice`
     git commit -m "adding accounts repo"
     git push origin master
     ```
+
 
 #### frontend namespace
 This repository will host the deployment and service manifests for `frontend` microservice, as well as a load generator service.
