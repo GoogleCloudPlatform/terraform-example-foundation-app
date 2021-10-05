@@ -292,7 +292,7 @@ Create a secret with your private key in both clusters.
     kubectl apply --context=${CTX_2} -f ${HOME}/terraform-example-foundation-app/6-anthos-install/acm-configs/config-management-west.yaml
 
 ### Populate the CSR repos
-For configuring and deploying the applicaiton, we are using multi-repo mode in ACM. This mode allows syncing from multiple repositories. In this example, we have one root repository that hosts the cluster-wide and namespace-scoped configurations, and three namespace repositories to host the application manifests.
+For configuring and deploying the application, we are using multi-repo mode in ACM. This mode allows syncing from multiple repositories. In this example, we have one root repository that hosts the cluster-wide and namespace-scoped configurations, and three namespace repositories to host the application manifests.
 
 Find the Project ID for your CI/CD project (you can rerun `terraform output app_cicd_project_id` in the `gcp-projects/business_unit_1/shared` folder) It will look something like this: "prj-bu1-c-app-cicd-[RANDOM]"
 
