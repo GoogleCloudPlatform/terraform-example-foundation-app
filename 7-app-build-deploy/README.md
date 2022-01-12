@@ -51,7 +51,7 @@ This demonstration uses Bank of Anthos to simulate a company building and deploy
    export REGION=<your_region>
    export PROJECT_ID=prj-bu1-c-app-cicd-<random>
    sed -i.bak \
-      "s|gcr.io/bank-of-anthos|${REGION}-docker.pkg.dev/${PROJECT_ID}/${PROJECT_ID}-boa-image-repo|g" skaffold.yaml && \
+      "s|gcr.io/bank-of-anthos-ci|${REGION}-docker.pkg.dev/${PROJECT_ID}/${PROJECT_ID}-boa-image-repo|g" skaffold.yaml && \
       sed -i.bak "s|gitCommit: {}|sha256: {}|g" skaffold.yaml
    ```
 1. Commit and push the changes.

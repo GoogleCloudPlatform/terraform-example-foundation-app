@@ -246,8 +246,8 @@ steps:
     - -c
     - |
       ./mvnw validate
-      # Replace gcr.io/bank-of-anthos to current project in skaffold.yaml
-      sed -i "s|gcr.io/bank-of-anthos|$_DEFAULT_REGION-docker.pkg.dev/$PROJECT_ID/$_GAR_REPOSITORY|g" skaffold.yaml
+      # Replace gcr.io/bank-of-anthos-ci to current project in skaffold.yaml
+      sed -i "s|gcr.io/bank-of-anthos-ci|$_DEFAULT_REGION-docker.pkg.dev/$PROJECT_ID/$_GAR_REPOSITORY|g" skaffold.yaml
       skaffold config set --global local-cluster false
       skaffold build --default-repo=$_DEFAULT_REGION-docker.pkg.dev/$PROJECT_ID/$_GAR_REPOSITORY --tag=$SHORT_SHA --cache-file='/.skaffold/cache' --file-output=/artifacts/build-artifacts.json
       sed -i "s|:latest||g" /artifacts/build-artifacts.json # remove the "latest" tag (complicates things later)
@@ -467,19 +467,19 @@ steps:
           case $$IMG in
               frontend|loadgenerator)
                   pushd frontend > /dev/null # repo folder
-                    GAR="$_DEFAULT_REGION-docker.pkg.dev/$PROJECT_ID/$_GAR_REPOSITORY/$${IMG}*" GCR="gcr.io/$PROJECT_ID/$${IMG}*" BOA="gcr.io/bank-of-anthos/$${IMG}*" FULL_IMAGE="$${IMAGES[$$INDEX]}" yq eval -i '(.spec | select(documentIndex == 0) |.template.spec.containers[].image | select(. == strenv(GAR) or . == strenv(GCR) or . == strenv(BOA))) |= strenv(FULL_IMAGE)' $$IMG.yaml
+                    GAR="$_DEFAULT_REGION-docker.pkg.dev/$PROJECT_ID/$_GAR_REPOSITORY/$${IMG}*" GCR="gcr.io/$PROJECT_ID/$${IMG}*" BOA="gcr.io/bank-of-anthos-ci/$${IMG}*" FULL_IMAGE="$${IMAGES[$$INDEX]}" yq eval -i '(.spec | select(documentIndex == 0) |.template.spec.containers[].image | select(. == strenv(GAR) or . == strenv(GCR) or . == strenv(BOA))) |= strenv(FULL_IMAGE)' $$IMG.yaml
                   popd > /dev/null
                   ;;
               userservice|contacts)
                   echo "ACCOUNTS - $${IMAGE}"
                   pushd accounts > /dev/null # repo folder
-                    GAR="$_DEFAULT_REGION-docker.pkg.dev/$PROJECT_ID/$_GAR_REPOSITORY/$${IMG}*" GCR="gcr.io/$PROJECT_ID/$${IMG}*" BOA="gcr.io/bank-of-anthos/$${IMG}*" FULL_IMAGE="$${IMAGES[$$INDEX]}" yq eval -i '(.spec | select(documentIndex == 0) |.template.spec.containers[].image | select(. == strenv(GAR) or . == strenv(GCR) or . == strenv(BOA))) |= strenv(FULL_IMAGE)' $$IMG.yaml
+                    GAR="$_DEFAULT_REGION-docker.pkg.dev/$PROJECT_ID/$_GAR_REPOSITORY/$${IMG}*" GCR="gcr.io/$PROJECT_ID/$${IMG}*" BOA="gcr.io/bank-of-anthos-ci/$${IMG}*" FULL_IMAGE="$${IMAGES[$$INDEX]}" yq eval -i '(.spec | select(documentIndex == 0) |.template.spec.containers[].image | select(. == strenv(GAR) or . == strenv(GCR) or . == strenv(BOA))) |= strenv(FULL_IMAGE)' $$IMG.yaml
                   popd > /dev/null
                   ;;
               balancereader|ledgerwriter|transactionhistory)
                   echo "TRANSACTIONS - $${IMAGE}"
                   pushd transactions > /dev/null # repo folder
-                    GAR="$_DEFAULT_REGION-docker.pkg.dev/$PROJECT_ID/$_GAR_REPOSITORY/$${IMG}*" GCR="gcr.io/$PROJECT_ID/$${IMG}*" BOA="gcr.io/bank-of-anthos/$${IMG}*" FULL_IMAGE="$${IMAGES[$$INDEX]}" yq eval -i '(.spec | select(documentIndex == 0) |.template.spec.containers[].image | select(. == strenv(GAR) or . == strenv(GCR) or . == strenv(BOA))) |= strenv(FULL_IMAGE)' $$IMG.yaml
+                    GAR="$_DEFAULT_REGION-docker.pkg.dev/$PROJECT_ID/$_GAR_REPOSITORY/$${IMG}*" GCR="gcr.io/$PROJECT_ID/$${IMG}*" BOA="gcr.io/bank-of-anthos-ci/$${IMG}*" FULL_IMAGE="$${IMAGES[$$INDEX]}" yq eval -i '(.spec | select(documentIndex == 0) |.template.spec.containers[].image | select(. == strenv(GAR) or . == strenv(GCR) or . == strenv(BOA))) |= strenv(FULL_IMAGE)' $$IMG.yaml
                   popd > /dev/null
                   ;;
           esac
