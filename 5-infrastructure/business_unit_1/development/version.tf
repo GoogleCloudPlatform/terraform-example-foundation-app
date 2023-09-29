@@ -1,5 +1,5 @@
 /**
- * Copyright 2021-2023 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-locals {
-  tf_sa = var.terraform_service_account
-}
-
-/******************************************
-  Provider credential configuration
- *****************************************/
-provider "google" {
-  impersonate_service_account = local.tf_sa
-}
-
-provider "google-beta" {
-  impersonate_service_account = local.tf_sa
+terraform {
+  required_version = ">= 0.13"
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = ">= 3.50"
+    }
+    google-beta = {
+      source  = "hashicorp/google-beta"
+      version = "~> 4.0"
+    }
+  }
 }

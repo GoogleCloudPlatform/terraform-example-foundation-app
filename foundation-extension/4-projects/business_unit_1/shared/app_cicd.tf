@@ -34,6 +34,7 @@ locals {
 }
 
 module "app_cicd_project" {
+  # tflint-ignore: terraform_module_pinned_source
   source                      = "github.com/terraform-google-modules/terraform-example-foundation/4-projects/modules/single_project"
   impersonate_service_account = var.terraform_service_account
   org_id                      = var.org_id

@@ -15,6 +15,7 @@
  */
 
 module "app_infra_cloudbuild_project" {
+  # tflint-ignore: terraform_module_pinned_source
   source                      = "github.com/terraform-google-modules/terraform-example-foundation/4-projects/modules/single_project"
   impersonate_service_account = var.terraform_service_account
   org_id                      = var.org_id
@@ -43,6 +44,7 @@ module "app_infra_cloudbuild_project" {
 }
 
 module "infra_pipelines" {
+  # tflint-ignore: terraform_module_pinned_source
   source                      = "github.com/terraform-google-modules/terraform-example-foundation/4-projects/modules/infra_pipelines"
   impersonate_service_account = var.terraform_service_account
   cloudbuild_project_id       = module.app_infra_cloudbuild_project.project_id

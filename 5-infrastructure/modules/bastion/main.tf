@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Google LLC
+ * Copyright 202-2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ data "google_compute_subnetwork" "bastion_subnet" {
 
 module "iap_bastion" {
   source  = "terraform-google-modules/bastion-host/google"
-  version = "~> 3.1"
+  version = "~> 5.3"
   project = var.project_id
 
   # Variables for existing network

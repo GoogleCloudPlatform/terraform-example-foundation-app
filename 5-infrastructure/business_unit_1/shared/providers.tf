@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Google LLC
+ * Copyright 2021-2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,21 +16,6 @@
 
 locals {
   tf_sa = var.app_cicd_build_sa
-}
-
-terraform {
-  required_version = ">=0.13.0"
-
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = ">= 3.50"
-    }
-    google-beta = {
-      source  = "hashicorp/google-beta"
-      version = ">= 3.50"
-    }
-  }
 }
 
 /******************************************

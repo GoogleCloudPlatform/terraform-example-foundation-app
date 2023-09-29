@@ -13,3 +13,14 @@ This is an additional Terraform configuration for [example_foundation 3-Networks
 This module adds:
 1. 4 Subnets - 1 Subnet for each cluster (gke1-cluster, gke2-cluster, mci-cluster) and one bastion-host-subnet to the default Base Shared VPC configuration from 3-networks
 1. 4 Ingress and 3 Egress Firewall Rules
+
+<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+## Inputs
+
+No inputs.
+
+## Outputs
+
+No outputs.
+
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

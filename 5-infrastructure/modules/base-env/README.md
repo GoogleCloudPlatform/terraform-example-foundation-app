@@ -35,7 +35,6 @@ The module provisions the following resources
 | boa\_sql\_project\_id | Project ID for SQL. | `string` | n/a | yes |
 | enforce\_bin\_auth\_policy | Enable or Disable creation of binary authorization policy. | `bool` | `false` | no |
 | env | The environment to prepare (dev/npd/prd). | `string` | n/a | yes |
-| folder\_prefix | Name prefix to use for folders created. | `string` | `"fldr"` | no |
 | gcp\_shared\_vpc\_project\_id | The host project id of the shared VPC. | `string` | n/a | yes |
 | gke\_cluster\_1\_cidr\_block | The primary IPv4 cidr block for the first GKE cluster. | `string` | n/a | yes |
 | gke\_cluster\_1\_range\_name\_pods | The name of the pods IP range for the first GKE cluster. | `string` | `"pod-ip-range"` | no |
@@ -52,7 +51,6 @@ The module provisions the following resources
 | location\_primary | The primary region for deployment, if not set default locations for each resource are taken from variables file. | `string` | `"us-east1"` | no |
 | location\_secondary | The secondary region for deployment, if not set default locations for each resource are taken from variables file. | `string` | `"us-west1"` | no |
 | max\_pods\_per\_node | The maximum number of pods to schedule per node | `number` | `64` | no |
-| project\_prefix | Name prefix to use for projects created. | `string` | `"prj"` | no |
 | shared\_vpc\_name | The shared VPC network name. | `string` | n/a | yes |
 | sql\_admin\_password | Admin Password for SQL Instances. | `string` | `"admin"` | no |
 | sql\_admin\_username | Admin Username for SQL Instances. | `string` | `"admin"` | no |

@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Google LLC
+ * Copyright 2021-2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,9 +43,9 @@ variable "database_region" {
 
 variable "database_users" {
   type = list(object({
-    name     = string
-    password = string
-    host     = string
+    name            = string
+    password        = string
+    random_password = bool
   }))
   description = "Additional Database Users"
   default     = []

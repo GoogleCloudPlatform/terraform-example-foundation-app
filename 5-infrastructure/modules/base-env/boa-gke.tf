@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Google LLC
+ * Copyright 2021-2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -72,7 +72,7 @@ locals {
 
 module "sink_gke" {
   source                 = "terraform-google-modules/log-export/google"
-  version                = "~> 6.0"
+  version                = "~> 7.3"
   destination_uri        = module.log_destination.destination_uri
   filter                 = "resource.type:(k8s_cluster OR k8s_container OR gce_target_https_proxy OR gce_url_map OR http_load_balancer OR gce_target_https_proxy OR gce_backend_service OR gce_instance OR gce_forwarding_rule OR gce_health_check OR service_account OR global OR audited_resource OR project)"
   log_sink_name          = "sink-boa-${local.envs[var.env].short}-gke-to-ops"
@@ -101,7 +101,7 @@ data "google_project" "gke_project" {
 
 module "clusters" {
   source   = "terraform-google-modules/kubernetes-engine/google//modules/safer-cluster"
-  version  = "~> 14.0.1"
+  version  = "~> 28.0"
   for_each = local.gke_settings
 
   project_id         = var.boa_gke_project_id

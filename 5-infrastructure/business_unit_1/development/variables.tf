@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Google LLC
+ * Copyright 2021-2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -59,24 +59,6 @@ variable "boa_sec_project_id" {
 variable "boa_sql_project_id" {
   type        = string
   description = "Project ID for SQL"
-}
-
-variable "gke_cluster_1_cidr_block" {
-  type        = string
-  description = "The primary IPv4 cidr block for the first GKE cluster."
-  default     = "100.64.78.0/28"
-}
-
-variable "gke_cluster_2_cidr_block" {
-  type        = string
-  description = "The primary IPv4 cidr block for the second GKE cluster."
-  default     = "100.65.70.0/28"
-}
-
-variable "gke_mci_cluster_cidr_block" {
-  type        = string
-  description = "The primary IPv4 cidr block for multi-cluster ingress (MCI)."
-  default     = "100.64.70.0/28"
 }
 
 variable "enforce_bin_auth_policy" {

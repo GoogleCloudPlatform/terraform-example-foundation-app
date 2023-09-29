@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Google LLC
+ * Copyright 2021-2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ locals {
 
 module "sink_sql" {
   source                 = "terraform-google-modules/log-export/google"
-  version                = "~> 6.0"
+  version                = "~> 7.2"
   destination_uri        = module.log_destination.destination_uri
   filter                 = "resource.type:(cloudsql_database OR service_account OR global OR audited_resource OR project)"
   log_sink_name          = "sink-boa-${local.envs[var.env].short}-sql-to-ops"

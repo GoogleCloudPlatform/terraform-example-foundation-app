@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Google LLC
+ * Copyright 2021-2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 resource "random_string" "keyring_name" {
   length  = 4
   special = false
-  number  = true
+  numeric = true
   upper   = false
   lower   = true
 }
@@ -40,7 +40,7 @@ resource "google_secret_manager_secret" "keyring-secret" {
   }
 
   replication {
-    automatic = true
+    auto {}
   }
 }
 
@@ -51,7 +51,7 @@ resource "google_secret_manager_secret_version" "keyring-secret-version" {
 
 module "attestors" {
   source   = "terraform-google-modules/kubernetes-engine/google//modules/binary-authorization"
-  version  = "~> 14.1"
+  version  = "~> 28.0"
   for_each = toset(var.attestor_names_prefix)
 
   project_id    = var.app_cicd_project_id

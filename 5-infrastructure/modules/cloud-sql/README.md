@@ -12,7 +12,7 @@ This module is a wrapper for [CFT PostgreSQL Module](https://github.com/terrafor
 | authorized\_networks | CIDR Ranges of Secondary IP ranges for all GKE Cluster Subnets | `list(map(string))` | n/a | yes |
 | database\_name | The database name | `string` | n/a | yes |
 | database\_region | The database region | `string` | n/a | yes |
-| database\_users | Additional Database Users | <pre>list(object({<br>    name     = string<br>    password = string<br>    host     = string<br>  }))</pre> | `[]` | no |
+| database\_users | Additional Database Users | <pre>list(object({<br>    name            = string<br>    password        = string<br>    random_password = bool<br>  }))</pre> | `[]` | no |
 | database\_zone | The database zone | `string` | n/a | yes |
 | project\_id | The GCP Project ID | `string` | n/a | yes |
 | replica\_zones | The GCP Zones | <pre>object({<br>    zone1 = string<br>    zone2 = string<br>  })</pre> | n/a | yes |

@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Google LLC
+ * Copyright 2021-2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ locals {
 
 module "sink_sec" {
   source                 = "terraform-google-modules/log-export/google"
-  version                = "~> 6.0"
+  version                = "~> 7.3"
   destination_uri        = module.log_destination.destination_uri
   filter                 = "resource.type:(cloudkms_keyring OR service_account OR global OR audited_resource OR project)"
   log_sink_name          = "sink-boa-${local.envs[var.env].short}-sec-to-ops"
@@ -37,14 +37,14 @@ module "sink_sec" {
 resource "random_string" "keyring_suffix" {
   length  = 4
   upper   = false
-  number  = true
+  numeric = true
   lower   = true
   special = false
 }
 
 module "kms_keyrings_keys" {
   source   = "terraform-google-modules/kms/google"
-  version  = "~> 2.0"
+  version  = "~> 2.1"
   for_each = local.kms_locations
 
   project_id           = var.boa_sec_project_id
@@ -69,7 +69,7 @@ resource "google_secret_manager_secret" "admin_password" {
     label = module.kms_keyrings_keys["sql_1"].keyring_name
   }
   replication {
-    automatic = true
+    auto {}
   }
 }
 

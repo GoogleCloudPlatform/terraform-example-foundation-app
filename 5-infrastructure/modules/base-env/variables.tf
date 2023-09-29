@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Google LLC
+ * Copyright 2021-2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,18 +22,6 @@ variable "env" {
 variable "terraform_service_account" {
   type        = string
   description = "Service account email of the account to impersonate to run Terraform."
-}
-
-variable "project_prefix" {
-  type        = string
-  description = "Name prefix to use for projects created."
-  default     = "prj"
-}
-
-variable "folder_prefix" {
-  type        = string
-  description = "Name prefix to use for folders created."
-  default     = "fldr"
 }
 
 variable "location_primary" {

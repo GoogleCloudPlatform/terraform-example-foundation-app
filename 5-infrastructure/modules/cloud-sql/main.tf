@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Google LLC
+ * Copyright 2021-2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,12 +20,13 @@ locals {
     require_ssl         = true
     private_network     = var.vpc_self_link
     authorized_networks = var.authorized_networks
+    allocated_ip_range  = null
   }
 }
 
 module "boa_postgress_ha" {
   source               = "GoogleCloudPlatform/sql-db/google//modules/postgresql"
-  version              = "~> 5.0"
+  version              = "~> 16.1"
   name                 = var.sql_instance_prefix
   random_instance_name = true
   project_id           = var.project_id
@@ -47,6 +48,7 @@ module "boa_postgress_ha" {
   ip_configuration = {
     ipv4_enabled        = false
     require_ssl         = true
+    allocated_ip_range  = null
     private_network     = var.vpc_self_link
     authorized_networks = var.authorized_networks
   }
@@ -56,32 +58,41 @@ module "boa_postgress_ha" {
     start_time                     = "20:55"
     location                       = null
     point_in_time_recovery_enabled = false
+    transaction_log_retention_days = null
+    retained_backups               = null
+    retention_unit                 = null
   }
 
   // Read replica configurations
   read_replica_name_suffix = "-example"
   read_replicas = [
     {
-      name             = "0"
-      zone             = var.replica_zones.zone1
-      tier             = "db-custom-2-13312"
-      ip_configuration = local.read_replica_ip_configuration
-      database_flags   = [{ name = "autovacuum", value = "off" }]
-      disk_autoresize  = null
-      disk_size        = null
-      disk_type        = "PD_HDD"
-      user_labels      = {}
+      name                  = "0"
+      zone                  = var.replica_zones.zone1
+      tier                  = "db-custom-2-13312"
+      ip_configuration      = local.read_replica_ip_configuration
+      database_flags        = [{ name = "autovacuum", value = "off" }]
+      disk_autoresize       = null
+      disk_autoresize_limit = null
+      availability_type     = "REGIONAL"
+      disk_size             = null
+      disk_type             = "PD_HDD"
+      user_labels           = {}
+      encryption_key_name   = null
     },
     {
-      name             = "1"
-      zone             = var.replica_zones.zone2
-      tier             = "db-custom-2-13312"
-      ip_configuration = local.read_replica_ip_configuration
-      database_flags   = [{ name = "autovacuum", value = "off" }]
-      disk_autoresize  = null
-      disk_size        = null
-      disk_type        = "PD_HDD"
-      user_labels      = {}
+      name                  = "1"
+      zone                  = var.replica_zones.zone2
+      tier                  = "db-custom-2-13312"
+      ip_configuration      = local.read_replica_ip_configuration
+      database_flags        = [{ name = "autovacuum", value = "off" }]
+      disk_autoresize       = null
+      disk_autoresize_limit = null
+      availability_type     = "REGIONAL"
+      disk_size             = null
+      disk_type             = "PD_HDD"
+      user_labels           = {}
+      encryption_key_name   = null
     }
   ]
 

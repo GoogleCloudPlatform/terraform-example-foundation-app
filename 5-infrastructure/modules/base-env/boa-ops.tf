@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Google LLC
+ * Copyright 2021-2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 module "sink_ops" {
   source                 = "terraform-google-modules/log-export/google"
-  version                = "~> 6.0"
+  version                = "~> 7.3"
   destination_uri        = module.log_destination.destination_uri
   filter                 = ""
   log_sink_name          = "sink-boa-${local.envs[var.env].short}-ops"
@@ -28,14 +28,14 @@ module "sink_ops" {
 resource "random_string" "bucket_name" {
   length  = 4
   upper   = false
-  number  = true
+  numeric = true
   lower   = true
   special = false
 }
 
 module "log_destination" {
   source                   = "terraform-google-modules/log-export/google//modules/storage"
-  version                  = "~> 6.0"
+  version                  = "~> 7.3"
   project_id               = var.boa_ops_project_id
   storage_bucket_name      = "log-ops-${lower(var.location_secondary)}-01-${random_string.bucket_name.result}"
   location                 = var.location_secondary

@@ -12,9 +12,6 @@
 | boa\_sql\_project\_id | Project ID for SQL | `string` | n/a | yes |
 | enforce\_bin\_auth\_policy | Enable or Disable creation of binary authorization policy | `bool` | `false` | no |
 | gcp\_shared\_vpc\_project\_id | The host project id of the shared VPC | `string` | n/a | yes |
-| gke\_cluster\_1\_cidr\_block | The primary IPv4 cidr block for the first GKE cluster. | `string` | `"100.64.78.0/28"` | no |
-| gke\_cluster\_2\_cidr\_block | The primary IPv4 cidr block for the second GKE cluster. | `string` | `"100.65.70.0/28"` | no |
-| gke\_mci\_cluster\_cidr\_block | The primary IPv4 cidr block for multi-cluster ingress (MCI). | `string` | `"100.64.70.0/28"` | no |
 | location\_primary | The primary region for deployment | `string` | `"us-east1"` | no |
 | location\_secondary | The secondary region for deployment | `string` | `"us-west1"` | no |
 | shared\_vpc\_name | The shared VPC network name | `string` | n/a | yes |
