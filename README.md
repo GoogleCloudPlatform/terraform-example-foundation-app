@@ -1,7 +1,7 @@
 # Deploy Bank of Anthos on example-foundations
 
 > [!WARNING]  
-> This blueprint has now been deprecated. Please refer to the [enterprise application blueprint](https://github.com/GoogleCloudPlatform/terraform-google-enterprise-application) for an updated implementation of GKE as an internal developer platform.
+> This blueprint is now deprecated. Please refer to the [enterprise application blueprint](https://github.com/GoogleCloudPlatform/terraform-google-enterprise-application) for an updated implementation of GKE as an internal developer platform.
 
 ## Overview
 
