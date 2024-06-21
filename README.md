@@ -1,5 +1,8 @@
 # Deploy Bank of Anthos on example-foundations
 
+> [!WARNING]  
+> This blueprint is now deprecated. Please refer to the [enterprise application blueprint](https://github.com/GoogleCloudPlatform/terraform-google-enterprise-application) for an updated implementation of GKE as an internal developer platform.
+
 ## Overview
 
 This module contains additional Terraform configurations that are meant to extend and modify the framework defined by [terraform-example-foundation](https://github.com/terraform-google-modules/terraform-example-foundation).
