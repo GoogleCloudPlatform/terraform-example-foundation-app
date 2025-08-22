@@ -16,7 +16,7 @@
 
 module "sink_ops" {
   source                 = "terraform-google-modules/log-export/google"
-  version                = "~> 6.0"
+  version                = "~> 11.0"
   destination_uri        = module.log_destination.destination_uri
   filter                 = ""
   log_sink_name          = "sink-boa-${local.envs[var.env].short}-ops"
@@ -35,7 +35,7 @@ resource "random_string" "bucket_name" {
 
 module "log_destination" {
   source                   = "terraform-google-modules/log-export/google//modules/storage"
-  version                  = "~> 6.0"
+  version                  = "~> 11.0"
   project_id               = var.boa_ops_project_id
   storage_bucket_name      = "log-ops-${lower(var.location_secondary)}-01-${random_string.bucket_name.result}"
   location                 = var.location_secondary
