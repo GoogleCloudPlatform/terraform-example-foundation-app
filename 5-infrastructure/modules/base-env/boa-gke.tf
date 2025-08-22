@@ -72,7 +72,7 @@ locals {
 
 module "sink_gke" {
   source                 = "terraform-google-modules/log-export/google"
-  version                = "~> 6.0"
+  version                = "~> 11.0"
   destination_uri        = module.log_destination.destination_uri
   filter                 = "resource.type:(k8s_cluster OR k8s_container OR gce_target_https_proxy OR gce_url_map OR http_load_balancer OR gce_target_https_proxy OR gce_backend_service OR gce_instance OR gce_forwarding_rule OR gce_health_check OR service_account OR global OR audited_resource OR project)"
   log_sink_name          = "sink-boa-${local.envs[var.env].short}-gke-to-ops"
