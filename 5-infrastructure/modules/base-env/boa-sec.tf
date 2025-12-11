@@ -44,7 +44,7 @@ resource "random_string" "keyring_suffix" {
 
 module "kms_keyrings_keys" {
   source   = "terraform-google-modules/kms/google"
-  version  = "~> 2.0"
+  version  = "~> 4.0"
   for_each = local.kms_locations
 
   project_id           = var.boa_sec_project_id
