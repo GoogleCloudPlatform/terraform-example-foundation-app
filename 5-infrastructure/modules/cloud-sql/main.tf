@@ -25,7 +25,7 @@ locals {
 
 module "boa_postgress_ha" {
   source               = "GoogleCloudPlatform/sql-db/google//modules/postgresql"
-  version              = "~> 5.0"
+  version              = "~> 27.0"
   name                 = var.sql_instance_prefix
   random_instance_name = true
   project_id           = var.project_id
