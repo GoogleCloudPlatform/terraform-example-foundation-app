@@ -62,11 +62,11 @@ steps:
 # Pull in cache for Maven, PIP and Skaffold
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   id: maven-cache-pull
-  entrypoint: 'gsutil'
+  entrypoint: 'gcloud'
   args:
-  - '-m'
+  - 'storage'
   - 'rsync'
-  - '-r'
+  - '--recursive'
   - 'gs://$_CACHE_BUCKET_NAME/cache/.m2'
   - '/cache/.m2'
   volumes:
@@ -75,11 +75,11 @@ steps:
   waitFor: ['-']
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   id: pip-cache-pull
-  entrypoint: 'gsutil'
+  entrypoint: 'gcloud'
   args:
-  - '-m'
+  - 'storage'
   - 'rsync'
-  - '-r'
+  - '--recursive'
   - 'gs://$_CACHE_BUCKET_NAME/cache/.cache/pip/wheels'
   - '/.cache/pip/wheels'
   volumes:
@@ -88,11 +88,11 @@ steps:
   waitFor: ['-']
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   id: kaniko-cache-pull
-  entrypoint: 'gsutil'
+  entrypoint: 'gcloud'
   args:
-  - '-m'
+  - 'storage'
   - 'rsync'
-  - '-r'
+  - '--recursive'
   - 'gs://$_CACHE_BUCKET_NAME/cache/.skaffold'
   - '/.skaffold'
   volumes:
@@ -271,11 +271,11 @@ steps:
 ############################### Push maven caches back to GCS ###############
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   id: maven-cache-push
-  entrypoint: 'gsutil'
+  entrypoint: 'gcloud'
   args:
-  - '-m'
+  - 'storage'
   - 'rsync'
-  - '-r'
+  - '--recursive'
   - '/cache/.m2'
   - 'gs://$_CACHE_BUCKET_NAME/cache/.m2/'
   volumes:
@@ -284,23 +284,23 @@ steps:
   waitFor: ['build-images']
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   id: skaffold-cache-push
-  entrypoint: 'gsutil'
+  entrypoint: 'gcloud'
   args:
-  - '-m'
+  - 'storage'
   - 'rsync'
-  - '-r'
+  - '--recursive'
   - '/.skaffold'
   - 'gs://$_CACHE_BUCKET_NAME/cache/.skaffold'
   volumes:
   - path: '/.skaffold'
     name: 'skaffold_cache'
   waitFor: ['build-images']
-- name: 'gcr.io/cloud-builders/gsutil'
+- name: 'gcr.io/cloud-builders/gcloud'
   id: pip-cache-push
   args:
-  - '-m'
+  - 'storage'
   - 'rsync'
-  - '-r'
+  - '--recursive'
   - '/.cache/pip/wheels'
   - 'gs://$_CACHE_BUCKET_NAME/cache/.cache/pip/wheels'
   volumes:

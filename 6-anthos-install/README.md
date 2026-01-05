@@ -280,7 +280,7 @@ Create a secret with your private key in both clusters.
 
 ### Download and install ACM
 
-    gsutil cp gs://config-management-release/released/1.7.0/config-management-operator.yaml config-management-operator.yaml
+    gcloud storage cp gs://config-management-release/released/1.7.0/config-management-operator.yaml config-management-operator.yaml
 
     kubectl apply --context=${CTX_1} -f config-management-operator.yaml
     kubectl apply --context=${CTX_2} -f config-management-operator.yaml
