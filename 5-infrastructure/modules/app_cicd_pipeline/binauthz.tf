@@ -51,7 +51,7 @@ resource "google_secret_manager_secret_version" "keyring-secret-version" {
 
 module "attestors" {
   source   = "terraform-google-modules/kubernetes-engine/google//modules/binary-authorization"
-  version  = "~> 14.1"
+  version  = "~> 43.0"
   for_each = toset(var.attestor_names_prefix)
 
   project_id    = var.app_cicd_project_id
