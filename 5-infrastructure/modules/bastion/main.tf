@@ -27,7 +27,7 @@ data "google_compute_subnetwork" "bastion_subnet" {
 
 module "iap_bastion" {
   source  = "terraform-google-modules/bastion-host/google"
-  version = "~> 3.1"
+  version = "~> 9.0"
   project = var.project_id
 
   # Variables for existing network
