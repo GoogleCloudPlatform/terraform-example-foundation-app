@@ -40,7 +40,7 @@ locals {
 
 module "sink_sql" {
   source                 = "terraform-google-modules/log-export/google"
-  version                = "~> 6.0"
+  version                = "~> 11.0"
   destination_uri        = module.log_destination.destination_uri
   filter                 = "resource.type:(cloudsql_database OR service_account OR global OR audited_resource OR project)"
   log_sink_name          = "sink-boa-${local.envs[var.env].short}-sql-to-ops"
