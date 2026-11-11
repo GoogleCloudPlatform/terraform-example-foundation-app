@@ -13,7 +13,7 @@
 # limitations under the License.
 
 # Start by building the application.
-FROM golang:1.15-buster as kritis-build
+FROM golang:1.20-buster as kritis-build
 
 # Install kritis
 WORKDIR /go/src
@@ -25,7 +25,7 @@ RUN make out/signer
 RUN cp out/signer /signer
 
 
-FROM alpine:3.13
+FROM alpine:3.20
 
 ### 1. Get Java via the package manager
 RUN apk update \
